@@ -81,10 +81,14 @@ def _find_prop(soup, prop):
 def _parse_html(html: str, url: str) -> dict:
     soup = BeautifulSoup(html, 'lxml')
 
-    # ---- foto (og:image) ----
+    # ---- foto: prefere itemprop=image (frasco puro) sobre og:image (social card) ----
     foto = None
-    og = soup.find('meta', property='og:image')
-    if og: foto = og.get('content')
+    img_i = soup.find(attrs={'itemprop':'image'})
+    if img_i:
+        foto = img_i.get('src') or img_i.get('content') or img_i.get('href')
+    if not foto:
+        og = soup.find('meta', property='og:image')
+        if og: foto = og.get('content')
 
     # ---- og:description e og:title (usados como fallback + regex de ano/família) ----
     og_desc = ''
