@@ -916,7 +916,7 @@ textarea.field{ resize:vertical; min-height:80px }
                   <p class="text-xs text-ink-muted mt-0.5">Ainda quero comprar.</p>
                 </div>
                 <button type="button" @click="newForm.eh_wishlist = !newForm.eh_wishlist; if(newForm.eh_wishlist) newForm.ja_terminou = false" :class="newForm.eh_wishlist ? 'bg-gold-500' : 'bg-cream-300'" class="relative w-12 h-7 rounded-full transition-colors flex-shrink-0">
-                  <span :class="newForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
+                  <span :class="newForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0'" class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
                 </button>
               </div>
               <div class="h-px bg-surface-border"></div>
@@ -926,7 +926,7 @@ textarea.field{ resize:vertical; min-height:80px }
                   <p class="text-xs text-ink-muted mt-0.5">Vai pro histórico "Já tive".</p>
                 </div>
                 <button type="button" @click="newForm.ja_terminou = !newForm.ja_terminou; if(newForm.ja_terminou) newForm.eh_wishlist = false" :class="newForm.ja_terminou ? 'bg-ink' : 'bg-cream-300'" class="relative w-12 h-7 rounded-full transition-colors flex-shrink-0">
-                  <span :class="newForm.ja_terminou ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
+                  <span :class="newForm.ja_terminou ? 'translate-x-5' : 'translate-x-0'" class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
                 </button>
               </div>
             </div>
@@ -1073,14 +1073,14 @@ textarea.field{ resize:vertical; min-height:80px }
                 <div class="flex items-center justify-between gap-3">
                   <div><p class="font-semibold text-ink text-sm">Na wishlist</p></div>
                   <button type="button" @click="editForm.eh_wishlist = !editForm.eh_wishlist; if(editForm.eh_wishlist) editForm.ja_terminou = false" :class="editForm.eh_wishlist ? 'bg-gold-500' : 'bg-cream-300'" class="relative w-12 h-7 rounded-full transition-colors">
-                    <span :class="editForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
+                    <span :class="editForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0'" class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
                   </button>
                 </div>
                 <div class="h-px bg-surface-border"></div>
                 <div class="flex items-center justify-between gap-3">
                   <div><p class="font-semibold text-ink text-sm">Já tive (arquivado)</p></div>
                   <button type="button" @click="editForm.ja_terminou = !editForm.ja_terminou; if(editForm.ja_terminou) editForm.eh_wishlist = false" :class="editForm.ja_terminou ? 'bg-ink' : 'bg-cream-300'" class="relative w-12 h-7 rounded-full transition-colors">
-                    <span :class="editForm.ja_terminou ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
+                    <span :class="editForm.ja_terminou ? 'translate-x-5' : 'translate-x-0'" class="absolute top-0.5 left-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
                   </button>
                 </div>
               </div>
@@ -1287,13 +1287,13 @@ textarea.field{ resize:vertical; min-height:80px }
       <label class="flex items-center justify-between cursor-pointer">
         <span class="text-sm text-ink font-semibold">Só com estoque</span>
         <button type="button" @click="filters.somenteEstoque = !filters.somenteEstoque" :class="filters.somenteEstoque ? 'bg-gold-500' : 'bg-cream-300'" class="relative w-11 h-6 rounded-full transition-colors">
-          <span :class="filters.somenteEstoque ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+          <span :class="filters.somenteEstoque ? 'translate-x-5' : 'translate-x-0'" class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
         </button>
       </label>
       <label class="flex items-center justify-between cursor-pointer">
         <span class="text-sm text-ink font-semibold">Só com referência (dupe)</span>
         <button type="button" @click="filters.somenteReferencia = !filters.somenteReferencia" :class="filters.somenteReferencia ? 'bg-gold-500' : 'bg-cream-300'" class="relative w-11 h-6 rounded-full transition-colors">
-          <span :class="filters.somenteReferencia ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+          <span :class="filters.somenteReferencia ? 'translate-x-5' : 'translate-x-0'" class="absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
         </button>
       </label>
     </div>
