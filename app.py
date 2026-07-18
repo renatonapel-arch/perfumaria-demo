@@ -371,11 +371,139 @@ def random_pick():
     if not rows: return {"error":"nenhum disponível"}, 404
     return jsonify(_row_to_dict(random.choice(rows)))
 
-# ---------------------------------------------------------------- import (mock)
+# ---------------------------------------------------------------- import xlsx real
+import unicodedata
+def _norm(s):
+    if s is None: return ''
+    s = str(s).strip().lower()
+    return ''.join(c for c in unicodedata.normalize('NFKD', s) if not unicodedata.combining(c))
+
+# possíveis nomes de coluna → campo interno
+COL_MAP = {
+    'marca': ['marca', 'brand', 'fabricante', 'casa'],
+    'modelo': ['modelo', 'nome', 'name', 'perfume', 'fragrancia', 'fragrance', 'produto'],
+    'ano': ['ano', 'year', 'lancamento', 'lançamento'],
+    'concentracao': ['concentracao', 'concentração', 'tipo', 'edt', 'edp', 'type'],
+    'tamanho_ml': ['tamanho', 'ml', 'tamanho_ml', 'tamanho (ml)', 'volume', 'size'],
+    'estoque_ml': ['estoque', 'estoque_ml', 'restante', 'saldo'],
+    'ml_por_spray': ['ml_por_spray', 'ml/spray', 'ml por spray', 'consumo'],
+    'preco_pago': ['preco', 'preço', 'preco_pago', 'valor', 'custo', 'preço pago', 'price'],
+    'familia': ['familia', 'família', 'family', 'olfativa', 'família olfativa'],
+    'notas_topo': ['notas_topo', 'topo', 'top', 'notas de topo', 'top notes'],
+    'notas_coracao': ['notas_coracao', 'coração', 'coracao', 'heart', 'middle', 'notas de coração'],
+    'notas_fundo': ['notas_fundo', 'fundo', 'base', 'base notes', 'notas de fundo'],
+    'rating': ['rating', 'nota_pessoal', 'nota pessoal', 'minha_nota', 'stars', 'estrelas'],
+    'nota_fragrantica': ['nota_fragrantica', 'fragrantica', 'nota fragrantica', 'nota fragantica'],
+    'votos_fragrantica': ['votos', 'votos_fragrantica', 'reviews'],
+    'review': ['review', 'anotacao', 'anotação', 'nota', 'observacao', 'observação', 'comentario', 'comentário'],
+    'eh_wishlist': ['wishlist', 'quero', 'lista de desejos', 'desejo'],
+    'ja_terminou': ['terminou', 'ja_terminou', 'ja tive', 'já tive', 'antigo', 'arquivo', 'finalizado'],
+    'foto': ['foto', 'imagem', 'photo', 'image', 'url'],
+}
+
+def _detect_columns(headers):
+    """Devolve {campo_interno: idx_coluna} baseado em fuzzy match de cabeçalhos."""
+    out = {}
+    for idx, h in enumerate(headers):
+        nh = _norm(h)
+        if not nh: continue
+        for field, aliases in COL_MAP.items():
+            if field in out: continue  # 1º match vence
+            if any(_norm(a) == nh or _norm(a) in nh for a in aliases):
+                out[field] = idx
+                break
+    return out
+
+def _cell_bool(v):
+    if v is None: return None
+    s = _norm(v)
+    if s in ('sim', 's', 'yes', 'y', 'true', '1', 'x'): return True
+    if s in ('nao', 'não', 'n', 'no', 'false', '0', ''): return False
+    return None
+
+def _cell_num(v):
+    if v is None: return None
+    if isinstance(v, (int, float)): return v
+    s = str(v).strip().replace('R$','').replace(' ','').replace(',','.')
+    try: return float(s)
+    except (ValueError, TypeError): return None
+
 @app.post("/api/import")
 def import_xlsx():
-    # v1: apenas simula. v2 troca por openpyxl leitura real.
-    return {"ok": True, "imported": 48}
+    from openpyxl import load_workbook
+    from io import BytesIO
+    mode = request.form.get('mode', 'add')
+    if 'file' not in request.files:
+        return {"error": "arquivo não enviado (campo 'file')"}, 400
+    f = request.files['file']
+    try:
+        wb = load_workbook(BytesIO(f.read()), data_only=True, read_only=True)
+    except Exception as e:
+        return {"error": f"não consegui abrir a planilha: {e}"}, 400
+    ws = wb.active
+    rows = list(ws.iter_rows(values_only=True))
+    if len(rows) < 2:
+        return {"error": "planilha vazia ou só com cabeçalho"}, 400
+    # descobre header row: primeira row com marca+modelo (ou similares)
+    header_row_idx = 0
+    header_cols = {}
+    for i in range(min(5, len(rows))):
+        candidate = _detect_columns(rows[i])
+        if 'marca' in candidate and 'modelo' in candidate:
+            header_row_idx = i
+            header_cols = candidate
+            break
+    if not header_cols:
+        return {"error": "não achei colunas 'marca' e 'modelo' — cheque o cabeçalho"}, 400
+
+    con = db()
+    if mode == 'replace':
+        con.execute("DELETE FROM usage_log")
+        con.execute("DELETE FROM perfume")
+
+    inserted = 0
+    skipped = 0
+    for row in rows[header_row_idx + 1:]:
+        if not row: continue
+        def _v(field):
+            i = header_cols.get(field)
+            return row[i] if i is not None and i < len(row) else None
+        marca = _v('marca')
+        modelo = _v('modelo')
+        if not marca or not modelo:
+            skipped += 1
+            continue
+        tamanho = _cell_num(_v('tamanho_ml')) or 100
+        estoque = _cell_num(_v('estoque_ml'))
+        if estoque is None: estoque = tamanho
+        eh_wish = _cell_bool(_v('eh_wishlist')) or False
+        ja_term = _cell_bool(_v('ja_terminou')) or False
+        con.execute("""INSERT INTO perfume
+            (marca, modelo, ano, concentracao, tamanho_ml, estoque_ml, ml_por_spray, preco_pago,
+             familia, notas_topo, notas_coracao, notas_fundo, rating, nota_fragrantica, votos_fragrantica,
+             review, eh_wishlist, ja_tive, ja_terminou, foto)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""", (
+            str(marca).strip(), str(modelo).strip(),
+            int(_cell_num(_v('ano')) or 0) or None,
+            str(_v('concentracao') or 'EDT').strip(),
+            int(tamanho), float(estoque),
+            float(_cell_num(_v('ml_por_spray')) or 0.1),
+            _cell_num(_v('preco_pago')),
+            str(_v('familia') or 'oriental').strip().lower()[:20],
+            _v('notas_topo'), _v('notas_coracao'), _v('notas_fundo'),
+            int(_cell_num(_v('rating')) or 0),
+            _cell_num(_v('nota_fragrantica')),
+            int(_cell_num(_v('votos_fragrantica')) or 0) or None,
+            _v('review'),
+            1 if eh_wish else 0,
+            0 if eh_wish else 1,
+            1 if ja_term else 0,
+            _v('foto') or 'bottle',
+        ))
+        inserted += 1
+    con.commit()
+    con.close()
+    return {"ok": True, "imported": inserted, "skipped": skipped, "columns_matched": list(header_cols.keys())}
 
 # ---------------------------------------------------------------- boot
 init_db()

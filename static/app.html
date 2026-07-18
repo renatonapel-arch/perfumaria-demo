@@ -1170,29 +1170,17 @@ textarea.field{ resize:vertical; min-height:80px }
                   <div class="mt-4 chip chip-ok"><svg class="i"><use href="#i-check"/></svg><span x-text="importFile"></span></div>
                 </template>
               </div>
-              <input type="file" class="hidden" accept=".xlsx,.xls,.csv" @change="importFile = $event.target.files[0]?.name || 'Perfumes.xlsx (simulado)'; importPreview = true">
-            </label>
-            <button type="button" @click="importFile = 'Perfumes.xlsx (simulado)'; importPreview = true" class="mt-3 text-xs text-gold-700 hover:underline">Usar planilha de demonstração →</button>
+              <input type="file" class="hidden" accept=".xlsx,.xls" @change="const f=$event.target.files[0]; if(f){ importFile=f.name; importFileObj=f; importPreview=true; }">
           </div>
 
           <template x-if="importPreview">
             <div class="card p-6 fade-in">
-              <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">2. Preview (primeiras 5 linhas)</p>
-              <div class="overflow-x-auto -mx-6 px-6">
-                <table class="w-full text-sm">
-                  <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
-                    <tr><th class="text-left py-2 px-3 font-semibold">Marca</th><th class="text-left py-2 px-3 font-semibold">Modelo</th><th class="text-left py-2 px-3 font-semibold hidden sm:table-cell">Concent.</th><th class="text-right py-2 px-3 font-semibold">ml</th><th class="text-right py-2 px-3 font-semibold hidden sm:table-cell">Preço</th><th class="py-2 px-3 font-semibold">Status</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr class="border-b border-surface-border/60"><td class="py-2 px-3 font-semibold">Yves Saint Laurent</td><td class="py-2 px-3">Y EDP</td><td class="py-2 px-3 hidden sm:table-cell">EDP</td><td class="py-2 px-3 text-right tnum">100</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 640,00</td><td class="py-2 px-3"><span class="chip chip-ok text-[10px]">OK</span></td></tr>
-                    <tr class="border-b border-surface-border/60"><td class="py-2 px-3 font-semibold">Armani</td><td class="py-2 px-3">Acqua di Giò Profondo</td><td class="py-2 px-3 hidden sm:table-cell">EDP</td><td class="py-2 px-3 text-right tnum">125</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 780,00</td><td class="py-2 px-3"><span class="chip chip-ok text-[10px]">OK</span></td></tr>
-                    <tr class="border-b border-surface-border/60"><td class="py-2 px-3 font-semibold">Hugo Boss</td><td class="py-2 px-3">Bottled Night</td><td class="py-2 px-3 hidden sm:table-cell">EDT</td><td class="py-2 px-3 text-right tnum">100</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 380,00</td><td class="py-2 px-3"><span class="chip chip-ok text-[10px]">OK</span></td></tr>
-                    <tr class="border-b border-surface-border/60"><td class="py-2 px-3 font-semibold">Versace</td><td class="py-2 px-3">Eros Flame</td><td class="py-2 px-3 hidden sm:table-cell">EDP</td><td class="py-2 px-3 text-right tnum">100</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 520,00</td><td class="py-2 px-3"><span class="chip chip-warn text-[10px]">Sem foto</span></td></tr>
-                    <tr><td class="py-2 px-3 font-semibold">Zara</td><td class="py-2 px-3">Nº 8.0</td><td class="py-2 px-3 hidden sm:table-cell">EDP</td><td class="py-2 px-3 text-right tnum">100</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 149,90</td><td class="py-2 px-3"><span class="chip chip-ok text-[10px]">OK</span></td></tr>
-                  </tbody>
-                </table>
+              <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">2. Colunas que serão reconhecidas</p>
+              <div class="bg-cream-100 rounded-xl p-4 text-sm space-y-2">
+                <p class="text-ink-muted"><span class="font-semibold text-ink">Obrigatórias:</span> marca, modelo</p>
+                <p class="text-ink-muted"><span class="font-semibold text-ink">Reconhecidas por nome</span> (podem variar): ano, tamanho/ml, estoque, preço, família, notas topo/coração/fundo, rating, fragrantica, votos, review, wishlist, já tive, foto</p>
+                <p class="text-[11px] text-ink-faint mt-2">Cabeçalhos em português ou inglês, com ou sem acento. Linhas sem marca/modelo são ignoradas.</p>
               </div>
-              <p class="text-xs text-ink-muted mt-3">+ 40 linhas adicionais serão importadas</p>
 
               <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-2 mt-6">3. Modo de import</p>
               <div class="flex flex-col sm:flex-row gap-2">
@@ -1537,6 +1525,7 @@ function perfumaria(){
     openConfirmImport: false,
     // import
     importFile: '',
+    importFileObj: null,
     importPreview: false,
     importMode: 'add',
     // autocomplete
@@ -1842,13 +1831,18 @@ function perfumaria(){
 
     // ------- import -------
     async confirmImport(){
+      if(!this.importFileObj){ this.showToast('Selecione um arquivo primeiro','err'); this.openConfirmImport=false; return; }
       try{
-        const r = await fetch('/api/import', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ mode: this.importMode }) });
+        const fd = new FormData();
+        fd.append('file', this.importFileObj);
+        fd.append('mode', this.importMode);
+        const r = await fetch('/api/import', { method:'POST', body: fd });
         const data = await r.json();
+        if(!r.ok) throw new Error(data.error || 'erro ao importar');
         await this.reloadAll();
-        this.showToast(data.imported + ' perfumes importados com sucesso');
-      }catch(e){ this.showToast('Erro ao importar','err'); }
-      this.openConfirmImport = false; this.importFile = ''; this.importPreview = false;
+        this.showToast(data.imported + ' perfumes importados' + (data.skipped ? ' · '+data.skipped+' linhas ignoradas' : ''));
+      }catch(e){ this.showToast(e.message,'err'); }
+      this.openConfirmImport = false; this.importFile = ''; this.importFileObj = null; this.importPreview = false;
       this.navigate('/');
     },
 
