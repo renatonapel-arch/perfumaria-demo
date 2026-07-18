@@ -393,7 +393,7 @@ COL_MAP = {
     'notas_coracao': ['notas_coracao', 'coração', 'coracao', 'heart', 'middle', 'notas de coração'],
     'notas_fundo': ['notas_fundo', 'fundo', 'base', 'base notes', 'notas de fundo'],
     'rating': ['rating', 'nota_pessoal', 'nota pessoal', 'minha_nota', 'stars', 'estrelas'],
-    'nota_fragrantica': ['nota_fragrantica', 'fragrantica', 'nota fragrantica', 'nota fragantica'],
+    'nota_fragrantica': ['nota_fragrantica', 'fragrantica', 'nota fragrantica', 'nota fragantica', 'pontuacao', 'pontuação'],
     'votos_fragrantica': ['votos', 'votos_fragrantica', 'reviews'],
     'review': ['review', 'anotacao', 'anotação', 'nota', 'observacao', 'observação', 'comentario', 'comentário'],
     'eh_wishlist': ['wishlist', 'quero', 'lista de desejos', 'desejo'],
