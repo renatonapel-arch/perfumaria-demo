@@ -340,10 +340,23 @@ def scrape():
     url = (body.get('url') or '').strip()
     if not url: return {"error":"URL vazia"}, 400
     if 'fragrantica' not in url.lower(): return {"error":"URL precisa ser do Fragrantica"}, 400
-    key = _match_scrape_key(url)
-    data = FRAGRANTICA_CACHE.get(key)
-    if not data: return {"error":"perfume não está no cache. Use um dos exemplos ou preencha manualmente."}, 404
-    return jsonify(data)
+    # 1) tenta scraper real (Playwright)
+    try:
+        from scraper import scrape_fragrantica, ScrapeError
+        data = scrape_fragrantica(url)
+        return jsonify(data)
+    except ScrapeError as e:
+        # 2) fallback pro cache (6 perfumes conhecidos)
+        key = _match_scrape_key(url)
+        cached = FRAGRANTICA_CACHE.get(key)
+        if cached: return jsonify(cached)
+        return {"error": f"scrape falhou e sem cache: {e}"}, 502
+    except Exception as e:
+        # 3) fallback silencioso pro cache mesmo em erro inesperado
+        key = _match_scrape_key(url)
+        cached = FRAGRANTICA_CACHE.get(key)
+        if cached: return jsonify(cached)
+        return {"error": f"erro inesperado: {e}"}, 500
 
 # ---------------------------------------------------------------- random
 @app.get("/api/random-pick")
