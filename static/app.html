@@ -1,0 +1,2004 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#1E1E1E">
+<title>Perfumaria — Clavis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        display: ['Archivo', 'system-ui', 'sans-serif'],
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['JetBrains Mono', 'monospace'],
+      },
+      colors: {
+        ink: { DEFAULT: '#1E1E1E', soft: '#2b2b2b', muted: '#5c5c5c', faint: '#8f8f8f' },
+        gold: { 50:'#FDF7EA', 100:'#F9EBC4', 200:'#F2D888', 300:'#E7C04D', 400:'#D5A21F', 500:'#B8860B', 600:'#966D08', 700:'#725306', 800:'#4f3a04', 900:'#2e2202' },
+        cream: { DEFAULT:'#FAF7F1', 100:'#FAF7F1', 200:'#F1EBD9', 300:'#E4DAB8' },
+        surface: { DEFAULT:'#FFFFFF', muted:'#F7F5EF', border:'#EBE5D3', 'border-strong':'#D8CFAD' },
+        ok: { DEFAULT:'#16A34A', bg:'#ECFDF5', fg:'#047857' },
+        warn: { DEFAULT:'#F59E0B', bg:'#FEF6E7', fg:'#9a6400' },
+        err: { DEFAULT:'#DC2626', bg:'#FEF2F2', fg:'#c1352f' },
+      },
+      boxShadow: {
+        soft: '0 1px 2px rgba(28,20,4,.04), 0 10px 26px -14px rgba(28,20,4,.18)',
+        lift: '0 24px 60px -22px rgba(28,20,4,.30)',
+        cta:  '0 10px 30px -8px rgba(184,134,11,.45)',
+        ring: '0 0 0 4px rgba(184,134,11,.15)',
+      },
+      borderRadius: { '4xl': '1.75rem' },
+    }
+  }
+}
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.14.1/dist/cdn.min.js"></script>
+
+<style>
+:root{
+  --gold:#B8860B; --gold-2:#D5A21F;
+  --ink:#1E1E1E;
+  --cream:#FAF7F1;
+  --border:#EBE5D3;
+  --ease:cubic-bezier(.16,1,.3,1);
+  --shadow-soft:0 1px 2px rgba(28,20,4,.04),0 10px 26px -14px rgba(28,20,4,.18);
+}
+*{ -webkit-tap-highlight-color: transparent }
+html,body{ background:#FAF7F1; color:#1E1E1E; font-family:'Inter',system-ui,sans-serif; font-feature-settings:"cv11","ss01"; }
+body{ min-height:100dvh; padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
+/* quando embutido no frame de iPhone do preview, reserva espaço do Dynamic Island */
+body.in-phone-frame{ padding-top:44px; }
+.font-display{ letter-spacing:-.02em }
+.tnum{ font-variant-numeric: tabular-nums lining-nums }
+
+/* --- SVG icons sprite --- */
+svg.i{ width:1em; height:1em; stroke:currentColor; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0 }
+svg.i.fill{ fill:currentColor; stroke:none }
+
+/* --- glass header --- */
+.glass{
+  background:rgba(255,255,255,.82);
+  backdrop-filter:saturate(180%) blur(16px);
+  -webkit-backdrop-filter:saturate(180%) blur(16px);
+  border-bottom:1px solid rgba(235,229,211,.6);
+}
+
+/* --- cards --- */
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:1.25rem;
+  transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
+  box-shadow:var(--shadow-soft);
+}
+.card:hover{ transform:translateY(-3px); box-shadow:0 24px 40px -20px rgba(28,20,4,.22); border-color:#D8CFAD; }
+
+/* --- bottle silhouette background (SVG data URI, gold+ink) --- */
+.bottle-bg{
+  background:
+    radial-gradient(140% 100% at 50% 0%, rgba(184,134,11,.10), transparent 60%),
+    linear-gradient(135deg,#FAF7F1,#F1EBD9);
+}
+
+/* --- estoque bar --- */
+.eb{ height:6px; background:#EFE9D6; border-radius:999px; overflow:hidden }
+.eb>span{ display:block; height:100%; border-radius:999px; transition:width .5s var(--ease) }
+
+/* --- primary CTA gold --- */
+.btn-gold{ background:linear-gradient(180deg,#D5A21F,#B8860B); color:#fff; box-shadow:var(--shadow-soft) }
+.btn-gold:hover{ filter:brightness(1.06); box-shadow:0 10px 30px -8px rgba(184,134,11,.45) }
+.btn-gold:active{ transform:translateY(1px) }
+.btn-ink{ background:#1E1E1E; color:#fff; box-shadow:var(--shadow-soft) }
+.btn-ink:hover{ background:#2b2b2b }
+.btn-ink:disabled{ background:#c9c1a8; cursor:not-allowed; box-shadow:none }
+.btn-ghost{ background:transparent; color:#1E1E1E; border:1px solid var(--border) }
+.btn-ghost:hover{ background:#F7F5EF; border-color:#D8CFAD }
+
+/* --- inputs --- */
+.field{
+  background:#fff; border:1.5px solid var(--border); border-radius:12px;
+  padding:.7rem .85rem; font-size:.95rem; color:#1E1E1E;
+  transition:border-color .2s, box-shadow .2s;
+  width:100%; font-family:inherit;
+}
+.field:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 4px rgba(184,134,11,.15) }
+.field::placeholder{ color:#8f8f8f }
+textarea.field{ resize:vertical; min-height:80px }
+
+/* --- chips --- */
+.chip{ display:inline-flex; align-items:center; gap:.35rem; padding:.35rem .7rem; border-radius:999px; font-size:.75rem; font-weight:600; letter-spacing:.02em; }
+.chip-ink{ background:#1E1E1E; color:#fff }
+.chip-gold{ background:#FDF7EA; color:#725306; border:1px solid #F2D888 }
+.chip-ok{ background:#ECFDF5; color:#047857; border:1px solid #86EFAC }
+.chip-warn{ background:#FEF6E7; color:#9a6400; border:1px solid #FCD34D }
+.chip-err{ background:#FEF2F2; color:#c1352f; border:1px solid #FCA5A5 }
+.chip-neutral{ background:#F7F5EF; color:#5c5c5c; border:1px solid var(--border) }
+
+/* --- família cores (dot antes do chip) --- */
+.dot{ width:.55rem; height:.55rem; border-radius:999px; display:inline-block }
+.f-woody{ background:#8B5A2B } .f-oriental{ background:#7B2D26 } .f-fresh{ background:#4CAF50 }
+.f-gourmand{ background:#C77D2A } .f-chypre{ background:#4E5B31 } .f-aquatic{ background:#2892C7 }
+.f-floral{ background:#D48DB6 } .f-leather{ background:#5a3a22 } .f-tobacco{ background:#3e2915 }
+
+/* --- rating stars --- */
+.star{ color:#D5A21F } .star-off{ color:#E4DAB8 }
+
+/* --- overlay/modal --- */
+[x-cloak]{ display:none !important }
+.overlay{ position:fixed; inset:0; background:rgba(28,20,4,.42); backdrop-filter:blur(6px); z-index:70; display:flex; align-items:flex-end; justify-content:center; padding:0; }
+@media(min-width:640px){ .overlay{ align-items:center; padding:1rem } }
+.modal-card{ background:#fff; border-radius:1.5rem 1.5rem 0 0; width:100%; max-width:520px; max-height:90dvh; overflow:auto; padding:1.25rem; box-shadow:0 -20px 60px -20px rgba(28,20,4,.4); }
+@media(min-width:640px){ .modal-card{ border-radius:1.5rem } }
+.drawer-card{ background:#fff; border-radius:1.5rem 1.5rem 0 0; width:100%; max-width:420px; max-height:90dvh; overflow:auto; padding:1.25rem; margin-right:auto; margin-left:auto; }
+@media(min-width:640px){ .drawer-card{ border-radius:1.5rem; margin-left:auto; margin-right:1rem; } .overlay.drawer{ align-items:stretch; justify-content:flex-end; padding:1rem; } .drawer-card{ height:100% } }
+
+/* --- animations --- */
+.fade-in{ animation: fi .35s var(--ease) both }
+@keyframes fi{ from{ opacity:0; transform:translateY(6px) } to{ opacity:1; transform:none } }
+
+.spray-anim{ animation: sprayp .5s var(--ease) }
+@keyframes sprayp{ 0%{transform:scale(1)} 40%{transform:scale(1.15) rotate(-6deg)} 100%{transform:scale(1)} }
+@keyframes spin{ to{ transform:rotate(360deg) } }
+
+/* highlight fields auto-preenchidos */
+.auto-glow{ box-shadow:0 0 0 3px rgba(184,134,11,.18); border-color:#D5A21F !important; }
+.auto-glow:focus{ box-shadow:0 0 0 4px rgba(184,134,11,.28); }
+
+/* --- sidebar module (desktop) --- */
+.side-link{ display:flex; align-items:center; gap:.65rem; padding:.65rem .85rem; border-radius:12px; color:#5c5c5c; font-weight:500; font-size:.9rem; }
+.side-link:hover{ background:#F7F5EF; color:#1E1E1E }
+.side-link.active{ background:#1E1E1E; color:#fff }
+.side-link.active .side-ic{ color:#D5A21F }
+
+/* --- bottom nav (mobile) --- */
+.bnav{ display:flex; align-items:center; justify-content:space-around; padding:.5rem .25rem calc(.5rem + env(safe-area-inset-bottom)); background:#fff; border-top:1px solid var(--border) }
+.bnav a{ display:flex; flex-direction:column; align-items:center; gap:.15rem; font-size:.68rem; color:#8f8f8f; padding:.4rem .5rem; border-radius:12px; min-width:60px }
+.bnav a.active{ color:#1E1E1E; background:#FDF7EA }
+
+/* --- toast --- */
+.toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:calc(72px + env(safe-area-inset-bottom)); z-index:100; background:#1E1E1E; color:#fff; padding:.75rem 1.1rem; border-radius:14px; box-shadow:0 24px 60px -22px rgba(28,20,4,.6); font-size:.9rem; display:flex; align-items:center; gap:.5rem; animation: fi .3s var(--ease) both }
+@media(min-width:1024px){ .toast{ bottom:24px } }
+.toast.err{ background:#c1352f }
+.toast.ok{ background:#047857 }
+
+/* --- delta dupe badge cores --- */
+.delta-ok{ background:#ECFDF5; color:#047857 }
+.delta-warn{ background:#FEF6E7; color:#9a6400 }
+.delta-err{ background:#FEF2F2; color:#c1352f }
+
+/* --- skeleton --- */
+.sk{ background:linear-gradient(90deg,#EFE9D6 25%,#F7F2E1 37%,#EFE9D6 63%); background-size:400% 100%; animation: sk 1.4s ease infinite; border-radius:12px }
+@keyframes sk{ from{ background-position:100% 0 } to{ background-position:0 0 } }
+
+/* --- utilities --- */
+.no-scrollbar::-webkit-scrollbar{ display:none } .no-scrollbar{ scrollbar-width:none }
+.line-2{ display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden }
+
+/* --- hover ring on card image container --- */
+.bottle{
+  aspect-ratio: 4/5; border-radius:14px; overflow:hidden; position:relative;
+  background: linear-gradient(160deg, var(--tone-a,#F1EBD9), var(--tone-b,#E4DAB8));
+  display:flex; align-items:center; justify-content:center;
+}
+.bottle::after{
+  content:""; position:absolute; inset:0; background: radial-gradient(120% 60% at 50% 0%, rgba(255,255,255,.35), transparent 60%);
+}
+.bottle svg{ position:relative; z-index:2 }
+
+/* famíla → tom da garrafa */
+.tone-leather{ --tone-a:#E7C99B; --tone-b:#B8865A }
+.tone-oriental{ --tone-a:#D4A28A; --tone-b:#78372E }
+.tone-fresh{ --tone-a:#D4E9C6; --tone-b:#6FA75E }
+.tone-woody{ --tone-a:#D9C6A8; --tone-b:#7B5A34 }
+.tone-floral{ --tone-a:#F3D3E1; --tone-b:#B76A93 }
+.tone-gourmand{ --tone-a:#F2D8A9; --tone-b:#B87C2E }
+.tone-chypre{ --tone-a:#CDD6B7; --tone-b:#606D3D }
+.tone-aquatic{ --tone-a:#B7DAEC; --tone-b:#2D7BAA }
+.tone-tobacco{ --tone-a:#C6A47B; --tone-b:#4E351C }
+
+/* out-of-stock overlay */
+.oos{ position:absolute; inset:0; background:rgba(28,20,4,.55); color:#fff; display:flex; align-items:center; justify-content:center; font-family:Archivo,sans-serif; font-weight:700; letter-spacing:.05em; font-size:.7rem; text-transform:uppercase; }
+
+/* animation reduced */
+@media(prefers-reduced-motion:reduce){
+  *{ animation-duration:.01ms!important; transition-duration:.01ms!important; }
+}
+</style>
+</head>
+<body x-data="perfumaria()" x-init="init()" x-cloak class="antialiased">
+
+<!-- ============================================================ -->
+<!-- SVG SPRITE — icons Lucide-inspired -->
+<!-- ============================================================ -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-spray" viewBox="0 0 24 24"><path d="M15 3h-3v4h3V3zM12 8h3v13h-7v-8a4 4 0 0 1 4-4V8z"/><path d="M17 5h.5M17 8h.5M20 5h.5M20 8h.5M17 11h.5M20 11h.5"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 1 1-12 0c0-4.5 6-11 6-11z"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.8l2.9 6.1 6.6.9-4.8 4.7 1.2 6.7L12 18l-5.9 3.2 1.2-6.7-4.8-4.7 6.6-.9z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5M12 3v12"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></symbol>
+    <symbol id="i-dice" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.2" class="fill"/><circle cx="16" cy="16" r="1.2" class="fill"/><circle cx="16" cy="8" r="1.2" class="fill"/><circle cx="8" cy="16" r="1.2" class="fill"/><circle cx="12" cy="12" r="1.2" class="fill"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></symbol>
+    <symbol id="i-chev-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-chev-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5" class="fill"/><circle cx="12" cy="12" r="1.5" class="fill"/><circle cx="12" cy="19" r="1.5" class="fill"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 10l9-7 9 7v10a2 2 0 0 1-2 2h-4v-6h-6v6H5a2 2 0 0 1-2-2z"/></symbol>
+    <symbol id="i-history" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-7 3.5"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-archive" viewBox="0 0 24 24"><path d="M3 3h18v5H3zM5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
+    <symbol id="i-pkg" viewBox="0 0 24 24"><path d="M21 8V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8"/><path d="M1 8h22l-2-4H3zM10 12h4"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+    <symbol id="i-import" viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M12 11v6M9 14l3 3 3-3"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <!-- garrafa (asset visual) -->
+    <symbol id="bottle-svg" viewBox="0 0 60 90">
+      <rect x="24" y="4" width="12" height="10" rx="1.5" fill="#1E1E1E"/>
+      <rect x="26" y="14" width="8" height="4" fill="#1E1E1E" opacity=".85"/>
+      <path d="M14 24 Q14 20 20 20 L40 20 Q46 20 46 24 L46 78 Q46 84 40 84 L20 84 Q14 84 14 78 Z" fill="rgba(255,255,255,.28)" stroke="rgba(30,30,30,.35)" stroke-width="1"/>
+      <path d="M18 28 Q18 26 22 26 L38 26 Q42 26 42 28 L42 44 Q30 42 18 44 Z" fill="rgba(255,255,255,.35)"/>
+      <text x="30" y="60" text-anchor="middle" font-family="Archivo,sans-serif" font-weight="800" font-size="6" fill="#1E1E1E" opacity=".55" letter-spacing=".05em">PARFUM</text>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ============================================================ -->
+<!-- APP SHELL -->
+<!-- ============================================================ -->
+<div class="min-h-dvh flex flex-col">
+
+  <!-- HEADER (glass, com breadcrumb + busca + botão global) -->
+  <header class="glass sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
+      <!-- mobile menu btn -->
+      <button @click="drawerNav = true" class="lg:hidden -ml-2 p-2 rounded-lg hover:bg-cream-200" aria-label="Menu">
+        <svg class="i text-lg"><use href="#i-menu"/></svg>
+      </button>
+
+      <!-- brand + breadcrumb -->
+      <div class="flex items-center gap-2 min-w-0">
+        <div class="w-8 h-8 rounded-lg btn-ink flex items-center justify-center">
+          <svg class="i text-gold-400" style="font-size:1.1rem"><use href="#i-spray"/></svg>
+        </div>
+        <div class="hidden sm:flex items-center gap-1.5 text-sm text-ink-muted min-w-0">
+          <a href="#/" @click.prevent="navigate('/')" class="hover:text-ink whitespace-nowrap">Ferramentas</a>
+          <svg class="i text-xs"><use href="#i-chev-right"/></svg>
+          <a href="#/" @click.prevent="navigate('/')" class="font-semibold text-ink whitespace-nowrap">Perfumaria</a>
+          <template x-if="breadcrumbTail()">
+            <span class="flex items-center gap-1.5 min-w-0"><svg class="i text-xs"><use href="#i-chev-right"/></svg><span class="truncate" x-text="breadcrumbTail()"></span></span>
+          </template>
+        </div>
+        <span class="sm:hidden font-display font-extrabold text-ink" x-text="headerTitle()"></span>
+      </div>
+
+      <!-- search desktop -->
+      <div class="ml-auto hidden md:flex items-center gap-2">
+        <div class="relative">
+          <svg class="i absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint text-sm"><use href="#i-search"/></svg>
+          <input x-model="query" type="search" placeholder="Buscar marca ou modelo" class="field pl-9 pr-3 py-2 w-64">
+        </div>
+        <button @click="openRandom = true" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-2 text-sm font-semibold" title="Random Pick">
+          <svg class="i text-base"><use href="#i-dice"/></svg><span class="hidden lg:inline">Random</span>
+        </button>
+        <button @click="navigate('/novo')" class="btn-gold h-10 px-3 rounded-xl flex items-center gap-2 text-sm font-semibold">
+          <svg class="i text-base"><use href="#i-plus"/></svg><span class="hidden lg:inline">Novo perfume</span>
+        </button>
+      </div>
+
+      <!-- search mobile trigger -->
+      <button @click="mobileSearch = !mobileSearch" class="md:hidden ml-auto -mr-2 p-2 rounded-lg hover:bg-cream-200" aria-label="Buscar">
+        <svg class="i text-lg"><use href="#i-search"/></svg>
+      </button>
+    </div>
+    <!-- mobile search bar -->
+    <div x-show="mobileSearch" x-transition class="md:hidden px-4 pb-3">
+      <div class="relative">
+        <svg class="i absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint text-sm"><use href="#i-search"/></svg>
+        <input x-model="query" type="search" placeholder="Buscar marca ou modelo" class="field pl-9 pr-3 py-2 w-full">
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================ -->
+  <!-- BODY (sidebar + main) -->
+  <!-- ============================================================ -->
+  <div class="flex-1 max-w-7xl w-full mx-auto flex gap-6 px-0 lg:px-8 pt-0 lg:pt-6 pb-24 lg:pb-10">
+
+    <!-- SIDEBAR do módulo (desktop) -->
+    <aside class="hidden lg:block w-56 shrink-0 sticky top-24 self-start">
+      <div class="bg-white border border-surface-border rounded-2xl p-3 shadow-soft">
+        <p class="px-3 pb-2 pt-1 text-xs uppercase tracking-wider text-ink-faint font-semibold">Perfumaria</p>
+        <nav class="flex flex-col gap-0.5">
+          <a href="#/" @click.prevent="navigate('/')" class="side-link" :class="{'active': route === '/'}">
+            <svg class="i text-base side-ic"><use href="#i-list"/></svg>Coleção
+            <span class="ml-auto text-xs opacity-70 tnum" x-text="filteredCollection().length + (query || Object.keys(activeFilters()).length ? '' : '')"></span>
+          </a>
+          <a href="#/wishlist" @click.prevent="navigate('/wishlist')" class="side-link" :class="{'active': route === '/wishlist'}">
+            <svg class="i text-base side-ic"><use href="#i-heart"/></svg>Wishlist
+            <span class="ml-auto text-xs opacity-70 tnum" x-text="wishlist().length"></span>
+          </a>
+          <a href="#/tive" @click.prevent="navigate('/tive')" class="side-link" :class="{'active': route === '/tive'}">
+            <svg class="i text-base side-ic"><use href="#i-archive"/></svg>Já tive
+            <span class="ml-auto text-xs opacity-70 tnum" x-text="pastCollection().length"></span>
+          </a>
+          <div class="h-px bg-surface-border my-1.5 mx-3"></div>
+          <a href="#/import" @click.prevent="navigate('/import')" class="side-link" :class="{'active': route === '/import'}">
+            <svg class="i text-base side-ic"><use href="#i-import"/></svg>Importar planilha
+          </a>
+        </nav>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="flex-1 min-w-0 px-4 sm:px-6 lg:px-0">
+
+      <!-- ============================================================ -->
+      <!-- TELA 1 · LISTAGEM (Coleção) -->
+      <!-- ============================================================ -->
+      <section x-show="route === '/'" x-transition.opacity class="fade-in">
+        <!-- header ações -->
+        <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
+          <div class="min-w-0">
+            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-ink">Coleção</h1>
+            <p class="text-sm text-ink-muted mt-0.5">
+              <span class="tnum" x-text="filteredCollection().length"></span> perfumes<span x-show="Object.keys(activeFilters()).length > 0" class="text-gold-600 font-semibold"> · com filtros ativos</span>
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button @click="drawerFilters = true" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold relative">
+              <svg class="i text-base"><use href="#i-filter"/></svg><span class="hidden sm:inline">Filtrar</span>
+              <span x-show="Object.keys(activeFilters()).length > 0" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gold-500 text-white text-[10px] font-bold flex items-center justify-center tnum" x-text="Object.keys(activeFilters()).length"></span>
+            </button>
+            <button @click="openRandom = true" class="btn-ghost h-10 w-10 rounded-xl md:hidden flex items-center justify-center" title="Random Pick">
+              <svg class="i text-base"><use href="#i-dice"/></svg>
+            </button>
+            <button @click="navigate('/novo')" class="btn-gold h-10 px-3 rounded-xl md:hidden flex items-center gap-1.5 text-sm font-semibold">
+              <svg class="i text-base"><use href="#i-plus"/></svg>Novo
+            </button>
+          </div>
+        </div>
+
+        <!-- estados -->
+        <template x-if="loading">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <template x-for="i in 6"><div class="card p-3"><div class="sk aspect-[4/5] mb-3"></div><div class="sk h-4 w-3/4 mb-2"></div><div class="sk h-3 w-1/2"></div></div></template>
+          </div>
+        </template>
+
+        <template x-if="!loading && filteredCollection().length === 0">
+          <div class="card p-10 text-center">
+            <div class="mx-auto w-14 h-14 rounded-2xl bg-cream-200 flex items-center justify-center mb-4">
+              <svg class="i text-2xl text-ink-faint"><use href="#i-spray"/></svg>
+            </div>
+            <h3 class="font-display font-extrabold text-lg text-ink" x-text="Object.keys(activeFilters()).length > 0 || query ? 'Nenhum perfume com esses filtros' : 'Nenhum perfume cadastrado ainda'"></h3>
+            <p class="text-sm text-ink-muted mt-1 mb-5" x-text="Object.keys(activeFilters()).length > 0 || query ? 'Ajuste os filtros ou limpe a busca.' : 'Comece cadastrando seu primeiro perfume ou importando da planilha.'"></p>
+            <div class="flex items-center justify-center gap-2 flex-wrap">
+              <template x-if="Object.keys(activeFilters()).length > 0 || query">
+                <button @click="clearAllFilters()" class="btn-ghost h-10 px-4 rounded-xl text-sm font-semibold">Limpar filtros</button>
+              </template>
+              <template x-if="!Object.keys(activeFilters()).length && !query">
+                <div class="flex gap-2 flex-wrap justify-center">
+                  <button @click="navigate('/novo')" class="btn-gold h-10 px-4 rounded-xl text-sm font-semibold flex items-center gap-1.5"><svg class="i"><use href="#i-plus"/></svg>Cadastrar primeiro</button>
+                  <button @click="navigate('/import')" class="btn-ghost h-10 px-4 rounded-xl text-sm font-semibold flex items-center gap-1.5"><svg class="i"><use href="#i-import"/></svg>Importar planilha</button>
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
+
+        <!-- grid -->
+        <template x-if="!loading && filteredCollection().length > 0">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            <template x-for="p in filteredCollection()" :key="p.id">
+              <article class="card p-2.5 sm:p-3 flex flex-col group cursor-pointer" @click="navigate('/'+p.id)">
+                <!-- foto -->
+                <div class="bottle mb-2.5" :class="'tone-'+p.familia">
+                  <template x-if="photoKind(p.foto) === 'url'">
+                    <img :src="p.foto" :alt="p.marca+' '+p.modelo" loading="lazy" class="absolute inset-0 w-full h-full object-contain p-2 z-10" onerror="this.style.display='none'">
+                  </template>
+                  <template x-if="photoKind(p.foto) === 'svg'">
+                    <svg viewBox="0 0 60 90" width="70" height="105" style="width:60%;height:auto"><use href="#bottle-svg"/></svg>
+                  </template>
+                  <template x-if="photoKind(p.foto) === 'none'">
+                    <svg class="i text-3xl text-ink/40" style="width:2rem;height:2rem"><use href="#i-drop"/></svg>
+                  </template>
+                  <template x-if="p.estoque_ml <= 0">
+                    <div class="oos">Sem estoque</div>
+                  </template>
+                  <!-- concentração pill -->
+                  <span class="absolute top-2 left-2 chip chip-ink text-[10px] py-1 px-2 shadow-sm" x-text="p.concentracao" style="z-index:3"></span>
+                  <!-- dupe badge -->
+                  <template x-if="p.referencia_id">
+                    <span class="absolute top-2 right-2 chip chip-gold text-[10px] py-1 px-2 shadow-sm" style="z-index:3">DUPE</span>
+                  </template>
+                </div>
+
+                <!-- info -->
+                <div class="flex-1 flex flex-col">
+                  <p class="text-[11px] font-semibold uppercase tracking-wider text-ink-muted truncate" x-text="p.marca"></p>
+                  <h3 class="font-display font-extrabold text-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
+
+                  <!-- família + rating -->
+                  <div class="flex items-center justify-between mt-2">
+                    <span class="chip chip-neutral text-[10px] py-0.5 px-2"><span class="dot" :class="'f-'+p.familia"></span><span x-text="familiaLabel(p.familia)"></span></span>
+                    <div class="flex items-center gap-0.5">
+                      <template x-for="i in 5" :key="i">
+                        <svg class="i fill" :class="i <= p.rating ? 'star' : 'star-off'" style="width:.85rem;height:.85rem"><use href="#i-star"/></svg>
+                      </template>
+                    </div>
+                  </div>
+
+                  <!-- estoque bar -->
+                  <div class="mt-3">
+                    <div class="flex items-center justify-between text-[11px] mb-1">
+                      <span class="text-ink-muted">Estoque</span>
+                      <span class="font-semibold text-ink tnum" x-text="p.estoque_ml + '/' + p.tamanho_ml + ' ml'"></span>
+                    </div>
+                    <div class="eb"><span :style="'width:'+Math.max(0,(p.estoque_ml/p.tamanho_ml)*100)+'%; background:'+stockColor(p)"></span></div>
+                  </div>
+
+                  <!-- dupe delta -->
+                  <template x-if="p.referencia_id && findPerfume(p.referencia_id)">
+                    <div class="mt-2.5 flex items-center gap-1.5 text-[11px]">
+                      <span class="text-ink-muted">vs</span>
+                      <span class="font-semibold text-ink truncate" x-text="findPerfume(p.referencia_id).marca+' '+findPerfume(p.referencia_id).modelo"></span>
+                      <span class="chip text-[10px] py-0.5 px-1.5 ml-auto" :class="deltaClass(Math.abs(findPerfume(p.referencia_id).nota_fragrantica - p.nota_fragrantica))">
+                        Δ<span x-text="Math.abs(findPerfume(p.referencia_id).nota_fragrantica - p.nota_fragrantica).toFixed(2)"></span>
+                      </span>
+                    </div>
+                  </template>
+
+                  <!-- rodapé: custo/spray + Spray On -->
+                  <div class="mt-3 pt-3 border-t border-surface-border flex items-end justify-between gap-2">
+                    <div class="min-w-0">
+                      <p class="text-[10px] text-ink-faint uppercase tracking-wider">Custo/spray</p>
+                      <p class="font-display font-bold text-[13px] text-ink tnum" x-text="p.preco_pago ? brl((p.preco_pago/(p.tamanho_ml/p.ml_por_spray))) : '—'"></p>
+                    </div>
+                    <button @click.stop="openSprayModal(p.id)" class="btn-ink h-9 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1"
+                            :disabled="p.estoque_ml < p.ml_por_spray"
+                            :class="{'!bg-cream-300 !text-ink-faint': p.estoque_ml < p.ml_por_spray}">
+                      <svg class="i text-sm"><use href="#i-spray"/></svg><span class="hidden sm:inline">Spray</span>
+                    </button>
+                  </div>
+                </div>
+              </article>
+            </template>
+          </div>
+        </template>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TELA 5 · WISHLIST -->
+      <!-- ============================================================ -->
+      <section x-show="route === '/wishlist'" x-transition.opacity class="fade-in">
+        <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
+          <div>
+            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-ink flex items-center gap-2">
+              <svg class="i text-2xl text-gold-500 fill"><use href="#i-heart"/></svg>Wishlist
+            </h1>
+            <p class="text-sm text-ink-muted mt-0.5"><span class="tnum" x-text="wishlist().length"></span> perfumes desejados</p>
+          </div>
+          <button @click="navigate('/novo')" class="btn-gold h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold">
+            <svg class="i text-base"><use href="#i-plus"/></svg><span class="hidden sm:inline">Adicionar</span>
+          </button>
+        </div>
+
+        <template x-if="wishlist().length === 0">
+          <div class="card p-10 text-center">
+            <div class="mx-auto w-14 h-14 rounded-2xl bg-cream-200 flex items-center justify-center mb-4">
+              <svg class="i text-2xl text-ink-faint"><use href="#i-heart"/></svg>
+            </div>
+            <h3 class="font-display font-extrabold text-lg text-ink">Sua wishlist está vazia</h3>
+            <p class="text-sm text-ink-muted mt-1 mb-5">Cadastre perfumes marcados como "wishlist" para vê-los aqui.</p>
+            <button @click="navigate('/novo'); newForm.eh_wishlist = true" class="btn-gold h-10 px-4 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5"><svg class="i"><use href="#i-plus"/></svg>Cadastrar como wishlist</button>
+          </div>
+        </template>
+
+        <template x-if="wishlist().length > 0">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            <template x-for="p in wishlist()" :key="p.id">
+              <article class="card p-2.5 sm:p-3 flex flex-col cursor-pointer" @click="navigate('/'+p.id)">
+                <div class="bottle mb-2.5" :class="'tone-'+p.familia">
+                  <template x-if="photoKind(p.foto) === 'url'"><img :src="p.foto" :alt="p.marca+' '+p.modelo" loading="lazy" class="absolute inset-0 w-full h-full object-contain p-2 z-10" onerror="this.style.display='none'"></template>
+                  <template x-if="photoKind(p.foto) === 'svg'"><svg viewBox="0 0 60 90" style="width:60%;height:auto"><use href="#bottle-svg"/></svg></template>
+                  <template x-if="photoKind(p.foto) === 'none'"><svg class="i" style="width:2rem;height:2rem"><use href="#i-drop"/></svg></template>
+                  <span class="absolute top-2 left-2 chip chip-ink text-[10px] py-1 px-2 shadow-sm" x-text="p.concentracao" style="z-index:3"></span>
+                  <span class="absolute top-2 right-2 chip chip-gold text-[10px] py-1 px-2 shadow-sm flex items-center gap-1" style="z-index:3">
+                    <svg class="i fill text-[10px]"><use href="#i-heart"/></svg>QUERO
+                  </span>
+                </div>
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-ink-muted truncate" x-text="p.marca"></p>
+                <h3 class="font-display font-extrabold text-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
+                <div class="flex items-center justify-between mt-2">
+                  <span class="chip chip-neutral text-[10px] py-0.5 px-2"><span class="dot" :class="'f-'+p.familia"></span><span x-text="familiaLabel(p.familia)"></span></span>
+                  <div class="flex items-center gap-0.5">
+                    <template x-for="i in 5" :key="i"><svg class="i fill" :class="i <= p.rating ? 'star' : 'star-off'" style="width:.85rem;height:.85rem"><use href="#i-star"/></svg></template>
+                  </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-surface-border">
+                  <p class="text-[11px] text-ink-muted">Nota Fragrantica</p>
+                  <div class="flex items-center gap-2 mt-0.5">
+                    <span class="font-display font-extrabold text-ink text-lg tnum" x-text="p.nota_fragrantica.toFixed(2)"></span>
+                    <span class="text-[10px] text-ink-faint tnum" x-text="'('+p.votos_fragrantica.toLocaleString('pt-BR')+' votos)'"></span>
+                  </div>
+                </div>
+              </article>
+            </template>
+          </div>
+        </template>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TELA · JÁ TIVE (perfumes que tinha mas não tem mais) -->
+      <!-- ============================================================ -->
+      <section x-show="route === '/tive'" x-transition.opacity class="fade-in">
+        <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
+          <div>
+            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-ink flex items-center gap-2">
+              <svg class="i text-2xl text-ink-muted"><use href="#i-archive"/></svg>Já tive
+            </h1>
+            <p class="text-sm text-ink-muted mt-0.5"><span class="tnum" x-text="pastCollection().length"></span> perfumes que tinha e não tenho mais</p>
+          </div>
+          <button @click="navigate('/novo')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold">
+            <svg class="i text-base"><use href="#i-plus"/></svg><span class="hidden sm:inline">Adicionar</span>
+          </button>
+        </div>
+
+        <template x-if="pastCollection().length === 0">
+          <div class="card p-10 text-center">
+            <div class="mx-auto w-14 h-14 rounded-2xl bg-cream-200 flex items-center justify-center mb-4">
+              <svg class="i text-2xl text-ink-faint"><use href="#i-archive"/></svg>
+            </div>
+            <h3 class="font-display font-extrabold text-lg text-ink">Nenhum perfume arquivado ainda</h3>
+            <p class="text-sm text-ink-muted mt-1 mb-5">Quando terminar ou vender um perfume, marca ele como "já tive" no detalhe pra manter o histórico da tua trajetória olfativa.</p>
+          </div>
+        </template>
+
+        <template x-if="pastCollection().length > 0">
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            <template x-for="p in pastCollection()" :key="p.id">
+              <article class="card p-2.5 sm:p-3 flex flex-col cursor-pointer" @click="navigate('/'+p.id)" style="opacity:.92">
+                <div class="bottle mb-2.5" :class="'tone-'+p.familia" style="filter:grayscale(.35)">
+                  <template x-if="photoKind(p.foto) === 'url'"><img :src="p.foto" :alt="p.marca+' '+p.modelo" loading="lazy" class="absolute inset-0 w-full h-full object-contain p-2 z-10" onerror="this.style.display='none'"></template>
+                  <template x-if="photoKind(p.foto) === 'svg'"><svg viewBox="0 0 60 90" style="width:60%;height:auto"><use href="#bottle-svg"/></svg></template>
+                  <template x-if="photoKind(p.foto) === 'none'"><svg class="i" style="width:2rem;height:2rem"><use href="#i-drop"/></svg></template>
+                  <span class="absolute top-2 left-2 chip chip-ink text-[10px] py-1 px-2 shadow-sm" x-text="p.concentracao" style="z-index:3"></span>
+                  <span class="absolute top-2 right-2 chip chip-neutral text-[10px] py-1 px-2 shadow-sm flex items-center gap-1" style="z-index:3">
+                    <svg class="i text-[10px]"><use href="#i-archive"/></svg>JÁ TIVE
+                  </span>
+                </div>
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-ink-muted truncate" x-text="p.marca"></p>
+                <h3 class="font-display font-extrabold text-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
+                <div class="flex items-center justify-between mt-2">
+                  <span class="chip chip-neutral text-[10px] py-0.5 px-2"><span class="dot" :class="'f-'+p.familia"></span><span x-text="familiaLabel(p.familia)"></span></span>
+                  <div class="flex items-center gap-0.5">
+                    <template x-for="i in 5" :key="i"><svg class="i fill" :class="i <= p.rating ? 'star' : 'star-off'" style="width:.85rem;height:.85rem"><use href="#i-star"/></svg></template>
+                  </div>
+                </div>
+                <div class="mt-3 pt-3 border-t border-surface-border flex items-center justify-between">
+                  <div>
+                    <p class="text-[10px] uppercase tracking-wider text-ink-faint">Investido</p>
+                    <p class="font-display font-bold text-[13px] text-ink tnum" x-text="p.preco_pago ? brl(p.preco_pago) : '—'"></p>
+                  </div>
+                  <button @click.stop="togglePast(p.id)" class="btn-ghost h-8 px-2.5 rounded-lg text-[11px] font-semibold flex items-center gap-1" title="Voltar para coleção ativa">
+                    <svg class="i text-xs"><use href="#i-back"/></svg>Voltar
+                  </button>
+                </div>
+              </article>
+            </template>
+          </div>
+        </template>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TELA 2 · DETALHE -->
+      <!-- ============================================================ -->
+      <template x-if="route.match(/^\/(\d+)$/) && currentPerfume()">
+        <section x-transition.opacity class="fade-in">
+          <!-- top bar -->
+          <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
+            <button @click="navigate('/')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold">
+              <svg class="i"><use href="#i-back"/></svg><span class="hidden sm:inline">Voltar</span>
+            </button>
+            <div class="flex items-center gap-2 relative">
+              <button @click="navigate('/'+currentPerfume().id+'/editar')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold">
+                <svg class="i"><use href="#i-edit"/></svg><span class="hidden sm:inline">Editar</span>
+              </button>
+              <div class="relative">
+                <button @click="menuMore = !menuMore" class="btn-ghost h-10 w-10 rounded-xl flex items-center justify-center"><svg class="i"><use href="#i-more"/></svg></button>
+                <div x-show="menuMore" @click.outside="menuMore=false" x-transition class="absolute right-0 top-11 bg-white border border-surface-border rounded-xl shadow-lift p-1 z-30 min-w-[220px]">
+                  <button @click="menuMore=false; togglePast(currentPerfume().id)" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-cream-100 text-ink flex items-center gap-2">
+                    <svg class="i"><use :href="currentPerfume().ja_terminou ? '#i-back' : '#i-archive'"/></svg>
+                    <span x-text="currentPerfume().ja_terminou ? 'Voltar para coleção ativa' : 'Marcar como já tive'"></span>
+                  </button>
+                  <div class="h-px bg-surface-border my-1"></div>
+                  <button @click="menuMore=false; openConfirmDelete = currentPerfume().id" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-err-bg text-err-fg flex items-center gap-2"><svg class="i"><use href="#i-trash"/></svg>Excluir perfume</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- header perfume -->
+          <div class="grid lg:grid-cols-[320px_1fr] gap-6 mb-6">
+            <div class="bottle mx-auto lg:mx-0 w-full max-w-xs" :class="'tone-'+currentPerfume().familia" style="aspect-ratio: 4/5">
+              <template x-if="photoKind(currentPerfume().foto) === 'url'"><img :src="currentPerfume().foto" :alt="currentPerfume().marca+' '+currentPerfume().modelo" class="absolute inset-0 w-full h-full object-contain p-4 z-10" onerror="this.style.display='none'"></template>
+              <template x-if="photoKind(currentPerfume().foto) === 'svg'"><svg viewBox="0 0 60 90" style="width:55%;height:auto"><use href="#bottle-svg"/></svg></template>
+              <template x-if="photoKind(currentPerfume().foto) === 'none'"><svg class="i" style="width:3.5rem;height:3.5rem"><use href="#i-drop"/></svg></template>
+              <template x-if="currentPerfume().estoque_ml <= 0"><div class="oos">Sem estoque</div></template>
+            </div>
+            <div>
+              <div class="flex items-center gap-2 mb-2 flex-wrap">
+                <span class="chip chip-ink" x-text="currentPerfume().concentracao"></span>
+                <span class="chip chip-neutral"><span class="dot" :class="'f-'+currentPerfume().familia"></span><span x-text="familiaLabel(currentPerfume().familia)"></span></span>
+                <template x-if="currentPerfume().eh_wishlist"><span class="chip chip-gold"><svg class="i fill"><use href="#i-heart"/></svg>Wishlist</span></template>
+                <template x-if="currentPerfume().ja_terminou"><span class="chip chip-neutral"><svg class="i"><use href="#i-archive"/></svg>Já tive</span></template>
+                <template x-if="currentPerfume().referencia_id"><span class="chip chip-gold">DUPE</span></template>
+              </div>
+              <p class="text-sm font-semibold uppercase tracking-wider text-ink-muted" x-text="currentPerfume().marca"></p>
+              <h1 class="font-display font-extrabold text-3xl sm:text-4xl text-ink leading-tight" x-text="currentPerfume().modelo"></h1>
+              <p class="text-sm text-ink-muted mt-1"><span x-text="currentPerfume().tamanho_ml"></span>ml · <span x-text="currentPerfume().ano"></span></p>
+
+              <!-- rating -->
+              <div class="flex items-center gap-1 mt-3">
+                <template x-for="i in 5" :key="i"><svg class="i fill" :class="i <= currentPerfume().rating ? 'star' : 'star-off'" style="width:1.35rem;height:1.35rem"><use href="#i-star"/></svg></template>
+                <span class="ml-2 text-sm text-ink-muted"><span class="font-semibold text-ink tnum" x-text="currentPerfume().rating"></span>/5 pessoal</span>
+              </div>
+
+              <!-- KPIs -->
+              <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-5">
+                <div class="bg-cream-200 rounded-2xl p-3">
+                  <p class="text-[11px] uppercase tracking-wider text-ink-faint">Estoque</p>
+                  <p class="font-display font-extrabold text-xl text-ink tnum mt-0.5"><span x-text="currentPerfume().estoque_ml"></span><span class="text-sm text-ink-muted">/<span x-text="currentPerfume().tamanho_ml"></span>ml</span></p>
+                  <div class="eb mt-2"><span :style="'width:'+Math.max(0,(currentPerfume().estoque_ml/currentPerfume().tamanho_ml)*100)+'%; background:'+stockColor(currentPerfume())"></span></div>
+                </div>
+                <div class="bg-cream-200 rounded-2xl p-3">
+                  <p class="text-[11px] uppercase tracking-wider text-ink-faint">Custo por spray</p>
+                  <p class="font-display font-extrabold text-xl text-ink tnum mt-0.5" x-text="currentPerfume().preco_pago ? brl(currentPerfume().preco_pago/(currentPerfume().tamanho_ml/currentPerfume().ml_por_spray)) : '—'"></p>
+                  <p class="text-[11px] text-ink-faint mt-1">de <span x-text="brl(currentPerfume().preco_pago||0)"></span></p>
+                </div>
+                <div class="bg-cream-200 rounded-2xl p-3 col-span-2 sm:col-span-1">
+                  <p class="text-[11px] uppercase tracking-wider text-ink-faint">Fragrantica</p>
+                  <div class="flex items-baseline gap-2 mt-0.5">
+                    <span class="font-display font-extrabold text-xl text-ink tnum" x-text="currentPerfume().nota_fragrantica.toFixed(2)"></span>
+                    <span class="text-[11px] text-ink-faint tnum">/5</span>
+                  </div>
+                  <p class="text-[11px] text-ink-faint mt-1 tnum" x-text="currentPerfume().votos_fragrantica.toLocaleString('pt-BR') + ' votos'"></p>
+                </div>
+              </div>
+
+              <!-- Spray On CTA -->
+              <div class="mt-5 flex items-center gap-2">
+                <button @click="openSprayModal(currentPerfume().id)" :disabled="currentPerfume().estoque_ml < currentPerfume().ml_por_spray" class="btn-ink flex-1 sm:flex-none h-12 px-6 rounded-xl text-sm font-bold flex items-center justify-center gap-2 uppercase tracking-wider">
+                  <svg class="i text-lg"><use href="#i-spray"/></svg>Spray On
+                </button>
+                <button @click="toggleWishlist(currentPerfume().id)" class="btn-ghost h-12 w-12 rounded-xl flex items-center justify-center" :class="{'!text-gold-500': currentPerfume().eh_wishlist}">
+                  <svg class="i text-lg" :class="{'fill': currentPerfume().eh_wishlist}"><use href="#i-heart"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ABAS -->
+          <div class="border-b border-surface-border mb-5">
+            <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
+              <button @click="tab = 'geral'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap" :class="tab === 'geral' ? 'border-ink text-ink' : 'border-transparent text-ink-muted hover:text-ink'">Geral</button>
+              <button @click="tab = 'historico'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap flex items-center gap-1.5" :class="tab === 'historico' ? 'border-ink text-ink' : 'border-transparent text-ink-muted hover:text-ink'">
+                Histórico de uso <span class="chip chip-neutral text-[10px] py-0 px-1.5" x-text="usageOf(currentPerfume().id).length"></span>
+              </button>
+              <button @click="tab = 'estoque'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap" :class="tab === 'estoque' ? 'border-ink text-ink' : 'border-transparent text-ink-muted hover:text-ink'">Estoque</button>
+            </div>
+          </div>
+
+          <!-- TAB: Geral -->
+          <div x-show="tab === 'geral'" class="fade-in grid lg:grid-cols-3 gap-5">
+            <div class="lg:col-span-2 space-y-5">
+              <div class="card p-5">
+                <h3 class="font-display font-extrabold text-lg text-ink mb-3">Pirâmide olfativa</h3>
+                <div class="space-y-3">
+                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-ink-faint">Notas de topo</p><p class="text-sm text-ink" x-text="currentPerfume().notas_topo || '—'"></p></div>
+                  <div class="h-px bg-surface-border"></div>
+                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-ink-faint">Notas de coração</p><p class="text-sm text-ink" x-text="currentPerfume().notas_coracao || '—'"></p></div>
+                  <div class="h-px bg-surface-border"></div>
+                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-ink-faint">Notas de fundo</p><p class="text-sm text-ink" x-text="currentPerfume().notas_fundo || '—'"></p></div>
+                </div>
+              </div>
+
+              <div class="card p-5">
+                <h3 class="font-display font-extrabold text-lg text-ink mb-2">Review pessoal</h3>
+                <p class="text-sm text-ink-soft leading-relaxed whitespace-pre-line" x-text="currentPerfume().review || 'Nenhuma review escrita ainda.'"></p>
+              </div>
+            </div>
+
+            <div class="space-y-5">
+              <!-- Referência olfativa -->
+              <template x-if="currentPerfume().referencia_id && findPerfume(currentPerfume().referencia_id)">
+                <div class="card p-4">
+                  <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">Referência olfativa</p>
+                  <a href="#" @click.prevent="navigate('/'+currentPerfume().referencia_id)" class="flex items-center gap-3 group">
+                    <div class="bottle w-14 shrink-0" :class="'tone-'+findPerfume(currentPerfume().referencia_id).familia" style="aspect-ratio: 4/5">
+                      <template x-if="photoKind(findPerfume(currentPerfume().referencia_id).foto) === 'url'"><img :src="findPerfume(currentPerfume().referencia_id).foto" class="absolute inset-0 w-full h-full object-contain p-1 z-10" onerror="this.style.display='none'"></template>
+                      <template x-if="photoKind(findPerfume(currentPerfume().referencia_id).foto) !== 'url'"><svg viewBox="0 0 60 90" style="width:70%;height:auto"><use href="#bottle-svg"/></svg></template>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                      <p class="text-[11px] font-semibold uppercase tracking-wider text-ink-muted truncate" x-text="findPerfume(currentPerfume().referencia_id).marca"></p>
+                      <h4 class="font-display font-extrabold text-ink text-[15px] leading-tight group-hover:text-gold-600 line-2" x-text="findPerfume(currentPerfume().referencia_id).modelo"></h4>
+                      <div class="flex items-center gap-2 mt-1.5">
+                        <span class="text-[11px] text-ink-muted">Δ Fragrantica</span>
+                        <span class="chip text-[10px] py-0.5 px-1.5" :class="deltaClass(Math.abs(findPerfume(currentPerfume().referencia_id).nota_fragrantica - currentPerfume().nota_fragrantica))">
+                          <span x-text="Math.abs(findPerfume(currentPerfume().referencia_id).nota_fragrantica - currentPerfume().nota_fragrantica).toFixed(2)"></span>
+                        </span>
+                      </div>
+                    </div>
+                    <svg class="i text-ink-faint"><use href="#i-chev-right"/></svg>
+                  </a>
+                </div>
+              </template>
+
+              <!-- Ficha técnica -->
+              <div class="card p-4">
+                <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">Ficha técnica</p>
+                <dl class="text-sm space-y-2">
+                  <div class="flex justify-between"><dt class="text-ink-muted">Marca</dt><dd class="font-semibold" x-text="currentPerfume().marca"></dd></div>
+                  <div class="flex justify-between"><dt class="text-ink-muted">Modelo</dt><dd class="font-semibold text-right" x-text="currentPerfume().modelo"></dd></div>
+                  <div class="flex justify-between"><dt class="text-ink-muted">Ano</dt><dd class="font-semibold tnum" x-text="currentPerfume().ano"></dd></div>
+                  <div class="flex justify-between"><dt class="text-ink-muted">Concentração</dt><dd class="font-semibold" x-text="currentPerfume().concentracao"></dd></div>
+                  <div class="flex justify-between"><dt class="text-ink-muted">Frasco</dt><dd class="font-semibold tnum" x-text="currentPerfume().tamanho_ml + ' ml'"></dd></div>
+                  <div class="flex justify-between"><dt class="text-ink-muted">ml por spray</dt><dd class="font-semibold tnum" x-text="currentPerfume().ml_por_spray + ' ml'"></dd></div>
+                  <div class="flex justify-between"><dt class="text-ink-muted">Preço pago</dt><dd class="font-semibold tnum" x-text="brl(currentPerfume().preco_pago||0)"></dd></div>
+                </dl>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB: Histórico -->
+          <div x-show="tab === 'historico'" class="fade-in">
+            <div class="card overflow-hidden">
+              <div class="p-4 border-b border-surface-border flex items-center justify-between">
+                <div>
+                  <h3 class="font-display font-extrabold text-lg text-ink">Histórico de sprays</h3>
+                  <p class="text-xs text-ink-muted mt-0.5"><span class="tnum" x-text="usageOf(currentPerfume().id).length"></span> registros</p>
+                </div>
+              </div>
+              <template x-if="usageOf(currentPerfume().id).length === 0">
+                <div class="p-10 text-center">
+                  <div class="mx-auto w-12 h-12 rounded-2xl bg-cream-200 flex items-center justify-center mb-3"><svg class="i text-xl text-ink-faint"><use href="#i-history"/></svg></div>
+                  <p class="text-sm text-ink-muted">Nenhum uso registrado ainda.</p>
+                  <button @click="openSprayModal(currentPerfume().id)" class="mt-4 btn-ink h-9 px-4 rounded-lg text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5"><svg class="i"><use href="#i-spray"/></svg>Registrar spray</button>
+                </div>
+              </template>
+              <template x-if="usageOf(currentPerfume().id).length > 0">
+                <div class="overflow-x-auto">
+                  <table class="w-full text-sm">
+                    <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                      <tr><th class="text-left py-2.5 px-4 font-semibold">Data</th><th class="text-left py-2.5 px-4 font-semibold">Ocasião</th><th class="text-left py-2.5 px-4 font-semibold hidden sm:table-cell">Estação</th><th class="text-left py-2.5 px-4 font-semibold hidden sm:table-cell">Hora</th><th class="text-right py-2.5 px-4 font-semibold">ml</th><th class="w-10"></th></tr>
+                    </thead>
+                    <tbody>
+                      <template x-for="u in usageOf(currentPerfume().id)" :key="u.id">
+                        <tr class="border-b border-surface-border/60 hover:bg-cream-100/60">
+                          <td class="py-3 px-4 tnum" x-text="fmtDateTime(u.data)"></td>
+                          <td class="py-3 px-4 capitalize" x-text="u.ocasiao"></td>
+                          <td class="py-3 px-4 capitalize hidden sm:table-cell" x-text="u.estacao"></td>
+                          <td class="py-3 px-4 capitalize hidden sm:table-cell" x-text="u.hora_dia"></td>
+                          <td class="py-3 px-4 text-right tnum" x-text="u.ml.toFixed(2)"></td>
+                          <td class="py-3 px-2"><button @click="openConfirmDeleteSpray = u.id" class="p-2 rounded-lg text-ink-faint hover:text-err hover:bg-err-bg"><svg class="i"><use href="#i-trash"/></svg></button></td>
+                        </tr>
+                      </template>
+                    </tbody>
+                  </table>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- TAB: Estoque -->
+          <div x-show="tab === 'estoque'" class="fade-in">
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-4">
+                <div>
+                  <h3 class="font-display font-extrabold text-lg text-ink">Estoque ao longo do tempo</h3>
+                  <p class="text-xs text-ink-muted mt-0.5">Cada spray registrado deduz <span class="tnum" x-text="currentPerfume().ml_por_spray"></span>ml do total.</p>
+                </div>
+                <div class="text-right">
+                  <p class="text-[11px] uppercase tracking-wider text-ink-faint">Restante</p>
+                  <p class="font-display font-extrabold text-2xl text-ink tnum"><span x-text="currentPerfume().estoque_ml"></span><span class="text-sm text-ink-muted">ml</span></p>
+                </div>
+              </div>
+              <div class="rounded-2xl bg-cream-100 border border-surface-border p-4 overflow-x-auto">
+                <div x-html="renderStockChart(currentPerfume())"></div>
+              </div>
+              <div class="grid grid-cols-3 gap-3 mt-4">
+                <div><p class="text-[10px] uppercase tracking-wider text-ink-faint">Sprays totais</p><p class="font-display font-extrabold text-lg text-ink tnum" x-text="usageOf(currentPerfume().id).length"></p></div>
+                <div><p class="text-[10px] uppercase tracking-wider text-ink-faint">ml consumidos</p><p class="font-display font-extrabold text-lg text-ink tnum" x-text="(currentPerfume().tamanho_ml - currentPerfume().estoque_ml).toFixed(1)"></p></div>
+                <div><p class="text-[10px] uppercase tracking-wider text-ink-faint">Sprays restantes</p><p class="font-display font-extrabold text-lg text-ink tnum" x-text="Math.floor(currentPerfume().estoque_ml/currentPerfume().ml_por_spray)"></p></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </template>
+
+      <!-- ============================================================ -->
+      <!-- TELA 3 · CADASTRO (Novo) -->
+      <!-- ============================================================ -->
+      <section x-show="route === '/novo'" x-transition.opacity class="fade-in">
+        <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
+          <button @click="navigate('/')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold"><svg class="i"><use href="#i-back"/></svg><span class="hidden sm:inline">Voltar</span></button>
+          <h1 class="font-display font-extrabold text-xl sm:text-2xl text-ink">Novo perfume</h1>
+          <span class="w-24"></span>
+        </div>
+
+        <!-- SCRAPE CARD (auto-preencher via URL Fragrantica) -->
+        <div class="max-w-5xl mb-5">
+          <div class="card p-5 bg-gradient-to-br from-white to-cream-100 border-gold-200">
+            <div class="flex items-start gap-3">
+              <div class="w-11 h-11 rounded-xl btn-gold flex items-center justify-center shrink-0 shadow-cta">
+                <svg class="i text-xl"><use href="#i-import"/></svg>
+              </div>
+              <div class="min-w-0 flex-1">
+                <div class="flex items-center gap-2 flex-wrap mb-1">
+                  <h3 class="font-display font-extrabold text-base text-ink">Preencher a partir de link</h3>
+                  <span class="chip chip-gold text-[10px]">FRAGRANTICA</span>
+                </div>
+                <p class="text-xs text-ink-muted">Cole a URL da página do perfume no Fragrantica — vou puxar marca, modelo, ano, concentração, família, notas olfativas, nota e votos. Os campos <span class="font-semibold">pessoais</span> (estoque, preço, rating, review, dupe) você preenche depois.</p>
+              </div>
+            </div>
+            <div class="mt-4 flex flex-col sm:flex-row gap-2">
+              <div class="relative flex-1">
+                <input x-model="scrapeUrl" type="url" placeholder="https://www.fragrantica.com.br/perfume/…" class="field pr-10" @keydown.enter.prevent="scrapeFragrantica()">
+                <template x-if="scrapeUrl">
+                  <button type="button" @click="scrapeUrl=''" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-ink-faint hover:bg-cream-200"><svg class="i text-xs"><use href="#i-x"/></svg></button>
+                </template>
+              </div>
+              <button type="button" @click="scrapeFragrantica()" :disabled="scrapeLoading || !scrapeUrl" class="btn-gold h-11 px-5 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 whitespace-nowrap" :class="{'opacity-60 cursor-not-allowed': scrapeLoading || !scrapeUrl}">
+                <template x-if="!scrapeLoading"><svg class="i"><use href="#i-import"/></svg></template>
+                <template x-if="scrapeLoading">
+                  <svg class="i animate-spin" viewBox="0 0 24 24" style="animation:spin 1s linear infinite"><circle cx="12" cy="12" r="9" stroke-opacity=".25"/><path d="M21 12a9 9 0 0 0-9-9"/></svg>
+                </template>
+                <span x-text="scrapeLoading ? 'Raspando…' : 'Puxar dados'"></span>
+              </button>
+            </div>
+            <template x-if="scrapeStatus">
+              <div class="mt-3 flex items-start gap-2 text-xs" :class="scrapeStatus.type === 'ok' ? 'text-ok-fg' : (scrapeStatus.type === 'err' ? 'text-err-fg' : 'text-ink-muted')">
+                <svg class="i text-sm mt-0.5"><use :href="scrapeStatus.type === 'ok' ? '#i-check' : '#i-info'"/></svg>
+                <span x-text="scrapeStatus.msg"></span>
+              </div>
+            </template>
+            <details class="mt-3 text-xs text-ink-muted group">
+              <summary class="cursor-pointer hover:text-ink font-semibold flex items-center gap-1">
+                <svg class="i text-xs transition-transform group-open:rotate-90"><use href="#i-chev-right"/></svg>Exemplos de URL pra testar
+              </summary>
+              <ul class="mt-2 space-y-1.5 pl-4">
+                <li><button type="button" @click="scrapeUrl='https://www.fragrantica.com.br/perfume/Creed/Aventus-9828.html'; scrapeFragrantica()" class="text-left hover:text-gold-700 hover:underline">→ Creed Aventus (fresh, ícone)</button></li>
+                <li><button type="button" @click="scrapeUrl='https://www.fragrantica.com.br/perfume/Dior/Sauvage-Elixir-63792.html'; scrapeFragrantica()" class="text-left hover:text-gold-700 hover:underline">→ Dior Sauvage Elixir (oriental)</button></li>
+                <li><button type="button" @click="scrapeUrl='https://www.fragrantica.com.br/perfume/Yves-Saint-Laurent/Y-Eau-de-Parfum-49232.html'; scrapeFragrantica()" class="text-left hover:text-gold-700 hover:underline">→ YSL Y EDP (amadeirado)</button></li>
+                <li><button type="button" @click="scrapeUrl='https://www.fragrantica.com.br/perfume/Paco-Rabanne/1-Million-Elixir-77441.html'; scrapeFragrantica()" class="text-left hover:text-gold-700 hover:underline">→ Paco Rabanne 1 Million Elixir (gourmand)</button></li>
+                <li><button type="button" @click="scrapeUrl='https://www.fragrantica.com.br/perfume/Armani/Acqua-di-Gio-Profondo-59692.html'; scrapeFragrantica()" class="text-left hover:text-gold-700 hover:underline">→ Armani Acqua di Giò Profondo (aquático)</button></li>
+                <li><button type="button" @click="scrapeUrl='https://www.fragrantica.com.br/perfume/Tom-Ford/Tobacco-Vanille-1825.html'; scrapeFragrantica()" class="text-left hover:text-gold-700 hover:underline">→ Tom Ford Tobacco Vanille (tabaco)</button></li>
+              </ul>
+            </details>
+          </div>
+        </div>
+
+        <form @submit.prevent="submitNew()" class="grid lg:grid-cols-3 gap-5 max-w-5xl">
+          <!-- FOTO + WISHLIST TOGGLE -->
+          <div class="lg:col-span-1 space-y-4">
+            <div class="card p-4">
+              <div class="flex items-center justify-between mb-2">
+                <p class="text-[11px] uppercase tracking-wider text-ink-faint">Foto do frasco</p>
+                <template x-if="scrapeFilled.includes('foto')"><span class="chip chip-gold text-[9px] py-0.5 px-1.5">AUTO</span></template>
+              </div>
+              <div class="bottle" :class="'tone-'+(newForm.familia||'leather')" style="aspect-ratio: 4/5">
+                <template x-if="photoKind(newForm.foto) === 'url'"><img :src="newForm.foto" class="absolute inset-0 w-full h-full object-contain p-4 z-10" onerror="this.style.display='none'"></template>
+                <template x-if="photoKind(newForm.foto) !== 'url'"><svg viewBox="0 0 60 90" style="width:55%;height:auto"><use href="#bottle-svg"/></svg></template>
+              </div>
+              <label class="mt-3 btn-ghost h-10 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer">
+                <svg class="i"><use href="#i-upload"/></svg>Enviar foto (mock)
+                <input type="file" class="hidden" accept="image/*" @change="newForm.foto = 'uploaded'">
+              </label>
+            </div>
+
+            <div class="card p-4 space-y-3">
+              <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                  <p class="font-semibold text-ink text-sm">Adicionar à wishlist</p>
+                  <p class="text-xs text-ink-muted mt-0.5">Ainda quero comprar.</p>
+                </div>
+                <button type="button" @click="newForm.eh_wishlist = !newForm.eh_wishlist; if(newForm.eh_wishlist) newForm.ja_terminou = false" :class="newForm.eh_wishlist ? 'bg-gold-500' : 'bg-cream-300'" class="relative w-12 h-7 rounded-full transition-colors flex-shrink-0">
+                  <span :class="newForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
+                </button>
+              </div>
+              <div class="h-px bg-surface-border"></div>
+              <div class="flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                  <p class="font-semibold text-ink text-sm">Já tive (não tenho mais)</p>
+                  <p class="text-xs text-ink-muted mt-0.5">Vai pro histórico "Já tive".</p>
+                </div>
+                <button type="button" @click="newForm.ja_terminou = !newForm.ja_terminou; if(newForm.ja_terminou) newForm.eh_wishlist = false" :class="newForm.ja_terminou ? 'bg-ink' : 'bg-cream-300'" class="relative w-12 h-7 rounded-full transition-colors flex-shrink-0">
+                  <span :class="newForm.ja_terminou ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CAMPOS -->
+          <div class="lg:col-span-2 space-y-5">
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display font-extrabold text-base text-ink">Identificação</h3>
+                <template x-if="['marca','modelo','ano','concentracao'].some(k => scrapeFilled.includes(k))"><span class="chip chip-gold text-[10px]">AUTO · FRAGRANTICA</span></template>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Marca <span class="text-err">*</span></label><input x-model="newForm.marca" type="text" class="field" :class="{'auto-glow': scrapeFilled.includes('marca')}" placeholder="Ex: Chanel"></div>
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Modelo <span class="text-err">*</span></label><input x-model="newForm.modelo" type="text" class="field" :class="{'auto-glow': scrapeFilled.includes('modelo')}" placeholder="Ex: Bleu de Chanel"></div>
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Ano de lançamento</label><input x-model.number="newForm.ano" type="number" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('ano')}" placeholder="2020"></div>
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Concentração</label>
+                  <select x-model="newForm.concentracao" class="field bg-white" :class="{'auto-glow': scrapeFilled.includes('concentracao')}">
+                    <option value="EDT">Eau de Toilette (EDT)</option><option value="EDP">Eau de Parfum (EDP)</option><option value="Elixir">Elixir</option><option value="Parfum">Parfum</option><option value="EDC">Eau de Cologne (EDC)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-1">
+                <h3 class="font-display font-extrabold text-base text-ink">Estoque e preço</h3>
+                <span class="chip chip-neutral text-[10px]">MANUAL</span>
+              </div>
+              <p class="text-[11px] text-ink-muted mb-4">Fragrantica não informa isto — depende do frasco que você comprou.</p>
+              <div class="grid sm:grid-cols-3 gap-4">
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Tamanho (ml) <span class="text-err">*</span></label><input x-model.number="newForm.tamanho_ml" @input="if(!newForm._touched_est) newForm.estoque_ml = newForm.tamanho_ml" type="number" class="field tnum" placeholder="100"></div>
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Estoque atual (ml) <span class="text-err">*</span></label><input x-model.number="newForm.estoque_ml" @input="newForm._touched_est = true" type="number" class="field tnum"></div>
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">ml por spray <span class="text-err">*</span></label><input x-model.number="newForm.ml_por_spray" type="number" step="0.05" class="field tnum" placeholder="0.10"></div>
+                <div class="sm:col-span-2"><label class="text-xs font-semibold text-ink-muted mb-1 block">Preço pago (R$)</label><input x-model.number="newForm.preco_pago" type="number" step="0.01" class="field tnum" placeholder="0,00"></div>
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Custo/spray (calc.)</label><input :value="newForm.preco_pago && newForm.tamanho_ml && newForm.ml_por_spray ? brl(newForm.preco_pago/(newForm.tamanho_ml/newForm.ml_por_spray)) : '—'" type="text" class="field tnum" disabled></div>
+              </div>
+            </div>
+
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-4">
+                <h3 class="font-display font-extrabold text-base text-ink">Perfil olfativo</h3>
+                <template x-if="['familia','notas_topo','notas_coracao','notas_fundo'].some(k => scrapeFilled.includes(k))"><span class="chip chip-gold text-[10px]">AUTO · FRAGRANTICA</span></template>
+              </div>
+              <div class="space-y-4">
+                <div>
+                  <label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Família olfativa <template x-if="scrapeFilled.includes('familia')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label>
+                  <div class="flex flex-wrap gap-2 p-1 rounded-xl" :class="{'ring-2 ring-gold-300 bg-gold-50/40': scrapeFilled.includes('familia')}">
+                    <template x-for="f in familias" :key="f.key">
+                      <button type="button" @click="newForm.familia = f.key" class="chip cursor-pointer transition-all" :class="newForm.familia === f.key ? 'chip-ink' : 'chip-neutral'">
+                        <span class="dot" :class="'f-'+f.key"></span><span x-text="f.label"></span>
+                      </button>
+                    </template>
+                  </div>
+                </div>
+                <div class="grid sm:grid-cols-3 gap-4">
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Notas de topo</label><textarea x-model="newForm.notas_topo" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_topo')}" placeholder="Bergamota, limão…"></textarea></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Notas de coração</label><textarea x-model="newForm.notas_coracao" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_coracao')}" placeholder="Rosa, jasmim…"></textarea></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Notas de fundo</label><textarea x-model="newForm.notas_fundo" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_fundo')}" placeholder="Almíscar, cedro…"></textarea></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card p-5">
+              <h3 class="font-display font-extrabold text-base text-ink mb-4">Avaliação</h3>
+              <div class="grid sm:grid-cols-3 gap-4 items-start">
+                <div>
+                  <label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Rating pessoal <span class="chip chip-neutral text-[9px] py-0 px-1.5">MANUAL</span></label>
+                  <div class="flex items-center gap-1">
+                    <template x-for="i in 5" :key="i">
+                      <button type="button" @click="newForm.rating = i" class="p-0.5">
+                        <svg class="i fill" :class="i <= newForm.rating ? 'star' : 'star-off'" style="width:1.6rem;height:1.6rem"><use href="#i-star"/></svg>
+                      </button>
+                    </template>
+                  </div>
+                </div>
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Nota Fragrantica (0-5) <template x-if="scrapeFilled.includes('nota_fragrantica')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label><input x-model.number="newForm.nota_fragrantica" type="number" step="0.01" min="0" max="5" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('nota_fragrantica')}" placeholder="4,20"></div>
+                <div><label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Votos Fragrantica <template x-if="scrapeFilled.includes('votos_fragrantica')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label><input x-model.number="newForm.votos_fragrantica" type="number" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('votos_fragrantica')}" placeholder="1000"></div>
+                <div class="sm:col-span-3"><label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Review pessoal <span class="chip chip-neutral text-[9px] py-0 px-1.5">MANUAL</span></label><textarea x-model="newForm.review" class="field" rows="4" placeholder="O que achou desse perfume?"></textarea></div>
+                <div class="sm:col-span-3">
+                  <label class="text-xs font-semibold text-ink-muted mb-1 block">Referência olfativa (autocomplete)</label>
+                  <div class="relative">
+                    <input x-model="autoQuery" @focus="autoOpen=true" @input="autoOpen=true" type="text" class="field" placeholder="Buscar perfume existente…">
+                    <div x-show="autoOpen && autoResults().length > 0" @click.outside="autoOpen=false" class="absolute z-20 mt-1 w-full bg-white border border-surface-border rounded-xl shadow-lift max-h-56 overflow-auto">
+                      <template x-for="r in autoResults()" :key="r.id">
+                        <button type="button" @click="newForm.referencia_id = r.id; autoQuery = r.marca+' '+r.modelo; autoOpen = false" class="w-full text-left px-3 py-2 hover:bg-cream-100 flex items-center gap-2 border-b border-surface-border/50 last:border-0">
+                          <div class="bottle w-8 shrink-0" :class="'tone-'+r.familia" style="aspect-ratio:4/5">
+                            <template x-if="photoKind(r.foto) === 'url'"><img :src="r.foto" class="absolute inset-0 w-full h-full object-contain p-0.5 z-10" onerror="this.style.display='none'"></template>
+                            <template x-if="photoKind(r.foto) !== 'url'"><svg viewBox="0 0 60 90" style="width:70%;height:auto"><use href="#bottle-svg"/></svg></template>
+                          </div>
+                          <div class="min-w-0">
+                            <p class="text-[10px] uppercase text-ink-muted" x-text="r.marca"></p>
+                            <p class="text-sm font-semibold text-ink truncate" x-text="r.modelo"></p>
+                          </div>
+                        </button>
+                      </template>
+                    </div>
+                    <template x-if="newForm.referencia_id && findPerfume(newForm.referencia_id)">
+                      <div class="mt-2 flex items-center gap-2 chip chip-gold w-fit">
+                        <svg class="i"><use href="#i-check"/></svg><span x-text="'Referência: '+findPerfume(newForm.referencia_id).marca+' '+findPerfume(newForm.referencia_id).modelo"></span>
+                        <button type="button" @click="newForm.referencia_id = null; autoQuery=''" class="ml-1"><svg class="i text-xs"><use href="#i-x"/></svg></button>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ações -->
+            <div class="flex items-center justify-end gap-2 pb-4">
+              <button type="button" @click="navigate('/'); resetNewForm()" class="btn-ghost h-11 px-5 rounded-xl text-sm font-semibold">Cancelar</button>
+              <button type="submit" class="btn-gold h-11 px-6 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center gap-2"><svg class="i"><use href="#i-check"/></svg>Salvar perfume</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- ============================================================ -->
+      <!-- TELA 4 · EDIÇÃO — reusa markup do cadastro via editForm -->
+      <!-- ============================================================ -->
+      <template x-if="route.match(/^\/(\d+)\/editar$/) && currentPerfume()">
+        <section x-transition.opacity class="fade-in">
+          <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
+            <button @click="navigate('/'+currentPerfume().id)" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold"><svg class="i"><use href="#i-back"/></svg><span class="hidden sm:inline">Voltar</span></button>
+            <h1 class="font-display font-extrabold text-xl sm:text-2xl text-ink">Editar perfume</h1>
+            <span class="w-24"></span>
+          </div>
+
+          <form @submit.prevent="submitEdit()" class="grid lg:grid-cols-3 gap-5 max-w-5xl">
+            <div class="lg:col-span-1 space-y-4">
+              <div class="card p-4">
+                <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-2">Foto do frasco</p>
+                <div class="bottle" :class="'tone-'+(editForm.familia||'leather')" style="aspect-ratio: 4/5">
+                  <template x-if="photoKind(editForm.foto) === 'url'"><img :src="editForm.foto" class="absolute inset-0 w-full h-full object-contain p-4 z-10" onerror="this.style.display='none'"></template>
+                  <template x-if="photoKind(editForm.foto) === 'svg'"><svg viewBox="0 0 60 90" style="width:55%;height:auto"><use href="#bottle-svg"/></svg></template>
+                  <template x-if="photoKind(editForm.foto) === 'none'"><svg class="i" style="width:3rem;height:3rem"><use href="#i-drop"/></svg></template>
+                </div>
+                <label class="mt-3 btn-ghost h-10 rounded-xl text-sm font-semibold flex items-center justify-center gap-2 cursor-pointer">
+                  <svg class="i"><use href="#i-upload"/></svg>Trocar foto (mock)
+                  <input type="file" class="hidden" accept="image/*" @change="editForm.foto = 'uploaded'">
+                </label>
+              </div>
+              <div class="card p-4 space-y-3">
+                <div class="flex items-center justify-between gap-3">
+                  <div><p class="font-semibold text-ink text-sm">Na wishlist</p></div>
+                  <button type="button" @click="editForm.eh_wishlist = !editForm.eh_wishlist; if(editForm.eh_wishlist) editForm.ja_terminou = false" :class="editForm.eh_wishlist ? 'bg-gold-500' : 'bg-cream-300'" class="relative w-12 h-7 rounded-full transition-colors">
+                    <span :class="editForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
+                  </button>
+                </div>
+                <div class="h-px bg-surface-border"></div>
+                <div class="flex items-center justify-between gap-3">
+                  <div><p class="font-semibold text-ink text-sm">Já tive (arquivado)</p></div>
+                  <button type="button" @click="editForm.ja_terminou = !editForm.ja_terminou; if(editForm.ja_terminou) editForm.eh_wishlist = false" :class="editForm.ja_terminou ? 'bg-ink' : 'bg-cream-300'" class="relative w-12 h-7 rounded-full transition-colors">
+                    <span :class="editForm.ja_terminou ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-6 h-6 rounded-full bg-white shadow transition-transform"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="lg:col-span-2 space-y-5">
+              <div class="card p-5">
+                <h3 class="font-display font-extrabold text-base text-ink mb-4">Identificação</h3>
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Marca <span class="text-err">*</span></label><input x-model="editForm.marca" type="text" class="field"></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Modelo <span class="text-err">*</span></label><input x-model="editForm.modelo" type="text" class="field"></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Ano</label><input x-model.number="editForm.ano" type="number" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Concentração</label>
+                    <select x-model="editForm.concentracao" class="field bg-white"><option>EDT</option><option>EDP</option><option>Elixir</option><option>Parfum</option><option>EDC</option></select>
+                  </div>
+                </div>
+              </div>
+              <div class="card p-5">
+                <h3 class="font-display font-extrabold text-base text-ink mb-4">Estoque e preço</h3>
+                <div class="grid sm:grid-cols-3 gap-4">
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Tamanho (ml)</label><input x-model.number="editForm.tamanho_ml" type="number" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Estoque (ml)</label><input x-model.number="editForm.estoque_ml" type="number" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">ml por spray</label><input x-model.number="editForm.ml_por_spray" type="number" step="0.05" class="field tnum"></div>
+                  <div class="sm:col-span-2"><label class="text-xs font-semibold text-ink-muted mb-1 block">Preço pago (R$)</label><input x-model.number="editForm.preco_pago" type="number" step="0.01" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Custo/spray</label><input :value="editForm.preco_pago && editForm.tamanho_ml && editForm.ml_por_spray ? brl(editForm.preco_pago/(editForm.tamanho_ml/editForm.ml_por_spray)) : '—'" type="text" class="field tnum" disabled></div>
+                </div>
+              </div>
+              <div class="card p-5">
+                <h3 class="font-display font-extrabold text-base text-ink mb-4">Perfil olfativo</h3>
+                <div class="space-y-4">
+                  <div class="flex flex-wrap gap-2">
+                    <template x-for="f in familias" :key="f.key">
+                      <button type="button" @click="editForm.familia = f.key" class="chip cursor-pointer" :class="editForm.familia === f.key ? 'chip-ink' : 'chip-neutral'"><span class="dot" :class="'f-'+f.key"></span><span x-text="f.label"></span></button>
+                    </template>
+                  </div>
+                  <div class="grid sm:grid-cols-3 gap-4">
+                    <textarea x-model="editForm.notas_topo" class="field" placeholder="Notas de topo"></textarea>
+                    <textarea x-model="editForm.notas_coracao" class="field" placeholder="Notas de coração"></textarea>
+                    <textarea x-model="editForm.notas_fundo" class="field" placeholder="Notas de fundo"></textarea>
+                  </div>
+                </div>
+              </div>
+              <div class="card p-5">
+                <h3 class="font-display font-extrabold text-base text-ink mb-4">Avaliação</h3>
+                <div class="grid sm:grid-cols-3 gap-4">
+                  <div>
+                    <label class="text-xs font-semibold text-ink-muted mb-1 block">Rating</label>
+                    <div class="flex items-center gap-1">
+                      <template x-for="i in 5" :key="i"><button type="button" @click="editForm.rating = i"><svg class="i fill" :class="i <= editForm.rating ? 'star' : 'star-off'" style="width:1.5rem;height:1.5rem"><use href="#i-star"/></svg></button></template>
+                    </div>
+                  </div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Nota Fragrantica</label><input x-model.number="editForm.nota_fragrantica" type="number" step="0.01" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Votos</label><input x-model.number="editForm.votos_fragrantica" type="number" class="field tnum"></div>
+                  <div class="sm:col-span-3"><label class="text-xs font-semibold text-ink-muted mb-1 block">Review</label><textarea x-model="editForm.review" class="field" rows="4"></textarea></div>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-end gap-2 pb-4">
+                <button type="button" @click="navigate('/'+currentPerfume().id)" class="btn-ghost h-11 px-5 rounded-xl text-sm font-semibold">Cancelar</button>
+                <button type="submit" class="btn-gold h-11 px-6 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center gap-2"><svg class="i"><use href="#i-check"/></svg>Salvar alterações</button>
+              </div>
+            </div>
+          </form>
+        </section>
+      </template>
+
+      <!-- ============================================================ -->
+      <!-- TELA 6 · IMPORT -->
+      <!-- ============================================================ -->
+      <section x-show="route === '/import'" x-transition.opacity class="fade-in">
+        <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
+          <button @click="navigate('/')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold"><svg class="i"><use href="#i-back"/></svg><span class="hidden sm:inline">Voltar</span></button>
+          <h1 class="font-display font-extrabold text-xl sm:text-2xl text-ink">Importar planilha</h1>
+          <span class="w-24"></span>
+        </div>
+
+        <div class="max-w-3xl space-y-5">
+          <div class="card p-6">
+            <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">1. Selecione o arquivo</p>
+            <label class="block cursor-pointer">
+              <div class="border-2 border-dashed border-surface-border-strong rounded-2xl p-8 text-center hover:border-gold-500 hover:bg-cream-100 transition-colors" :class="{'border-gold-500 bg-cream-100': importFile}">
+                <div class="mx-auto w-14 h-14 rounded-2xl bg-cream-200 flex items-center justify-center mb-3">
+                  <svg class="i text-2xl text-ink-muted"><use href="#i-upload"/></svg>
+                </div>
+                <p class="font-semibold text-ink">Arraste ou clique para enviar Perfumes.xlsx</p>
+                <p class="text-xs text-ink-muted mt-1">Formatos aceitos: xlsx, xls, csv · até 5 MB</p>
+                <template x-if="importFile">
+                  <div class="mt-4 chip chip-ok"><svg class="i"><use href="#i-check"/></svg><span x-text="importFile"></span></div>
+                </template>
+              </div>
+              <input type="file" class="hidden" accept=".xlsx,.xls,.csv" @change="importFile = $event.target.files[0]?.name || 'Perfumes.xlsx (simulado)'; importPreview = true">
+            </label>
+            <button type="button" @click="importFile = 'Perfumes.xlsx (simulado)'; importPreview = true" class="mt-3 text-xs text-gold-700 hover:underline">Usar planilha de demonstração →</button>
+          </div>
+
+          <template x-if="importPreview">
+            <div class="card p-6 fade-in">
+              <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">2. Preview (primeiras 5 linhas)</p>
+              <div class="overflow-x-auto -mx-6 px-6">
+                <table class="w-full text-sm">
+                  <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                    <tr><th class="text-left py-2 px-3 font-semibold">Marca</th><th class="text-left py-2 px-3 font-semibold">Modelo</th><th class="text-left py-2 px-3 font-semibold hidden sm:table-cell">Concent.</th><th class="text-right py-2 px-3 font-semibold">ml</th><th class="text-right py-2 px-3 font-semibold hidden sm:table-cell">Preço</th><th class="py-2 px-3 font-semibold">Status</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-surface-border/60"><td class="py-2 px-3 font-semibold">Yves Saint Laurent</td><td class="py-2 px-3">Y EDP</td><td class="py-2 px-3 hidden sm:table-cell">EDP</td><td class="py-2 px-3 text-right tnum">100</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 640,00</td><td class="py-2 px-3"><span class="chip chip-ok text-[10px]">OK</span></td></tr>
+                    <tr class="border-b border-surface-border/60"><td class="py-2 px-3 font-semibold">Armani</td><td class="py-2 px-3">Acqua di Giò Profondo</td><td class="py-2 px-3 hidden sm:table-cell">EDP</td><td class="py-2 px-3 text-right tnum">125</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 780,00</td><td class="py-2 px-3"><span class="chip chip-ok text-[10px]">OK</span></td></tr>
+                    <tr class="border-b border-surface-border/60"><td class="py-2 px-3 font-semibold">Hugo Boss</td><td class="py-2 px-3">Bottled Night</td><td class="py-2 px-3 hidden sm:table-cell">EDT</td><td class="py-2 px-3 text-right tnum">100</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 380,00</td><td class="py-2 px-3"><span class="chip chip-ok text-[10px]">OK</span></td></tr>
+                    <tr class="border-b border-surface-border/60"><td class="py-2 px-3 font-semibold">Versace</td><td class="py-2 px-3">Eros Flame</td><td class="py-2 px-3 hidden sm:table-cell">EDP</td><td class="py-2 px-3 text-right tnum">100</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 520,00</td><td class="py-2 px-3"><span class="chip chip-warn text-[10px]">Sem foto</span></td></tr>
+                    <tr><td class="py-2 px-3 font-semibold">Zara</td><td class="py-2 px-3">Nº 8.0</td><td class="py-2 px-3 hidden sm:table-cell">EDP</td><td class="py-2 px-3 text-right tnum">100</td><td class="py-2 px-3 text-right tnum hidden sm:table-cell">R$ 149,90</td><td class="py-2 px-3"><span class="chip chip-ok text-[10px]">OK</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="text-xs text-ink-muted mt-3">+ 40 linhas adicionais serão importadas</p>
+
+              <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-2 mt-6">3. Modo de import</p>
+              <div class="flex flex-col sm:flex-row gap-2">
+                <label class="flex-1 cursor-pointer">
+                  <input type="radio" name="importMode" value="add" x-model="importMode" class="peer hidden">
+                  <div class="border-2 rounded-2xl p-4 transition-colors" :class="importMode === 'add' ? 'border-ink bg-cream-100' : 'border-surface-border'">
+                    <p class="font-semibold text-ink text-sm flex items-center gap-2"><svg class="i"><use href="#i-plus"/></svg>Adicionar</p>
+                    <p class="text-xs text-ink-muted mt-1">Adiciona os novos e mantém os existentes.</p>
+                  </div>
+                </label>
+                <label class="flex-1 cursor-pointer">
+                  <input type="radio" name="importMode" value="replace" x-model="importMode" class="peer hidden">
+                  <div class="border-2 rounded-2xl p-4 transition-colors" :class="importMode === 'replace' ? 'border-err bg-err-bg' : 'border-surface-border'">
+                    <p class="font-semibold text-ink text-sm flex items-center gap-2"><svg class="i"><use href="#i-trash"/></svg>Substituir tudo</p>
+                    <p class="text-xs text-ink-muted mt-1">Apaga a coleção atual e importa do zero.</p>
+                  </div>
+                </label>
+              </div>
+
+              <div class="flex items-center justify-end gap-2 mt-6">
+                <button type="button" @click="importFile = ''; importPreview = false" class="btn-ghost h-11 px-5 rounded-xl text-sm font-semibold">Cancelar</button>
+                <button type="button" @click="openConfirmImport = true" class="btn-gold h-11 px-6 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center gap-2"><svg class="i"><use href="#i-check"/></svg>Confirmar import</button>
+              </div>
+            </div>
+          </template>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- BOTTOM NAV (mobile) -->
+  <!-- ============================================================ -->
+  <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 backdrop-blur border-t border-surface-border">
+    <div class="bnav max-w-md mx-auto">
+      <a href="#/" @click.prevent="navigate('/')" :class="{'active': route === '/'}"><svg class="i text-lg"><use href="#i-list"/></svg>Coleção</a>
+      <a href="#/wishlist" @click.prevent="navigate('/wishlist')" :class="{'active': route === '/wishlist'}"><svg class="i text-lg"><use href="#i-heart"/></svg>Wishlist</a>
+      <a href="#/novo" @click.prevent="navigate('/novo')" :class="{'active': route === '/novo'}">
+        <span class="w-11 h-11 -mt-4 rounded-full btn-gold flex items-center justify-center"><svg class="i text-xl"><use href="#i-plus"/></svg></span>
+        <span class="mt-0">Novo</span>
+      </a>
+      <a href="#/tive" @click.prevent="navigate('/tive')" :class="{'active': route === '/tive'}"><svg class="i text-lg"><use href="#i-archive"/></svg>Já tive</a>
+      <a href="#" @click.prevent="openRandom = true"><svg class="i text-lg"><use href="#i-dice"/></svg>Random</a>
+    </div>
+  </nav>
+</div>
+
+<!-- ============================================================ -->
+<!-- DRAWER NAV MOBILE -->
+<!-- ============================================================ -->
+<div x-show="drawerNav" x-transition.opacity class="overlay drawer" @click.self="drawerNav=false" x-cloak>
+  <div class="drawer-card fade-in">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <div class="w-10 h-10 rounded-xl btn-ink flex items-center justify-center"><svg class="i text-xl text-gold-400"><use href="#i-spray"/></svg></div>
+        <div><p class="font-display font-extrabold text-lg text-ink">Perfumaria</p><p class="text-[11px] text-ink-faint">Ferramentas · Clavis</p></div>
+      </div>
+      <button @click="drawerNav=false" class="btn-ghost h-9 w-9 rounded-lg flex items-center justify-center"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+    <nav class="flex flex-col gap-0.5">
+      <a href="#/" @click.prevent="navigate('/'); drawerNav=false" class="side-link" :class="{'active': route === '/'}"><svg class="i text-base side-ic"><use href="#i-list"/></svg>Coleção<span class="ml-auto text-xs opacity-70 tnum" x-text="filteredCollection().length"></span></a>
+      <a href="#/wishlist" @click.prevent="navigate('/wishlist'); drawerNav=false" class="side-link" :class="{'active': route === '/wishlist'}"><svg class="i text-base side-ic"><use href="#i-heart"/></svg>Wishlist<span class="ml-auto text-xs opacity-70 tnum" x-text="wishlist().length"></span></a>
+      <a href="#/tive" @click.prevent="navigate('/tive'); drawerNav=false" class="side-link" :class="{'active': route === '/tive'}"><svg class="i text-base side-ic"><use href="#i-archive"/></svg>Já tive<span class="ml-auto text-xs opacity-70 tnum" x-text="pastCollection().length"></span></a>
+      <div class="h-px bg-surface-border my-1.5 mx-3"></div>
+      <a href="#/novo" @click.prevent="navigate('/novo'); drawerNav=false" class="side-link" :class="{'active': route === '/novo'}"><svg class="i text-base side-ic"><use href="#i-plus"/></svg>Cadastrar novo</a>
+      <a href="#/import" @click.prevent="navigate('/import'); drawerNav=false" class="side-link" :class="{'active': route === '/import'}"><svg class="i text-base side-ic"><use href="#i-import"/></svg>Importar planilha</a>
+    </nav>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- DRAWER FILTERS -->
+<!-- ============================================================ -->
+<div x-show="drawerFilters" x-transition.opacity class="overlay drawer" @click.self="drawerFilters=false" x-cloak>
+  <div class="drawer-card fade-in">
+    <div class="flex items-center justify-between mb-5">
+      <h3 class="font-display font-extrabold text-lg text-ink">Filtros</h3>
+      <button @click="drawerFilters=false" class="btn-ghost h-9 w-9 rounded-lg flex items-center justify-center"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+
+    <div class="space-y-6">
+      <div>
+        <p class="text-xs font-semibold text-ink-muted mb-2">Marca</p>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="m in uniqueBrands()" :key="m">
+            <button @click="toggleFilterList('marcas', m)" class="chip cursor-pointer" :class="filters.marcas.includes(m) ? 'chip-ink' : 'chip-neutral'"><span x-text="m"></span></button>
+          </template>
+        </div>
+      </div>
+      <div>
+        <p class="text-xs font-semibold text-ink-muted mb-2">Família olfativa</p>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="f in familias" :key="f.key">
+            <button @click="toggleFilterList('familias', f.key)" class="chip cursor-pointer" :class="filters.familias.includes(f.key) ? 'chip-ink' : 'chip-neutral'"><span class="dot" :class="'f-'+f.key"></span><span x-text="f.label"></span></button>
+          </template>
+        </div>
+      </div>
+      <div>
+        <p class="text-xs font-semibold text-ink-muted mb-2 flex items-center justify-between">Rating mínimo<span class="tnum text-ink" x-text="filters.ratingMin+' ★'"></span></p>
+        <input type="range" min="0" max="5" step="1" x-model.number="filters.ratingMin" class="w-full accent-gold-500">
+        <div class="flex justify-between text-[10px] text-ink-faint mt-1"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+      </div>
+      <label class="flex items-center justify-between cursor-pointer">
+        <span class="text-sm text-ink font-semibold">Só com estoque</span>
+        <button type="button" @click="filters.somenteEstoque = !filters.somenteEstoque" :class="filters.somenteEstoque ? 'bg-gold-500' : 'bg-cream-300'" class="relative w-11 h-6 rounded-full transition-colors">
+          <span :class="filters.somenteEstoque ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+        </button>
+      </label>
+      <label class="flex items-center justify-between cursor-pointer">
+        <span class="text-sm text-ink font-semibold">Só com referência (dupe)</span>
+        <button type="button" @click="filters.somenteReferencia = !filters.somenteReferencia" :class="filters.somenteReferencia ? 'bg-gold-500' : 'bg-cream-300'" class="relative w-11 h-6 rounded-full transition-colors">
+          <span :class="filters.somenteReferencia ? 'translate-x-5' : 'translate-x-0.5'" class="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform"></span>
+        </button>
+      </label>
+    </div>
+
+    <div class="flex items-center gap-2 mt-8 pt-4 border-t border-surface-border">
+      <button @click="clearAllFilters()" class="btn-ghost h-10 px-4 rounded-xl text-sm font-semibold flex-1">Limpar</button>
+      <button @click="drawerFilters=false" class="btn-ink h-10 px-4 rounded-xl text-sm font-semibold flex-1 uppercase tracking-wider">Aplicar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: Spray On -->
+<!-- ============================================================ -->
+<div x-show="sprayModal.open" x-transition.opacity class="overlay" @click.self="sprayModal.open = false" x-cloak>
+  <div class="modal-card fade-in">
+    <div class="flex items-center justify-between mb-5">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl btn-ink flex items-center justify-center spray-anim" :key="sprayModal.perfumeId">
+          <svg class="i text-xl text-gold-400"><use href="#i-spray"/></svg>
+        </div>
+        <div>
+          <h3 class="font-display font-extrabold text-lg text-ink">Registrar uso</h3>
+          <p class="text-xs text-ink-muted" x-text="sprayModal.perfumeId && findPerfume(sprayModal.perfumeId) ? findPerfume(sprayModal.perfumeId).marca+' — '+findPerfume(sprayModal.perfumeId).modelo : ''"></p>
+        </div>
+      </div>
+      <button @click="sprayModal.open=false" class="btn-ghost h-9 w-9 rounded-lg flex items-center justify-center"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+
+    <div class="space-y-4">
+      <div>
+        <p class="text-xs font-semibold text-ink-muted mb-2">Ocasião</p>
+        <div class="grid grid-cols-2 gap-2">
+          <template x-for="o in ['trabalho','social','noite','casa']" :key="o">
+            <button @click="sprayModal.ocasiao = o" class="chip py-2 cursor-pointer capitalize justify-center" :class="sprayModal.ocasiao === o ? 'chip-ink' : 'chip-neutral'" x-text="o"></button>
+          </template>
+        </div>
+      </div>
+      <div>
+        <p class="text-xs font-semibold text-ink-muted mb-2">Estação</p>
+        <div class="grid grid-cols-3 gap-2">
+          <template x-for="e in ['verão','meia-estação','inverno']" :key="e">
+            <button @click="sprayModal.estacao = e" class="chip py-2 cursor-pointer capitalize justify-center" :class="sprayModal.estacao === e ? 'chip-ink' : 'chip-neutral'" x-text="e"></button>
+          </template>
+        </div>
+      </div>
+      <div>
+        <p class="text-xs font-semibold text-ink-muted mb-2">Hora do dia</p>
+        <div class="grid grid-cols-3 gap-2">
+          <template x-for="h in ['manhã','tarde','noite']" :key="h">
+            <button @click="sprayModal.hora = h" class="chip py-2 cursor-pointer capitalize justify-center" :class="sprayModal.hora === h ? 'chip-ink' : 'chip-neutral'" x-text="h"></button>
+          </template>
+        </div>
+      </div>
+      <div class="bg-cream-100 rounded-xl p-3 flex items-center gap-3">
+        <div class="w-9 h-9 rounded-lg btn-gold flex items-center justify-center"><svg class="i text-base"><use href="#i-drop"/></svg></div>
+        <div class="flex-1">
+          <p class="text-[11px] uppercase tracking-wider text-ink-faint">Será deduzido</p>
+          <p class="font-display font-extrabold text-ink tnum"><span x-text="sprayModal.perfumeId && findPerfume(sprayModal.perfumeId) ? findPerfume(sprayModal.perfumeId).ml_por_spray : 0.1"></span> ml</p>
+        </div>
+        <div class="text-right">
+          <p class="text-[11px] uppercase tracking-wider text-ink-faint">Restará</p>
+          <p class="font-display font-extrabold text-ink tnum">
+            <span x-text="sprayModal.perfumeId && findPerfume(sprayModal.perfumeId) ? Math.max(0,findPerfume(sprayModal.perfumeId).estoque_ml - findPerfume(sprayModal.perfumeId).ml_por_spray).toFixed(2) : ''"></span> ml
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2 mt-6">
+      <button @click="sprayModal.open=false" class="btn-ghost h-11 px-4 rounded-xl text-sm font-semibold flex-1">Cancelar</button>
+      <button @click="confirmSpray()" class="btn-ink h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1 flex items-center justify-center gap-2"><svg class="i"><use href="#i-spray"/></svg>Confirmar spray</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: Random Picker -->
+<!-- ============================================================ -->
+<div x-show="openRandom" x-transition.opacity class="overlay" @click.self="openRandom=false; randomPicked=null" x-cloak>
+  <div class="modal-card fade-in">
+    <div class="flex items-center justify-between mb-5">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl btn-gold flex items-center justify-center"><svg class="i text-xl"><use href="#i-dice"/></svg></div>
+        <div><h3 class="font-display font-extrabold text-lg text-ink">Random pick</h3><p class="text-xs text-ink-muted">Sortear um perfume da coleção com estoque</p></div>
+      </div>
+      <button @click="openRandom=false; randomPicked=null" class="btn-ghost h-9 w-9 rounded-lg flex items-center justify-center"><svg class="i"><use href="#i-x"/></svg></button>
+    </div>
+
+    <template x-if="!randomPicked">
+      <div class="space-y-4">
+        <div>
+          <p class="text-xs font-semibold text-ink-muted mb-2">Filtro por ocasião (opcional)</p>
+          <div class="grid grid-cols-2 gap-2">
+            <template x-for="o in ['qualquer','trabalho','social','noite','casa']" :key="o"><button @click="randomFilter.ocasiao = o" class="chip py-2 cursor-pointer capitalize justify-center" :class="randomFilter.ocasiao === o ? 'chip-ink' : 'chip-neutral'" x-text="o"></button></template>
+          </div>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-ink-muted mb-2">Filtro por estação (opcional)</p>
+          <div class="grid grid-cols-3 gap-2">
+            <template x-for="e in ['qualquer','verão','meia-estação','inverno']" :key="e"><button @click="randomFilter.estacao = e" class="chip py-2 cursor-pointer capitalize justify-center" :class="randomFilter.estacao === e ? 'chip-ink' : 'chip-neutral'" x-text="e"></button></template>
+          </div>
+        </div>
+        <button @click="doRandomPick()" class="w-full btn-gold h-12 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2"><svg class="i text-lg"><use href="#i-dice"/></svg>Sortear</button>
+      </div>
+    </template>
+
+    <template x-if="randomPicked">
+      <div class="fade-in text-center">
+        <p class="text-xs text-ink-muted mb-3">Escolhemos pra você</p>
+        <div class="bottle mx-auto mb-4" :class="'tone-'+randomPicked.familia" style="aspect-ratio: 4/5; max-width: 180px">
+          <template x-if="photoKind(randomPicked.foto) === 'url'"><img :src="randomPicked.foto" class="absolute inset-0 w-full h-full object-contain p-3 z-10" onerror="this.style.display='none'"></template>
+          <template x-if="photoKind(randomPicked.foto) !== 'url'"><svg viewBox="0 0 60 90" style="width:55%;height:auto"><use href="#bottle-svg"/></svg></template>
+        </div>
+        <p class="text-xs font-semibold uppercase tracking-wider text-ink-muted" x-text="randomPicked.marca"></p>
+        <h4 class="font-display font-extrabold text-2xl text-ink leading-tight" x-text="randomPicked.modelo"></h4>
+        <div class="flex items-center justify-center gap-1 mt-2 mb-4">
+          <template x-for="i in 5" :key="i"><svg class="i fill" :class="i <= randomPicked.rating ? 'star' : 'star-off'" style="width:1.1rem;height:1.1rem"><use href="#i-star"/></svg></template>
+        </div>
+        <div class="flex items-center gap-2">
+          <button @click="randomPicked = null" class="btn-ghost h-11 px-4 rounded-xl text-sm font-semibold flex-1">Sortear outro</button>
+          <button @click="navigate('/'+randomPicked.id); openRandom=false; randomPicked=null" class="btn-ink h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1">Ver detalhes</button>
+        </div>
+        <button @click="openSprayModal(randomPicked.id); openRandom=false; randomPicked=null" class="mt-2 w-full btn-gold h-11 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2"><svg class="i"><use href="#i-spray"/></svg>Usar esse hoje</button>
+      </div>
+    </template>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: Confirm Delete Perfume -->
+<!-- ============================================================ -->
+<div x-show="openConfirmDelete" x-transition.opacity class="overlay" @click.self="openConfirmDelete=null" x-cloak>
+  <div class="modal-card fade-in" style="max-width:420px">
+    <div class="flex items-start gap-3 mb-4">
+      <div class="w-11 h-11 rounded-xl bg-err-bg flex items-center justify-center shrink-0"><svg class="i text-xl text-err-fg"><use href="#i-trash"/></svg></div>
+      <div>
+        <h3 class="font-display font-extrabold text-lg text-ink">Excluir perfume?</h3>
+        <p class="text-sm text-ink-muted mt-1">Isso apaga também o histórico de <span class="font-semibold tnum" x-text="openConfirmDelete ? usageOf(openConfirmDelete).length : 0"></span> spray(s) associados. A ação é irreversível.</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button @click="openConfirmDelete=null" class="btn-ghost h-11 px-4 rounded-xl text-sm font-semibold flex-1">Cancelar</button>
+      <button @click="confirmDelete()" class="h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1 bg-err text-white hover:bg-err-fg">Excluir</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: Confirm Delete Spray -->
+<!-- ============================================================ -->
+<div x-show="openConfirmDeleteSpray" x-transition.opacity class="overlay" @click.self="openConfirmDeleteSpray=null" x-cloak>
+  <div class="modal-card fade-in" style="max-width:400px">
+    <div class="flex items-start gap-3 mb-4">
+      <div class="w-11 h-11 rounded-xl bg-err-bg flex items-center justify-center shrink-0"><svg class="i text-xl text-err-fg"><use href="#i-trash"/></svg></div>
+      <div>
+        <h3 class="font-display font-extrabold text-lg text-ink">Remover este spray?</h3>
+        <p class="text-sm text-ink-muted mt-1">O estoque do perfume será restaurado em <span class="tnum" x-text="openConfirmDeleteSpray && usageLog.find(u=>u.id===openConfirmDeleteSpray) ? usageLog.find(u=>u.id===openConfirmDeleteSpray).ml : 0"></span> ml.</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-2">
+      <button @click="openConfirmDeleteSpray=null" class="btn-ghost h-11 px-4 rounded-xl text-sm font-semibold flex-1">Cancelar</button>
+      <button @click="confirmDeleteSpray()" class="h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1 bg-err text-white hover:bg-err-fg">Remover</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- MODAL: Confirm Import -->
+<!-- ============================================================ -->
+<div x-show="openConfirmImport" x-transition.opacity class="overlay" @click.self="openConfirmImport=false" x-cloak>
+  <div class="modal-card fade-in" style="max-width:460px">
+    <div class="flex items-start gap-3 mb-4">
+      <div class="w-11 h-11 rounded-xl bg-gold-100 flex items-center justify-center shrink-0"><svg class="i text-xl text-gold-700"><use href="#i-import"/></svg></div>
+      <div>
+        <h3 class="font-display font-extrabold text-lg text-ink">Confirmar importação?</h3>
+        <p class="text-sm text-ink-muted mt-1">Modo selecionado: <span class="font-semibold" x-text="importMode === 'add' ? 'Adicionar' : 'Substituir tudo'"></span>.</p>
+      </div>
+    </div>
+    <div class="bg-cream-100 rounded-xl p-3 space-y-1.5 text-sm">
+      <div class="flex justify-between"><span class="text-ink-muted">Linhas OK</span><span class="font-semibold tnum">45</span></div>
+      <div class="flex justify-between"><span class="text-ink-muted">Linhas com aviso</span><span class="font-semibold tnum">3</span></div>
+      <div class="flex justify-between"><span class="text-ink-muted">Linhas rejeitadas</span><span class="font-semibold tnum">0</span></div>
+      <div class="h-px bg-surface-border my-1"></div>
+      <div class="flex justify-between"><span class="text-ink">Serão importadas</span><span class="font-display font-extrabold text-ink tnum">48</span></div>
+    </div>
+    <div class="flex items-center gap-2 mt-5">
+      <button @click="openConfirmImport=false" class="btn-ghost h-11 px-4 rounded-xl text-sm font-semibold flex-1">Cancelar</button>
+      <button @click="confirmImport()" class="btn-gold h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1 flex items-center justify-center gap-2"><svg class="i"><use href="#i-check"/></svg>Importar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- TOAST -->
+<!-- ============================================================ -->
+<template x-if="toast.show">
+  <div class="toast" :class="toast.type">
+    <svg class="i text-base"><use :href="toast.type === 'err' ? '#i-info' : '#i-check'"/></svg>
+    <span x-text="toast.msg"></span>
+  </div>
+</template>
+
+<!-- ============================================================ -->
+<!-- ALPINE APP -->
+<!-- ============================================================ -->
+<script>
+function perfumaria(){
+  return {
+    // ------- state -------
+    route: '/',
+    loading: false,
+    query: '',
+    mobileSearch: false,
+    drawerNav: false,
+    drawerFilters: false,
+    tab: 'geral',
+    menuMore: false,
+    toast: { show:false, type:'ok', msg:'' },
+    // filters
+    filters: { marcas:[], familias:[], ratingMin:0, somenteEstoque:false, somenteReferencia:false },
+    // modals
+    sprayModal: { open:false, perfumeId:null, ocasiao:'trabalho', estacao:'meia-estação', hora:'manhã' },
+    openRandom: false,
+    randomFilter: { ocasiao:'qualquer', estacao:'qualquer' },
+    randomPicked: null,
+    openConfirmDelete: null,
+    openConfirmDeleteSpray: null,
+    openConfirmImport: false,
+    // import
+    importFile: '',
+    importPreview: false,
+    importMode: 'add',
+    // autocomplete
+    autoQuery: '',
+    autoOpen: false,
+    // forms
+    newForm: {},
+    editForm: {},
+    // scrape
+    scrapeUrl: '',
+    scrapeLoading: false,
+    scrapeStatus: null,
+    scrapeFilled: [],
+
+    // ------- ref data -------
+    familias: [
+      { key:'leather', label:'Couro' },{ key:'oriental', label:'Oriental' },{ key:'fresh', label:'Fresh' },
+      { key:'woody', label:'Amadeirado' },{ key:'floral', label:'Floral' },{ key:'gourmand', label:'Gourmand' },
+      { key:'chypre', label:'Chipre' },{ key:'aquatic', label:'Aquático' },{ key:'tobacco', label:'Tabaco' }
+    ],
+    perfumes: [],
+    usageLog: [],
+
+    // ------- init -------
+    async init(){
+      this.loading = true;
+      await this.reloadAll();
+      this.loading = false;
+      this.resetNewForm();
+      this.parseHash();
+      window.addEventListener('hashchange', () => this.parseHash());
+      if(window.self !== window.top || new URLSearchParams(location.search).get('phone') === '1'){
+        document.body.classList.add('in-phone-frame');
+      }
+    },
+    async reloadAll(){
+      try{
+        const r = await fetch('/api/perfumes');
+        this.perfumes = await r.json();
+        // limpa cache de sprays; será re-carregado sob demanda
+        this._sprayCache = {};
+        this.usageLog = [];
+      }catch(e){ console.error(e); this.showToast('Erro ao carregar dados','err'); }
+    },
+    async reloadSprays(id){
+      try{
+        const r = await fetch('/api/perfumes/'+id+'/sprays');
+        const list = await r.json();
+        this._sprayCache = this._sprayCache || {};
+        this._sprayCache[id] = list;
+        // atualiza usageLog concatenando sem duplicar
+        this.usageLog = this.usageLog.filter(u => u.perfume_id !== id).concat(list);
+      }catch(e){ console.error(e); }
+    },
+
+    // ------- routing -------
+    parseHash(){
+      const h = location.hash.replace(/^#/,'') || '/';
+      this.route = h;
+      this.tab = 'geral';
+      window.scrollTo({top:0, behavior:'instant'});
+      const m = h.match(/^\/(\d+)\/editar$/);
+      if(m){
+        const p = this.perfumes.find(x => x.id === m[1]);
+        if(p) this.editForm = JSON.parse(JSON.stringify(p));
+      }
+      // lazy carrega sprays quando entra em detalhe
+      const md = h.match(/^\/(\d+)$/);
+      if(md) this.reloadSprays(md[1]);
+    },
+    navigate(p){ location.hash = '#'+p; },
+    breadcrumbTail(){
+      if(this.route === '/') return null;
+      if(this.route === '/wishlist') return 'Wishlist';
+      if(this.route === '/tive') return 'Já tive';
+      if(this.route === '/novo') return 'Novo perfume';
+      if(this.route === '/import') return 'Importar';
+      const p = this.currentPerfume();
+      if(this.route.endsWith('/editar')) return p ? 'Editar · '+p.modelo : 'Editar';
+      return p ? p.marca+' · '+p.modelo : null;
+    },
+    headerTitle(){
+      if(this.route === '/') return 'Coleção';
+      if(this.route === '/wishlist') return 'Wishlist';
+      if(this.route === '/tive') return 'Já tive';
+      if(this.route === '/novo') return 'Novo';
+      if(this.route === '/import') return 'Import';
+      if(this.route.endsWith('/editar')) return 'Editar';
+      const p = this.currentPerfume(); return p ? p.modelo : 'Perfumaria';
+    },
+    async togglePast(id){
+      const p = this.findPerfume(id); if(!p) return;
+      const novo = !p.ja_terminou;
+      try{
+        const r = await fetch('/api/perfumes/'+id, {
+          method:'PUT', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ ja_terminou: novo, eh_wishlist: novo ? false : p.eh_wishlist })
+        });
+        if(!r.ok) throw new Error('erro');
+        const updated = await r.json();
+        const idx = this.perfumes.findIndex(x => x.id === id);
+        if(idx >= 0) this.perfumes[idx] = updated;
+        this.showToast(novo ? 'Movido para "Já tive"' : 'Voltou para a coleção ativa');
+      }catch(e){ this.showToast(e.message,'err'); }
+    },
+
+    // ------- data helpers -------
+    findPerfume(id){ return this.perfumes.find(p => p.id === id); },
+    photoKind(f){ if(!f) return 'none'; if(typeof f === 'string' && (f.startsWith('http') || f.startsWith('//') || f.startsWith('data:'))) return 'url'; return 'svg'; },
+    currentPerfume(){
+      const m = this.route.match(/^\/(\d+)(\/editar)?$/);
+      return m ? this.findPerfume(m[1]) : null;
+    },
+    familiaLabel(k){ const f = this.familias.find(x=>x.key===k); return f ? f.label : k; },
+    stockColor(p){
+      const pct = p.tamanho_ml ? p.estoque_ml/p.tamanho_ml : 0;
+      if(pct >= 0.5) return '#16A34A';
+      if(pct >= 0.2) return '#F59E0B';
+      return '#DC2626';
+    },
+    deltaClass(d){ if(d < 0.3) return 'delta-ok'; if(d < 0.5) return 'delta-warn'; return 'delta-err'; },
+    brl(n){ return (n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); },
+    fmtDateTime(iso){ const d = new Date(iso); return d.toLocaleString('pt-BR',{ day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }); },
+
+    // ------- collection / filters -------
+    activeFilters(){
+      const a = {};
+      if(this.filters.marcas.length) a.marcas = this.filters.marcas;
+      if(this.filters.familias.length) a.familias = this.filters.familias;
+      if(this.filters.ratingMin > 0) a.rating = this.filters.ratingMin;
+      if(this.filters.somenteEstoque) a.est = true;
+      if(this.filters.somenteReferencia) a.ref = true;
+      return a;
+    },
+    uniqueBrands(){ return [...new Set(this.perfumes.map(p => p.marca))].sort(); },
+    filteredCollection(){
+      return this.perfumes.filter(p => {
+        if(!p.ja_tive || p.ja_terminou || p.eh_wishlist) return false;
+        if(this.query){
+          const q = this.query.toLowerCase();
+          if(!(p.marca+' '+p.modelo).toLowerCase().includes(q)) return false;
+        }
+        if(this.filters.marcas.length && !this.filters.marcas.includes(p.marca)) return false;
+        if(this.filters.familias.length && !this.filters.familias.includes(p.familia)) return false;
+        if(this.filters.ratingMin > 0 && p.rating < this.filters.ratingMin) return false;
+        if(this.filters.somenteEstoque && p.estoque_ml <= 0) return false;
+        if(this.filters.somenteReferencia && !p.referencia_id) return false;
+        return true;
+      });
+    },
+    wishlist(){ return this.perfumes.filter(p => p.eh_wishlist && !p.ja_terminou); },
+    pastCollection(){ return this.perfumes.filter(p => p.ja_terminou); },
+    toggleFilterList(key, v){
+      const i = this.filters[key].indexOf(v);
+      if(i >= 0) this.filters[key].splice(i,1); else this.filters[key].push(v);
+    },
+    clearAllFilters(){
+      this.filters = { marcas:[], familias:[], ratingMin:0, somenteEstoque:false, somenteReferencia:false };
+      this.query = '';
+    },
+
+    // ------- spray -------
+    openSprayModal(id){
+      this.sprayModal = { open:true, perfumeId:id, ocasiao:'trabalho', estacao:'meia-estação', hora:'manhã' };
+    },
+    async confirmSpray(){
+      const p = this.findPerfume(this.sprayModal.perfumeId);
+      if(!p){ this.sprayModal.open=false; return; }
+      try{
+        const r = await fetch('/api/perfumes/'+p.id+'/spray', {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ ocasiao:this.sprayModal.ocasiao, estacao:this.sprayModal.estacao, hora_dia:this.sprayModal.hora })
+        });
+        if(!r.ok){ const e = await r.json(); throw new Error(e.error||'erro'); }
+        const data = await r.json();
+        // atualiza local sem reload completo
+        const idx = this.perfumes.findIndex(x => x.id === p.id);
+        if(idx >= 0) this.perfumes[idx] = data.perfume;
+        await this.reloadSprays(p.id);
+        this.sprayModal.open = false;
+        this.showToast('Spray registrado · '+data.pct_restante+'% restante');
+      }catch(e){ this.showToast(e.message,'err'); this.sprayModal.open=false; }
+    },
+
+    // ------- usage -------
+    usageOf(id){ return this.usageLog.filter(u => u.perfume_id === id).sort((a,b)=> new Date(b.data)-new Date(a.data)); },
+    async confirmDeleteSpray(){
+      const uid = this.openConfirmDeleteSpray;
+      const u = this.usageLog.find(x => x.id === uid);
+      if(!u){ this.openConfirmDeleteSpray = null; return; }
+      try{
+        const r = await fetch('/api/sprays/'+uid, { method:'DELETE' });
+        if(!r.ok) throw new Error('erro ao remover');
+        const data = await r.json();
+        const p = this.findPerfume(u.perfume_id);
+        if(p) p.estoque_ml = data.estoque_ml;
+        await this.reloadSprays(u.perfume_id);
+        this.showToast('Spray removido');
+      }catch(e){ this.showToast(e.message,'err'); }
+      this.openConfirmDeleteSpray = null;
+    },
+
+    // ------- CRUD -------
+    resetNewForm(){
+      this.newForm = { marca:'', modelo:'', ano: new Date().getFullYear(), concentracao:'EDT', tamanho_ml:100, estoque_ml:100, ml_por_spray:0.1, preco_pago:null, familia:'oriental', notas_topo:'', notas_coracao:'', notas_fundo:'', rating:0, nota_fragrantica:null, votos_fragrantica:null, review:'', referencia_id:null, foto:'bottle', eh_wishlist:false, ja_terminou:false, _touched_est:false };
+      this.autoQuery = ''; this.autoOpen = false;
+      this.scrapeUrl = ''; this.scrapeStatus = null; this.scrapeFilled = []; this.scrapeLoading = false;
+    },
+
+    // ------- scrape fragrantica (backend) -------
+    async scrapeFragrantica(){
+      const url = (this.scrapeUrl || '').trim();
+      if(!url){ this.scrapeStatus = { type:'err', msg:'Cole uma URL primeiro.' }; return; }
+      if(!/fragrantica\.(com|com\.br)/i.test(url)){
+        this.scrapeStatus = { type:'err', msg:'URL precisa ser do Fragrantica (fragrantica.com.br ou .com).' }; return;
+      }
+      this.scrapeLoading = true;
+      this.scrapeStatus = { type:'info', msg:'Abrindo a página no browser invisível, rolando até o fim e lendo o texto…' };
+      try{
+        const r = await fetch('/api/scrape', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({url}) });
+        if(!r.ok){ const e = await r.json(); throw new Error(e.error || 'erro no scrape'); }
+        const data = await r.json();
+        const filled = [];
+        Object.keys(data).forEach(k => { this.newForm[k] = data[k]; filled.push(k); });
+        this.scrapeFilled = filled;
+        this.scrapeStatus = { type:'ok', msg:filled.length+' campos preenchidos automaticamente. Confira e complete os campos pessoais (tamanho do frasco, estoque, preço, rating, review, dupe, wishlist).' };
+      }catch(e){
+        this.scrapeStatus = { type:'err', msg: e.message };
+      }finally{ this.scrapeLoading = false; }
+    },
+    async submitNew(){
+      if(!this.newForm.marca || !this.newForm.modelo){ this.showToast('Preencha marca e modelo', 'err'); return; }
+      const payload = { ...this.newForm };
+      delete payload._touched_est;
+      try{
+        const r = await fetch('/api/perfumes', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+        if(!r.ok){ const e = await r.json(); throw new Error(e.error||'erro'); }
+        const p = await r.json();
+        this.perfumes.push(p);
+        this.resetNewForm();
+        this.showToast('Perfume cadastrado');
+        this.navigate('/'+p.id);
+      }catch(e){ this.showToast(e.message,'err'); }
+    },
+    async submitEdit(){
+      if(!this.editForm.marca || !this.editForm.modelo){ this.showToast('Preencha marca e modelo', 'err'); return; }
+      try{
+        const r = await fetch('/api/perfumes/'+this.editForm.id, {
+          method:'PUT', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(this.editForm)
+        });
+        if(!r.ok) throw new Error('erro ao salvar');
+        const p = await r.json();
+        const idx = this.perfumes.findIndex(x => x.id === p.id);
+        if(idx >= 0) this.perfumes[idx] = p;
+        this.showToast('Alterações salvas');
+        this.navigate('/'+p.id);
+      }catch(e){ this.showToast(e.message,'err'); }
+    },
+    async confirmDelete(){
+      const id = this.openConfirmDelete;
+      try{
+        const r = await fetch('/api/perfumes/'+id, { method:'DELETE' });
+        if(!r.ok) throw new Error('erro ao excluir');
+        this.perfumes = this.perfumes.filter(p => p.id !== id);
+        this.usageLog = this.usageLog.filter(u => u.perfume_id !== id);
+        this.showToast('Perfume excluído');
+        this.navigate('/');
+      }catch(e){ this.showToast(e.message,'err'); }
+      this.openConfirmDelete = null; this.menuMore = false;
+    },
+    async toggleWishlist(id){
+      const p = this.findPerfume(id); if(!p) return;
+      const novo = !p.eh_wishlist;
+      try{
+        const r = await fetch('/api/perfumes/'+id, {
+          method:'PUT', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ eh_wishlist: novo })
+        });
+        if(!r.ok) throw new Error('erro');
+        const updated = await r.json();
+        const idx = this.perfumes.findIndex(x => x.id === id);
+        if(idx >= 0) this.perfumes[idx] = updated;
+        this.showToast(novo ? 'Adicionado à wishlist' : 'Removido da wishlist');
+      }catch(e){ this.showToast(e.message,'err'); }
+    },
+
+    // ------- random -------
+    async doRandomPick(){
+      try{
+        const r = await fetch('/api/random-pick');
+        if(!r.ok){ const e = await r.json(); throw new Error(e.error||'nenhum'); }
+        this.randomPicked = await r.json();
+      }catch(e){ this.showToast(e.message,'err'); }
+    },
+
+    // ------- autocomplete -------
+    autoResults(){
+      const q = this.autoQuery.toLowerCase();
+      if(!q) return this.perfumes.filter(p => p.id !== this.newForm.id).slice(0,5);
+      return this.perfumes.filter(p => (p.marca+' '+p.modelo).toLowerCase().includes(q)).slice(0,6);
+    },
+
+    // ------- import -------
+    async confirmImport(){
+      try{
+        const r = await fetch('/api/import', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ mode: this.importMode }) });
+        const data = await r.json();
+        await this.reloadAll();
+        this.showToast(data.imported + ' perfumes importados com sucesso');
+      }catch(e){ this.showToast('Erro ao importar','err'); }
+      this.openConfirmImport = false; this.importFile = ''; this.importPreview = false;
+      this.navigate('/');
+    },
+
+    // ------- stock chart (SVG) -------
+    renderStockChart(p){
+      const uses = this.usageOf(p.id).slice().reverse();
+      const pointsAll = [{ t: 0, y: p.tamanho_ml }];
+      let running = p.tamanho_ml;
+      const startT = uses.length ? new Date(uses[0].data).getTime() : Date.now() - 60*86400*1000;
+      const endT = Date.now();
+      const span = Math.max(endT - startT, 86400*1000);
+      uses.forEach(u => {
+        const x = (new Date(u.data).getTime() - startT) / span;
+        running = Math.max(0, running - u.ml);
+        pointsAll.push({ t:x, y: running });
+      });
+      pointsAll.push({ t:1, y: p.estoque_ml });
+
+      const W = 640, H = 180, pad = 32;
+      const maxY = p.tamanho_ml;
+      const points = pointsAll.map(pt => ({ x: pad + pt.t*(W-pad*2), y: pad + (1 - pt.y/maxY)*(H-pad*2) }));
+      const linePath = points.map((pt,i) => (i===0?'M':'L')+pt.x.toFixed(1)+','+pt.y.toFixed(1)).join(' ');
+      const areaPath = linePath + ' L'+points[points.length-1].x.toFixed(1)+','+(H-pad)+' L'+points[0].x.toFixed(1)+','+(H-pad)+' Z';
+      const gridY = [0,25,50,75,100].map(pct => {
+        const y = pad + (1 - pct/100)*(H-pad*2);
+        return `<line x1="${pad}" x2="${W-pad}" y1="${y}" y2="${y}" stroke="#EBE5D3" stroke-width="1"/><text x="${pad-6}" y="${y+3}" text-anchor="end" font-size="9" fill="#8f8f8f" font-family="Inter">${Math.round(maxY*pct/100)}</text>`;
+      }).join('');
+      return `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto; min-width:520px" role="img" aria-label="Estoque ao longo do tempo">
+        <defs>
+          <linearGradient id="grad-stock" x1="0" x2="0" y1="0" y2="1">
+            <stop offset="0%" stop-color="#B8860B" stop-opacity=".28"/>
+            <stop offset="100%" stop-color="#B8860B" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        ${gridY}
+        <path d="${areaPath}" fill="url(#grad-stock)"/>
+        <path d="${linePath}" fill="none" stroke="#1E1E1E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        ${points.map((pt,i)=> i===points.length-1 ? `<circle cx="${pt.x}" cy="${pt.y}" r="5" fill="#B8860B" stroke="#fff" stroke-width="2"/>` : `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="#fff" stroke="#1E1E1E" stroke-width="1.6"/>`).join('')}
+      </svg>`;
+    },
+
+    // ------- toast -------
+    showToast(msg, type='ok'){
+      this.toast = { show:true, type, msg };
+      clearTimeout(this._tt);
+      this._tt = setTimeout(() => { this.toast.show = false; }, 2600);
+    },
+  }
+}
+
+// ============================================================
+// (seed antigo removido — dados vêm da API /api/perfumes)
+// ============================================================
+function _unused_seedPerfumes_deprecated(){
+  return [
+    { id:'1', marca:'Zara', modelo:'Vibrant Leather', ano:2018, concentracao:'EDT', tamanho_ml:100, estoque_ml:62, preco_pago:149.90, ml_por_spray:0.1, familia:'leather', notas_topo:'Bergamota, toranja', notas_coracao:'Ameixa, rosa', notas_fundo:'Couro, almíscar, baunilha', rating:4, nota_fragrantica:4.28, votos_fragrantica:3421, review:'Impressionante o quanto se aproxima do Aventus. Longevidade média, projeção boa nas primeiras 4h.', referencia_id:'4', eh_wishlist:false, ja_tive:true, foto:'bottle' },
+    { id:'2', marca:'Zara', modelo:'Vibrant Leather Oud', ano:2020, concentracao:'EDP', tamanho_ml:100, estoque_ml:78, preco_pago:189.90, ml_por_spray:0.1, familia:'oriental', notas_topo:'Cardamomo, bergamota', notas_coracao:'Oud, rosa, açafrão', notas_fundo:'Couro, âmbar, madeiras', rating:5, nota_fragrantica:4.35, votos_fragrantica:1892, review:'Melhor dupe Zara na minha coleção. Oud rico sem ficar sintético.', referencia_id:'9', eh_wishlist:false, ja_tive:true, foto:'bottle' },
+    { id:'3', marca:'Zara', modelo:'W/END 03:00 AM', ano:2022, concentracao:'EDP', tamanho_ml:80, estoque_ml:45, preco_pago:129.90, ml_por_spray:0.1, familia:'oriental', notas_topo:'Pimenta rosa, cardamomo', notas_coracao:'Especiarias, íris', notas_fundo:'Baunilha, âmbar, madeiras', rating:4, nota_fragrantica:4.05, votos_fragrantica:987, review:'Vibe noturna, sedutor. Referência Black XS é evidente.', referencia_id:'10', eh_wishlist:false, ja_tive:true, foto:'bottle' },
+    { id:'4', marca:'Creed', modelo:'Aventus', ano:2010, concentracao:'EDP', tamanho_ml:100, estoque_ml:88, preco_pago:3200.00, ml_por_spray:0.1, familia:'fresh', notas_topo:'Abacaxi, bergamota, maçã, cassis', notas_coracao:'Bétula, rosa, jasmim, patchouli', notas_fundo:'Almíscar, musgo de carvalho, baunilha, âmbar cinza', rating:5, nota_fragrantica:4.42, votos_fragrantica:28450, review:'A referência. Padrão-ouro dos frutados masculinos. Usar com parcimônia.', referencia_id:null, eh_wishlist:false, ja_tive:true, foto:'bottle' },
+    { id:'5', marca:'Chanel', modelo:'Bleu de Chanel Parfum', ano:2018, concentracao:'Parfum', tamanho_ml:100, estoque_ml:0, preco_pago:0, ml_por_spray:0.1, familia:'woody', notas_topo:'Bergamota, grapefruit, menta', notas_coracao:'Gengibre, jasmim, noz-moscada', notas_fundo:'Incenso, cedro, sândalo', rating:5, nota_fragrantica:4.31, votos_fragrantica:45210, review:'', referencia_id:null, eh_wishlist:true, ja_tive:false, foto:'bottle' },
+    { id:'6', marca:'Prada', modelo:"L'Homme", ano:2016, concentracao:'EDT', tamanho_ml:100, estoque_ml:0, preco_pago:420.00, ml_por_spray:0.1, familia:'floral', notas_topo:'Cardamomo, nerólio, pimenta preta', notas_coracao:'Íris, violeta, gerânio', notas_fundo:'Cedro, almíscar, âmbar cinza', rating:4, nota_fragrantica:3.98, votos_fragrantica:5820, review:'Elegante, sofisticado. Usava em jantares.', referencia_id:null, eh_wishlist:false, ja_tive:true, ja_terminou:true, foto:'bottle' },
+    { id:'7', marca:'Dior', modelo:'Fahrenheit', ano:1988, concentracao:'EDT', tamanho_ml:100, estoque_ml:55, preco_pago:550.00, ml_por_spray:0.1, familia:'leather', notas_topo:'Espinheiro, mandarina, bergamota', notas_coracao:'Madressilva, sândalo, violeta', notas_fundo:'Couro, cedro, tonka', rating:5, nota_fragrantica:4.15, votos_fragrantica:22103, review:'Clássico atemporal. Nada como usar Fahrenheit no inverno.', referencia_id:null, eh_wishlist:false, ja_tive:true, foto:null },
+    { id:'8', marca:'Yves Saint Laurent', modelo:"La Nuit de L'Homme", ano:2009, concentracao:'EDT', tamanho_ml:100, estoque_ml:12, preco_pago:460.00, ml_por_spray:0.1, familia:'oriental', notas_topo:'Cardamomo', notas_coracao:'Lavanda, cominho, bergamota', notas_fundo:'Vetiver, cedro, cumarina', rating:5, nota_fragrantica:4.29, votos_fragrantica:31890, review:'Mais votos que qualquer outro. Especialmente forte no outono.', referencia_id:null, eh_wishlist:false, ja_tive:true, foto:'bottle' },
+    { id:'9', marca:'Tom Ford', modelo:'Oud Wood', ano:2007, concentracao:'EDP', tamanho_ml:50, estoque_ml:44, preco_pago:1890.00, ml_por_spray:0.1, familia:'oriental', notas_topo:'Pau-rosa, cardamomo, pimenta', notas_coracao:'Oud, sândalo, vetiver', notas_fundo:'Baunilha, âmbar, almíscar', rating:5, nota_fragrantica:4.40, votos_fragrantica:12034, review:'Elegância pura. Oud de alta qualidade.', referencia_id:null, eh_wishlist:false, ja_tive:true, foto:'bottle' },
+    { id:'10', marca:'Paco Rabanne', modelo:'Black XS', ano:2005, concentracao:'EDT', tamanho_ml:100, estoque_ml:0, preco_pago:320.00, ml_por_spray:0.1, familia:'oriental', notas_topo:'Toranja, álamo', notas_coracao:'Cardamomo, praliné', notas_fundo:'Patchouli, baunilha, tonka', rating:4, nota_fragrantica:4.10, votos_fragrantica:15342, review:'Meu perfume da adolescência. Fase 2000s pura.', referencia_id:null, eh_wishlist:false, ja_tive:true, ja_terminou:true, foto:'bottle' }
+  ];
+}
+function seedUsage(){
+  const now = Date.now();
+  const d = (daysAgo, h, mi) => new Date(now - daysAgo*86400000).toISOString().replace(/T\d{2}:\d{2}/, 'T'+String(h).padStart(2,'0')+':'+String(mi).padStart(2,'0'));
+  return [
+    // Vibrant Leather (id 1) — bem usado
+    { id:'u1', perfume_id:'1', data:d(1,8,15), ocasiao:'trabalho', estacao:'inverno', hora_dia:'manhã', ml:0.1 },
+    { id:'u2', perfume_id:'1', data:d(3,7,45), ocasiao:'trabalho', estacao:'inverno', hora_dia:'manhã', ml:0.1 },
+    { id:'u3', perfume_id:'1', data:d(5,19,20), ocasiao:'social', estacao:'inverno', hora_dia:'noite', ml:0.2 },
+    { id:'u4', perfume_id:'1', data:d(8,8,10), ocasiao:'trabalho', estacao:'inverno', hora_dia:'manhã', ml:0.1 },
+    { id:'u5', perfume_id:'1', data:d(12,20,30), ocasiao:'noite', estacao:'meia-estação', hora_dia:'noite', ml:0.2 },
+    { id:'u6', perfume_id:'1', data:d(18,7,50), ocasiao:'trabalho', estacao:'meia-estação', hora_dia:'manhã', ml:0.1 },
+    { id:'u7', perfume_id:'1', data:d(22,15,0), ocasiao:'casa', estacao:'meia-estação', hora_dia:'tarde', ml:0.1 },
+    { id:'u8', perfume_id:'1', data:d(28,19,15), ocasiao:'social', estacao:'verão', hora_dia:'noite', ml:0.2 },
+    // Fahrenheit (id 7)
+    { id:'u9', perfume_id:'7', data:d(2,20,0), ocasiao:'noite', estacao:'inverno', hora_dia:'noite', ml:0.2 },
+    { id:'u10', perfume_id:'7', data:d(6,19,45), ocasiao:'social', estacao:'inverno', hora_dia:'noite', ml:0.1 },
+    { id:'u11', perfume_id:'7', data:d(14,20,20), ocasiao:'noite', estacao:'inverno', hora_dia:'noite', ml:0.2 },
+    { id:'u12', perfume_id:'7', data:d(20,19,0), ocasiao:'noite', estacao:'meia-estação', hora_dia:'noite', ml:0.2 },
+    { id:'u13', perfume_id:'7', data:d(35,18,30), ocasiao:'social', estacao:'meia-estação', hora_dia:'noite', ml:0.2 },
+    { id:'u14', perfume_id:'7', data:d(45,20,0), ocasiao:'noite', estacao:'verão', hora_dia:'noite', ml:0.1 },
+    // Oud Wood (id 9)
+    { id:'u15', perfume_id:'9', data:d(4,21,0), ocasiao:'noite', estacao:'inverno', hora_dia:'noite', ml:0.1 },
+    { id:'u16', perfume_id:'9', data:d(15,19,30), ocasiao:'social', estacao:'inverno', hora_dia:'noite', ml:0.1 },
+    { id:'u17', perfume_id:'9', data:d(25,20,0), ocasiao:'noite', estacao:'meia-estação', hora_dia:'noite', ml:0.1 },
+    { id:'u18', perfume_id:'9', data:d(40,21,15), ocasiao:'noite', estacao:'meia-estação', hora_dia:'noite', ml:0.1 }
+  ];
+}
+
+// FRAGRANTICA CACHE (mockup — simula o get_page_text pós-raspagem)
+// Só campos que a Fragrantica realmente devolve: marca, modelo, ano, concentração,
+// família olfativa (após mapeamento fuzzy), notas topo/coração/fundo, nota, votos.
+// NÃO vem da Fragrantica (por design): tamanho_ml, estoque_ml, ml_por_spray,
+// preco_pago, rating pessoal, review, referencia_id, eh_wishlist.
+const FRAGRANTICA_DB = {
+  'aventus': {
+    marca: 'Creed', modelo: 'Aventus', ano: 2010, concentracao: 'EDP', familia: 'fresh',
+    notas_topo: 'Abacaxi, bergamota, maçã, cassis',
+    notas_coracao: 'Bétula, rosa, jasmim, patchouli',
+    notas_fundo: 'Almíscar, musgo de carvalho, baunilha, âmbar cinza',
+    nota_fragrantica: 4.42, votos_fragrantica: 28450,
+    foto: 'https://fimgs.net/mdimg/perfume/375x500.9828.jpg'
+  },
+  'sauvage-elixir': {
+    marca: 'Dior', modelo: 'Sauvage Elixir', ano: 2021, concentracao: 'Elixir', familia: 'oriental',
+    notas_topo: 'Canela, noz-moscada, cardamomo, toranja',
+    notas_coracao: 'Lavanda, alcaçuz',
+    notas_fundo: 'Sândalo, âmbar cinza, patchouli, madeiras de haiti',
+    nota_fragrantica: 4.35, votos_fragrantica: 18732,
+    foto: 'https://fimgs.net/mdimg/perfume/375x500.63792.jpg'
+  },
+  'y-edp': {
+    marca: 'Yves Saint Laurent', modelo: 'Y Eau de Parfum', ano: 2018, concentracao: 'EDP', familia: 'woody',
+    notas_topo: 'Maçã, gengibre, bergamota',
+    notas_coracao: 'Sálvia, gerânio, lavanda',
+    notas_fundo: 'Fava tonka, cedro, âmbar cinza',
+    nota_fragrantica: 4.19, votos_fragrantica: 12580,
+    foto: 'https://fimgs.net/mdimg/perfume/375x500.49232.jpg'
+  },
+  '1m-elixir': {
+    marca: 'Paco Rabanne', modelo: '1 Million Elixir', ano: 2022, concentracao: 'Parfum', familia: 'gourmand',
+    notas_topo: 'Grapefruit, canela, pimenta rosa',
+    notas_coracao: 'Cardamomo, âmbar liquido',
+    notas_fundo: 'Baunilha, fava tonka, patchouli',
+    nota_fragrantica: 4.02, votos_fragrantica: 4260,
+    foto: 'https://fimgs.net/mdimg/perfume/375x500.77441.jpg'
+  },
+  'adg-profondo': {
+    marca: 'Giorgio Armani', modelo: 'Acqua di Giò Profondo', ano: 2020, concentracao: 'EDP', familia: 'aquatic',
+    notas_topo: 'Bergamota, notas aquáticas, notas marinhas, limão',
+    notas_coracao: 'Rosmarinho, lavanda, alecrim, cipreste',
+    notas_fundo: 'Patchouli, âmbar cinza, almíscar, musgo',
+    nota_fragrantica: 4.31, votos_fragrantica: 15920,
+    foto: 'https://fimgs.net/mdimg/perfume/375x500.59692.jpg'
+  },
+  'tobacco-vanille': {
+    marca: 'Tom Ford', modelo: 'Tobacco Vanille', ano: 2007, concentracao: 'EDP', familia: 'tobacco',
+    notas_topo: 'Folha de tabaco, especiarias',
+    notas_coracao: 'Baunilha, cacau, fruta de tabaco, fava tonka',
+    notas_fundo: 'Madeiras secas frutadas',
+    nota_fragrantica: 4.38, votos_fragrantica: 21340,
+    foto: 'https://fimgs.net/mdimg/perfume/375x500.1825.jpg'
+  }
+};
+</script>
+</body>
+</html>
