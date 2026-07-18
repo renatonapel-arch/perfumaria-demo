@@ -334,6 +334,39 @@ def _match_scrape_key(url):
     if 'tobacco-vanille' in u: return 'tobacco-vanille'
     return None
 
+@app.post("/api/perfumes/<int:pid>/enrich")
+def enrich_perfume(pid):
+    """Busca no Fragrantica pela marca+modelo do perfume e atualiza campos raspáveis."""
+    con = db()
+    row = con.execute("SELECT * FROM perfume WHERE id=?", (pid,)).fetchone()
+    if not row: con.close(); return {"error":"not found"}, 404
+    try:
+        from scraper import search_and_scrape, ScrapeError
+    except Exception as e:
+        con.close(); return {"error": f"scraper indisponível: {e}"}, 500
+    marca = row['marca']; modelo = row['modelo']
+    try:
+        data = search_and_scrape(marca, modelo)
+    except ScrapeError as e:
+        con.close(); return {"error": str(e), "marca": marca, "modelo": modelo}, 404
+    # atualiza só os campos que vieram — não sobrescreve preço/rating/review/estoque etc
+    updatable = ['ano','concentracao','familia','notas_topo','notas_coracao','notas_fundo',
+                 'nota_fragrantica','votos_fragrantica','foto']
+    sets=[]; vals=[]
+    updated_keys = []
+    for f in updatable:
+        v = data.get(f)
+        if v not in (None, ''):
+            sets.append(f"{f}=?"); vals.append(v); updated_keys.append(f)
+    if sets:
+        vals.append(pid)
+        con.execute(f"UPDATE perfume SET {', '.join(sets)} WHERE id=?", vals)
+        con.commit()
+    result = _row_to_dict(con.execute("SELECT * FROM perfume WHERE id=?", (pid,)).fetchone())
+    con.close()
+    return jsonify({"ok": True, "perfume": result, "updated": updated_keys, "url": data.get('url')})
+
+
 @app.post("/api/scrape")
 def scrape():
     body = request.get_json() or {}

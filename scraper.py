@@ -250,7 +250,94 @@ def scrape_fragrantica(url: str, timeout_ms: int = 30_000) -> dict:
     return {k: v for k, v in parsed.items() if v is not None and v != ''}
 
 
+def _score_url(url: str, marca: str, modelo: str) -> int:
+    """Menor score = melhor match (URL mais próxima do modelo buscado)."""
+    m = re.search(r'/perfume/([^/]+)/([^/]+?)-\d+\.html', url)
+    if not m: return 999
+    url_marca_slug = m.group(1).lower()
+    url_modelo_slug = m.group(2).lower()
+    marca_n = _slug_norm(marca)
+    modelo_n = _slug_norm(modelo)
+    score = 0
+    # penaliza se marca não bate
+    if marca_n not in url_marca_slug and url_marca_slug not in marca_n:
+        score += 50
+    # calcula palavras extras no slug do modelo
+    modelo_words = set(modelo_n.split('-'))
+    url_words = set(url_modelo_slug.split('-'))
+    faltando = modelo_words - url_words
+    extras_all = url_words - modelo_words
+    # palavras extras não-dígito são penalização forte (indica variação: Intense, Sport, Cologne)
+    extras_words = {w for w in extras_all if not w.isdigit() and len(w) > 1}
+    # anos numéricos são penalização leve (indica reformulação: 2020, 2011)
+    extras_years = {w for w in extras_all if w.isdigit() and len(w) == 4}
+    score += len(faltando) * 10 + len(extras_words) * 5 + len(extras_years) * 2
+    # tiebreak: prefere slug mais curto (versão original)
+    score += len(url_modelo_slug) // 10
+    return score
+
+
+def _slug_norm(s: str) -> str:
+    s = s.lower().strip()
+    # remove acentos
+    import unicodedata
+    s = ''.join(c for c in unicodedata.normalize('NFKD', s) if not unicodedata.combining(c))
+    # remove aspas, pontuação
+    s = re.sub(r"[`'\"´¨]", '', s)
+    s = re.sub(r'[^a-z0-9]+', '-', s).strip('-')
+    return s
+
+
+def search_url(marca: str, modelo: str, timeout_ms: int = 25_000) -> Optional[str]:
+    """Abre a busca do Fragrantica, digita 'marca modelo' e devolve a URL com melhor match."""
+    q = f"{marca} {modelo}".strip()
+    try:
+        with sync_playwright() as p:
+            browser = p.chromium.launch(headless=True, args=['--no-sandbox'])
+            ctx = browser.new_context(user_agent=UA, locale='pt-BR',
+                                       extra_http_headers={'Accept-Language':'pt-BR,pt;q=0.9,en;q=0.8'})
+            page = ctx.new_page()
+            page.goto('https://www.fragrantica.com.br/busca/', wait_until='domcontentloaded', timeout=timeout_ms)
+            page.wait_for_timeout(1500)
+            try:
+                page.locator('input[placeholder="Start typing...."]').fill(q)
+            except PWError:
+                browser.close()
+                return None
+            page.wait_for_timeout(4500)
+            hrefs = page.eval_on_selector_all(
+                'a[href*="/perfume/"]',
+                'els => Array.from(new Set(els.map(e => e.href).filter(h => /\\/perfume\\/.+-\\d+\\.html$/.test(h))))'
+            )
+            browser.close()
+        if not hrefs:
+            return None
+        # escolhe o melhor match (menor score)
+        ranked = sorted(hrefs, key=lambda h: _score_url(h, marca, modelo))
+        return ranked[0]
+    except PWError:
+        return None
+
+
+def search_and_scrape(marca: str, modelo: str) -> dict:
+    """Busca no Fragrantica, pega a primeira URL de perfume, e chama scrape_fragrantica.
+
+    Devolve {'url': ..., **campos_scrape} ou raises ScrapeError.
+    """
+    url = search_url(marca, modelo)
+    if not url:
+        raise ScrapeError(f'não achei perfume "{marca} {modelo}" na busca do Fragrantica')
+    data = scrape_fragrantica(url)
+    data['url'] = url
+    return data
+
+
 if __name__ == '__main__':
     import sys
-    url = sys.argv[1] if len(sys.argv) > 1 else 'https://www.fragrantica.com.br/perfume/Creed/Aventus-9828.html'
-    print(json.dumps(scrape_fragrantica(url), ensure_ascii=False, indent=2))
+    if len(sys.argv) > 2 and sys.argv[1] == 'search':
+        # python scraper.py search "Creed" "Aventus"
+        result = search_and_scrape(sys.argv[2], sys.argv[3])
+    else:
+        url = sys.argv[1] if len(sys.argv) > 1 else 'https://www.fragrantica.com.br/perfume/Creed/Aventus-9828.html'
+        result = scrape_fragrantica(url)
+    print(json.dumps(result, ensure_ascii=False, indent=2))
