@@ -493,18 +493,78 @@ textarea.field{ resize:vertical; min-height:80px }
           <div class="card overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted select-none">
                   <tr>
-                    <th class="text-left py-2.5 px-4 font-semibold">Marca</th>
-                    <th class="text-left py-2.5 px-4 font-semibold">Modelo</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Ano</th>
-                    <th class="text-left py-2.5 px-4 font-semibold">Concentração</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Nota</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Votos</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Marca</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Modelo</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Ano</span>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Concentração</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Nota</span>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Votos</span>
+                        </button>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <template x-for="p in filteredCollection()" :key="p.id">
+                  <template x-for="p in tableRows(filteredCollection())" :key="p.id">
                     <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
                       <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
                       <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
@@ -595,18 +655,78 @@ textarea.field{ resize:vertical; min-height:80px }
           <div class="card overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted select-none">
                   <tr>
-                    <th class="text-left py-2.5 px-4 font-semibold">Marca</th>
-                    <th class="text-left py-2.5 px-4 font-semibold">Modelo</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Ano</th>
-                    <th class="text-left py-2.5 px-4 font-semibold">Concentração</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Nota</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Votos</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Marca</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Modelo</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Ano</span>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Concentração</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Nota</span>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Votos</span>
+                        </button>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <template x-for="p in wishlist()" :key="p.id">
+                  <template x-for="p in tableRows(wishlist())" :key="p.id">
                     <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
                       <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
                       <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
@@ -698,18 +818,78 @@ textarea.field{ resize:vertical; min-height:80px }
           <div class="card overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted select-none">
                   <tr>
-                    <th class="text-left py-2.5 px-4 font-semibold">Marca</th>
-                    <th class="text-left py-2.5 px-4 font-semibold">Modelo</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Ano</th>
-                    <th class="text-left py-2.5 px-4 font-semibold">Concentração</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Nota</th>
-                    <th class="text-right py-2.5 px-4 font-semibold">Votos</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Marca</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Modelo</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Ano</span>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-left py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1">
+                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-ink">
+                          <span>Concentração</span>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        </button>
+                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Nota</span>
+                        </button>
+                      </div>
+                    </th>
+                    <th class="text-right py-2.5 px-4 font-semibold">
+                      <div class="flex items-center gap-1 justify-end">
+                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-ink-faint/60'">
+                          <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
+                        </button>
+                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <span>Votos</span>
+                        </button>
+                      </div>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  <template x-for="p in pastCollection()" :key="p.id">
+                  <template x-for="p in tableRows(pastCollection())" :key="p.id">
                     <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
                       <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
                       <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
@@ -1611,6 +1791,71 @@ textarea.field{ resize:vertical; min-height:80px }
 </div>
 
 <!-- ============================================================ -->
+<!-- POPOVER: Filtro de coluna da tabela -->
+<!-- ============================================================ -->
+<div x-show="openColFilter" @click.outside="if(!$event.target.closest('[data-colfilter-btn]')) openColFilter=null" x-transition x-cloak
+     class="fixed z-[90] bg-white border border-surface-border rounded-xl shadow-lift p-3 w-56"
+     :style="'top:'+colFilterPos.top+'px; left:'+colFilterPos.left+'px'">
+
+  <template x-if="openColFilter === 'marca'">
+    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por marca</p>
+      <input x-model="colFilters.marca" type="text" placeholder="Ex: Dior" class="field text-sm py-1.5">
+    </div>
+  </template>
+
+  <template x-if="openColFilter === 'modelo'">
+    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por modelo</p>
+      <input x-model="colFilters.modelo" type="text" placeholder="Ex: Aventus" class="field text-sm py-1.5">
+    </div>
+  </template>
+
+  <template x-if="openColFilter === 'concentracao'">
+    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por concentração</p>
+      <div class="flex flex-wrap gap-1.5">
+        <template x-for="c in uniqueConcentracoes()" :key="c">
+          <button type="button" @click="toggleConcentracaoFilter(c)" class="chip cursor-pointer text-[11px]" :class="colFilters.concentracao.includes(c) ? 'chip-ink' : 'chip-neutral'" x-text="c"></button>
+        </template>
+      </div>
+    </div>
+  </template>
+
+  <template x-if="openColFilter === 'ano'">
+    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por ano</p>
+      <div class="flex items-center gap-2">
+        <input x-model.number="colFilters.ano_min" type="number" placeholder="De" class="field text-sm py-1.5 tnum">
+        <span class="text-ink-faint text-xs">até</span>
+        <input x-model.number="colFilters.ano_max" type="number" placeholder="Até" class="field text-sm py-1.5 tnum">
+      </div>
+    </div>
+  </template>
+
+  <template x-if="openColFilter === 'nota'">
+    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por nota Fragrantica</p>
+      <div class="flex items-center gap-2">
+        <input x-model.number="colFilters.nota_min" type="number" step="0.1" min="0" max="5" placeholder="Min" class="field text-sm py-1.5 tnum">
+        <span class="text-ink-faint text-xs">até</span>
+        <input x-model.number="colFilters.nota_max" type="number" step="0.1" min="0" max="5" placeholder="Max" class="field text-sm py-1.5 tnum">
+      </div>
+    </div>
+  </template>
+
+  <template x-if="openColFilter === 'votos'">
+    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por votos</p>
+      <div class="flex items-center gap-2">
+        <input x-model.number="colFilters.votos_min" type="number" placeholder="Min" class="field text-sm py-1.5 tnum">
+        <span class="text-ink-faint text-xs">até</span>
+        <input x-model.number="colFilters.votos_max" type="number" placeholder="Max" class="field text-sm py-1.5 tnum">
+      </div>
+    </div>
+  </template>
+
+  <div class="flex items-center justify-between mt-3 pt-2 border-t border-surface-border">
+    <button type="button" @click="clearColFilters()" class="text-xs text-ink-muted hover:text-ink">Limpar todos</button>
+    <button type="button" @click="openColFilter=null" class="text-xs font-semibold text-gold-700 hover:underline">Fechar</button>
+  </div>
+</div>
+
+<!-- ============================================================ -->
 <!-- TOAST -->
 <!-- ============================================================ -->
 <template x-if="toast.show">
@@ -1631,6 +1876,11 @@ function perfumaria(){
     loading: false,
     query: '',
     viewMode: 'grid',
+    sortBy: '',
+    sortDir: 'asc',
+    openColFilter: null,
+    colFilterPos: { top:0, left:0 },
+    colFilters: { marca:'', modelo:'', concentracao:[], ano_min:null, ano_max:null, nota_min:null, nota_max:null, votos_min:null, votos_max:null },
     mobileSearch: false,
     drawerNav: false,
     drawerFilters: false,
@@ -1764,6 +2014,65 @@ function perfumaria(){
       return m ? this.findPerfume(m[1]) : null;
     },
     familiaLabel(k){ const f = this.familias.find(x=>x.key===k); return f ? f.label : k; },
+
+    // ------- tabela: ordenar + filtrar por coluna -------
+    normText(s){ return (s||'').toString().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); },
+    toggleSort(field){
+      if(this.sortBy === field){ this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc'; }
+      else { this.sortBy = field; this.sortDir = 'asc'; }
+    },
+    uniqueConcentracoes(){ return [...new Set(this.perfumes.map(p => p.concentracao).filter(Boolean))].sort(); },
+    openColFilterPopover(field, evt){
+      if(this.openColFilter === field){ this.openColFilter = null; return; }
+      const rect = evt.currentTarget.getBoundingClientRect();
+      const popW = 224;
+      let left = rect.left;
+      if(left + popW > window.innerWidth - 8) left = window.innerWidth - popW - 8;
+      this.colFilterPos = { top: rect.bottom + 6, left: Math.max(8, left) };
+      this.openColFilter = field;
+    },
+    colFilterActive(field){
+      const cf = this.colFilters;
+      if(field === 'concentracao') return cf.concentracao.length > 0;
+      if(field === 'ano') return cf.ano_min != null || cf.ano_max != null;
+      if(field === 'nota') return cf.nota_min != null || cf.nota_max != null;
+      if(field === 'votos') return cf.votos_min != null || cf.votos_max != null;
+      return !!cf[field];
+    },
+    clearColFilters(){
+      this.colFilters = { marca:'', modelo:'', concentracao:[], ano_min:null, ano_max:null, nota_min:null, nota_max:null, votos_min:null, votos_max:null };
+    },
+    toggleConcentracaoFilter(v){
+      const i = this.colFilters.concentracao.indexOf(v);
+      if(i >= 0) this.colFilters.concentracao.splice(i,1); else this.colFilters.concentracao.push(v);
+    },
+    tableRows(list){
+      const cf = this.colFilters;
+      let rows = list.filter(p => {
+        if(cf.marca && !this.normText(p.marca).includes(this.normText(cf.marca))) return false;
+        if(cf.modelo && !this.normText(p.modelo).includes(this.normText(cf.modelo))) return false;
+        if(cf.concentracao.length && !cf.concentracao.includes(p.concentracao)) return false;
+        if(cf.ano_min != null && (p.ano||0) < cf.ano_min) return false;
+        if(cf.ano_max != null && (p.ano||0) > cf.ano_max) return false;
+        if(cf.nota_min != null && (p.nota_fragrantica||0) < cf.nota_min) return false;
+        if(cf.nota_max != null && (p.nota_fragrantica||0) > cf.nota_max) return false;
+        if(cf.votos_min != null && (p.votos_fragrantica||0) < cf.votos_min) return false;
+        if(cf.votos_max != null && (p.votos_fragrantica||0) > cf.votos_max) return false;
+        return true;
+      });
+      if(this.sortBy){
+        const f = this.sortBy, dir = this.sortDir === 'asc' ? 1 : -1;
+        rows = rows.slice().sort((a,b) => {
+          let av = a[f], bv = b[f];
+          if(typeof av === 'string' || typeof bv === 'string'){
+            return this.normText(av).localeCompare(this.normText(bv)) * dir;
+          }
+          av = av ?? -Infinity; bv = bv ?? -Infinity;
+          return (av - bv) * dir;
+        });
+      }
+      return rows;
+    },
     stockColor(p){
       const pct = p.tamanho_ml ? p.estoque_ml/p.tamanho_ml : 0;
       if(pct >= 0.5) return '#16A34A';
