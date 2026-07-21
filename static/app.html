@@ -241,6 +241,7 @@ textarea.field{ resize:vertical; min-height:80px }
     <symbol id="i-archive" viewBox="0 0 24 24"><path d="M3 3h18v5H3zM5 8v11a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></symbol>
     <symbol id="i-pkg" viewBox="0 0 24 24"><path d="M21 8V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8"/><path d="M1 8h22l-2-4H3zM10 12h4"/></symbol>
     <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="8" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/><rect x="13" y="13" width="8" height="8" rx="1.5"/></symbol>
     <symbol id="i-import" viewBox="0 0 24 24"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2z"/><path d="M12 11v6M9 14l3 3 3-3"/></symbol>
     <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></symbol>
     <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
@@ -358,6 +359,14 @@ textarea.field{ resize:vertical; min-height:80px }
             </p>
           </div>
           <div class="flex items-center gap-2">
+            <div class="inline-flex rounded-xl border border-surface-border p-0.5 bg-cream-100">
+              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
+                <svg class="i text-base"><use href="#i-grid"/></svg>
+              </button>
+              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
+                <svg class="i text-base"><use href="#i-list"/></svg>
+              </button>
+            </div>
             <button @click="drawerFilters = true" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold relative">
               <svg class="i text-base"><use href="#i-filter"/></svg><span class="hidden sm:inline">Filtrar</span>
               <span x-show="Object.keys(activeFilters()).length > 0" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gold-500 text-white text-[10px] font-bold flex items-center justify-center tnum" x-text="Object.keys(activeFilters()).length"></span>
@@ -400,7 +409,7 @@ textarea.field{ resize:vertical; min-height:80px }
         </template>
 
         <!-- grid -->
-        <template x-if="!loading && filteredCollection().length > 0">
+        <template x-if="!loading && viewMode === 'grid' && filteredCollection().length > 0">
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             <template x-for="p in filteredCollection()" :key="p.id">
               <article class="card p-2.5 sm:p-3 flex flex-col group cursor-pointer" @click="navigate('/'+p.id)">
@@ -478,6 +487,38 @@ textarea.field{ resize:vertical; min-height:80px }
             </template>
           </div>
         </template>
+
+        <!-- tabela -->
+        <template x-if="!loading && viewMode === 'table' && filteredCollection().length > 0">
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                  <tr>
+                    <th class="text-left py-2.5 px-4 font-semibold">Marca</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">Modelo</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Ano</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">Concentração</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Nota</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Votos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="p in filteredCollection()" :key="p.id">
+                    <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
+                      <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
+                      <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
+                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.ano || '—'"></td>
+                      <td class="py-3 px-4"><span class="chip chip-ink text-[10px] py-0.5 px-2" x-text="p.concentracao"></span></td>
+                      <td class="py-3 px-4 text-right tnum font-semibold text-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </template>
       </section>
 
       <!-- ============================================================ -->
@@ -491,9 +532,19 @@ textarea.field{ resize:vertical; min-height:80px }
             </h1>
             <p class="text-sm text-ink-muted mt-0.5"><span class="tnum" x-text="wishlist().length"></span> perfumes desejados</p>
           </div>
-          <button @click="navigate('/novo')" class="btn-gold h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold">
-            <svg class="i text-base"><use href="#i-plus"/></svg><span class="hidden sm:inline">Adicionar</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <div class="inline-flex rounded-xl border border-surface-border p-0.5 bg-cream-100">
+              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
+                <svg class="i text-base"><use href="#i-grid"/></svg>
+              </button>
+              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
+                <svg class="i text-base"><use href="#i-list"/></svg>
+              </button>
+            </div>
+            <button @click="navigate('/novo')" class="btn-gold h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold">
+              <svg class="i text-base"><use href="#i-plus"/></svg><span class="hidden sm:inline">Adicionar</span>
+            </button>
+          </div>
         </div>
 
         <template x-if="wishlist().length === 0">
@@ -507,7 +558,7 @@ textarea.field{ resize:vertical; min-height:80px }
           </div>
         </template>
 
-        <template x-if="wishlist().length > 0">
+        <template x-if="viewMode === 'grid' && wishlist().length > 0">
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             <template x-for="p in wishlist()" :key="p.id">
               <article class="card p-2.5 sm:p-3 flex flex-col cursor-pointer" @click="navigate('/'+p.id)">
@@ -539,6 +590,37 @@ textarea.field{ resize:vertical; min-height:80px }
             </template>
           </div>
         </template>
+
+        <template x-if="viewMode === 'table' && wishlist().length > 0">
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                  <tr>
+                    <th class="text-left py-2.5 px-4 font-semibold">Marca</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">Modelo</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Ano</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">Concentração</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Nota</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Votos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="p in wishlist()" :key="p.id">
+                    <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
+                      <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
+                      <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
+                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.ano || '—'"></td>
+                      <td class="py-3 px-4"><span class="chip chip-ink text-[10px] py-0.5 px-2" x-text="p.concentracao"></span></td>
+                      <td class="py-3 px-4 text-right tnum font-semibold text-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </template>
       </section>
 
       <!-- ============================================================ -->
@@ -552,9 +634,19 @@ textarea.field{ resize:vertical; min-height:80px }
             </h1>
             <p class="text-sm text-ink-muted mt-0.5"><span class="tnum" x-text="pastCollection().length"></span> perfumes que tinha e não tenho mais</p>
           </div>
-          <button @click="navigate('/novo')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold">
-            <svg class="i text-base"><use href="#i-plus"/></svg><span class="hidden sm:inline">Adicionar</span>
-          </button>
+          <div class="flex items-center gap-2">
+            <div class="inline-flex rounded-xl border border-surface-border p-0.5 bg-cream-100">
+              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
+                <svg class="i text-base"><use href="#i-grid"/></svg>
+              </button>
+              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
+                <svg class="i text-base"><use href="#i-list"/></svg>
+              </button>
+            </div>
+            <button @click="navigate('/novo')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold">
+              <svg class="i text-base"><use href="#i-plus"/></svg><span class="hidden sm:inline">Adicionar</span>
+            </button>
+          </div>
         </div>
 
         <template x-if="pastCollection().length === 0">
@@ -567,7 +659,7 @@ textarea.field{ resize:vertical; min-height:80px }
           </div>
         </template>
 
-        <template x-if="pastCollection().length > 0">
+        <template x-if="viewMode === 'grid' && pastCollection().length > 0">
           <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             <template x-for="p in pastCollection()" :key="p.id">
               <article class="card p-2.5 sm:p-3 flex flex-col cursor-pointer" @click="navigate('/'+p.id)" style="opacity:.92">
@@ -599,6 +691,37 @@ textarea.field{ resize:vertical; min-height:80px }
                 </div>
               </article>
             </template>
+          </div>
+        </template>
+
+        <template x-if="viewMode === 'table' && pastCollection().length > 0">
+          <div class="card overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm">
+                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                  <tr>
+                    <th class="text-left py-2.5 px-4 font-semibold">Marca</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">Modelo</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Ano</th>
+                    <th class="text-left py-2.5 px-4 font-semibold">Concentração</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Nota</th>
+                    <th class="text-right py-2.5 px-4 font-semibold">Votos</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template x-for="p in pastCollection()" :key="p.id">
+                    <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
+                      <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
+                      <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
+                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.ano || '—'"></td>
+                      <td class="py-3 px-4"><span class="chip chip-ink text-[10px] py-0.5 px-2" x-text="p.concentracao"></span></td>
+                      <td class="py-3 px-4 text-right tnum font-semibold text-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
           </div>
         </template>
       </section>
@@ -1507,6 +1630,7 @@ function perfumaria(){
     route: '/',
     loading: false,
     query: '',
+    viewMode: 'grid',
     mobileSearch: false,
     drawerNav: false,
     drawerFilters: false,
