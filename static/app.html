@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#1E1E1E">
+<meta name="theme-color" content="#042C48">
 <title>Perfumaria — Clavis</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,19 +19,16 @@ tailwind.config = {
         mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
-        ink: { DEFAULT: '#1E1E1E', soft: '#2b2b2b', muted: '#5c5c5c', faint: '#8f8f8f' },
-        gold: { 50:'#FDF7EA', 100:'#F9EBC4', 200:'#F2D888', 300:'#E7C04D', 400:'#D5A21F', 500:'#B8860B', 600:'#966D08', 700:'#725306', 800:'#4f3a04', 900:'#2e2202' },
-        cream: { DEFAULT:'#FAF7F1', 100:'#FAF7F1', 200:'#F1EBD9', 300:'#E4DAB8' },
-        surface: { DEFAULT:'#FFFFFF', muted:'#F7F5EF', border:'#EBE5D3', 'border-strong':'#D8CFAD' },
-        ok: { DEFAULT:'#16A34A', bg:'#ECFDF5', fg:'#047857' },
-        warn: { DEFAULT:'#F59E0B', bg:'#FEF6E7', fg:'#9a6400' },
-        err: { DEFAULT:'#DC2626', bg:'#FEF2F2', fg:'#c1352f' },
+        nv: { bg:'#042C48', surface:'#0A3450', 'surface-2':'#113C58', border:'#113C58', 'border-strong':'#27557A', hairline:'#1D4B6D',
+              ink:'#EBF7FA', soft:'#B5D4E8', muted:'#8DB2CF', faint:'#7DA4C6', primary:'#74A9D7', on:'#2F7FBF',
+              danger:'#F87171', 'danger-text':'#FCA5A5', 'danger-bg':'rgba(248,113,113,.16)', 'success-text':'#6EE7B7' },
+        gold: { 50:'#4A3A0A', 100:'#4A3A0A', 200:'#8A6A12', 300:'#E7C04D', 400:'#E7C04D', 500:'#FBBF24', 600:'#FCD34D', 700:'#FDE68A' },
       },
       boxShadow: {
-        soft: '0 1px 2px rgba(28,20,4,.04), 0 10px 26px -14px rgba(28,20,4,.18)',
-        lift: '0 24px 60px -22px rgba(28,20,4,.30)',
-        cta:  '0 10px 30px -8px rgba(184,134,11,.45)',
-        ring: '0 0 0 4px rgba(184,134,11,.15)',
+        soft: '0 1px 2px rgba(0,0,0,.25), 0 10px 26px -14px rgba(0,0,0,.5)',
+        lift: '0 24px 60px -22px rgba(0,0,0,.6)',
+        cta:  '0 10px 30px -8px rgba(116,169,215,.35)',
+        ring: '0 0 0 4px rgba(116,169,215,.25)',
       },
       borderRadius: { '4xl': '1.75rem' },
     }
@@ -42,15 +39,19 @@ tailwind.config = {
 
 <style>
 :root{
-  --gold:#B8860B; --gold-2:#D5A21F;
-  --ink:#1E1E1E;
-  --cream:#FAF7F1;
-  --border:#EBE5D3;
+  --gold:#FBBF24; --gold-2:#E7C04D;
+  --ink:#EBF7FA;
+  --cream:#042C48;
+  --border:#113C58;
   --ease:cubic-bezier(.16,1,.3,1);
-  --shadow-soft:0 1px 2px rgba(28,20,4,.04),0 10px 26px -14px rgba(28,20,4,.18);
+  --shadow-soft:0 1px 2px rgba(0,0,0,.25),0 10px 26px -14px rgba(0,0,0,.5);
 }
+html{ color-scheme:dark }
+input,select,textarea{ color-scheme:dark }
+select option{ background:#0A3450; color:#EBF7FA }
+::selection{ background:#27557A; color:#EBF7FA }
 *{ -webkit-tap-highlight-color: transparent }
-html,body{ background:#FAF7F1; color:#1E1E1E; font-family:'Inter',system-ui,sans-serif; font-feature-settings:"cv11","ss01"; }
+html,body{ background:#042C48; color:#EBF7FA; font-family:'Inter',system-ui,sans-serif; font-feature-settings:"cv11","ss01"; }
 body{ min-height:100dvh; padding-top:env(safe-area-inset-top); padding-bottom:env(safe-area-inset-bottom); }
 /* quando embutido no frame de iPhone do preview, reserva espaço do Dynamic Island */
 body.in-phone-frame{ padding-top:44px; }
@@ -63,79 +64,80 @@ svg.i.fill{ fill:currentColor; stroke:none }
 
 /* --- glass header --- */
 .glass{
-  background:rgba(255,255,255,.82);
+  background:rgba(4,44,72,.88);
   backdrop-filter:saturate(180%) blur(16px);
   -webkit-backdrop-filter:saturate(180%) blur(16px);
-  border-bottom:1px solid rgba(235,229,211,.6);
+  border-bottom:1px solid #27557A;
 }
 
 /* --- cards --- */
 .card{
-  background:#fff;
+  background:#0A3450;
   border:1px solid var(--border);
   border-radius:1.25rem;
   transition:transform .35s var(--ease), box-shadow .35s var(--ease), border-color .35s var(--ease);
   box-shadow:var(--shadow-soft);
 }
-.card:hover{ transform:translateY(-3px); box-shadow:0 24px 40px -20px rgba(28,20,4,.22); border-color:#D8CFAD; }
+.card:hover{ transform:translateY(-3px); box-shadow:0 24px 40px -20px rgba(0,0,0,.55); border-color:#27557A; }
 
 /* --- bottle silhouette background (SVG data URI, gold+ink) --- */
 .bottle-bg{
   background:
-    radial-gradient(140% 100% at 50% 0%, rgba(184,134,11,.10), transparent 60%),
-    linear-gradient(135deg,#FAF7F1,#F1EBD9);
+    radial-gradient(140% 100% at 50% 0%, rgba(116,169,215,.10), transparent 60%),
+    linear-gradient(135deg,#0A3450,#113C58);
 }
 
 /* --- estoque bar --- */
-.eb{ height:6px; background:#EFE9D6; border-radius:999px; overflow:hidden }
+.eb{ height:6px; background:#27557A; border-radius:999px; overflow:hidden }
 .eb>span{ display:block; height:100%; border-radius:999px; transition:width .5s var(--ease) }
 
 /* --- primary CTA gold --- */
-.btn-gold{ background:linear-gradient(180deg,#D5A21F,#B8860B); color:#fff; box-shadow:var(--shadow-soft) }
-.btn-gold:hover{ filter:brightness(1.06); box-shadow:0 10px 30px -8px rgba(184,134,11,.45) }
-.btn-gold:active{ transform:translateY(1px) }
-.btn-ink{ background:#1E1E1E; color:#fff; box-shadow:var(--shadow-soft) }
-.btn-ink:hover{ background:#2b2b2b }
-.btn-ink:disabled{ background:#c9c1a8; cursor:not-allowed; box-shadow:none }
-.btn-ghost{ background:transparent; color:#1E1E1E; border:1px solid var(--border) }
-.btn-ghost:hover{ background:#F7F5EF; border-color:#D8CFAD }
+.btn-gold{ background:#74A9D7; color:#042C48; box-shadow:var(--shadow-soft) }
+.btn-gold:hover{ background:#B5D4E8; box-shadow:0 10px 30px -8px rgba(116,169,215,.35) }
+.btn-gold:active{ transform:translateY(1px); background:#6B9FCE }
+.btn-gold:disabled{ background:#113C58; color:#B5D4E8; opacity:1; cursor:not-allowed; box-shadow:none }
+.btn-ink{ background:#113C58; color:#EBF7FA; box-shadow:inset 0 0 0 1px #27557A, var(--shadow-soft) }
+.btn-ink:hover{ background:#1D4B6D }
+.btn-ink:disabled{ background:#042C48; color:#8DB2CF; cursor:not-allowed; box-shadow:inset 0 0 0 1px #27557A }
+.btn-ghost{ background:transparent; color:#EBF7FA; border:1px solid #27557A }
+.btn-ghost:hover{ background:#113C58; border-color:#5E88AA }
 
 /* --- inputs --- */
 .field{
-  background:#fff; border:1.5px solid var(--border); border-radius:12px;
-  padding:.7rem .85rem; font-size:.95rem; color:#1E1E1E;
+  background:#042C48; border:1.5px solid #27557A; border-radius:12px;
+  padding:.7rem .85rem; font-size:.95rem; color:#EBF7FA;
   transition:border-color .2s, box-shadow .2s;
   width:100%; font-family:inherit;
 }
-.field:focus{ outline:none; border-color:var(--gold); box-shadow:0 0 0 4px rgba(184,134,11,.15) }
-.field::placeholder{ color:#8f8f8f }
+.field:focus{ outline:none; border-color:#74A9D7; box-shadow:0 0 0 4px rgba(116,169,215,.28) }
+.field::placeholder{ color:#8DB2CF }
 textarea.field{ resize:vertical; min-height:80px }
 
 /* --- chips --- */
 .chip{ display:inline-flex; align-items:center; gap:.35rem; padding:.35rem .7rem; border-radius:999px; font-size:.75rem; font-weight:600; letter-spacing:.02em; }
-.chip-ink{ background:#1E1E1E; color:#fff }
-.chip-gold{ background:#FDF7EA; color:#725306; border:1px solid #F2D888 }
-.chip-ok{ background:#ECFDF5; color:#047857; border:1px solid #86EFAC }
-.chip-warn{ background:#FEF6E7; color:#9a6400; border:1px solid #FCD34D }
-.chip-err{ background:#FEF2F2; color:#c1352f; border:1px solid #FCA5A5 }
-.chip-neutral{ background:#F7F5EF; color:#5c5c5c; border:1px solid var(--border) }
+.chip-ink{ background:#74A9D7; color:#042C48 }
+.chip-gold{ background:#4A3A0A; color:#FCD34D; border:1px solid #8A6A12 }
+.chip-ok{ background:#064E3B; color:#6EE7B7; border:1px solid #047857 }
+.chip-warn{ background:#422006; color:#FCD34D; border:1px solid #B45309 }
+.chip-err{ background:#4C1D1D; color:#FCA5A5; border:1px solid #B91C1C }
+.chip-neutral{ background:#113C58; color:#B5D4E8; border:1px solid #27557A }
 
 /* --- família cores (dot antes do chip) --- */
-.dot{ width:.55rem; height:.55rem; border-radius:999px; display:inline-block }
-.f-woody{ background:#8B5A2B } .f-oriental{ background:#7B2D26 } .f-fresh{ background:#4CAF50 }
-.f-gourmand{ background:#C77D2A } .f-chypre{ background:#4E5B31 } .f-aquatic{ background:#2892C7 }
-.f-floral{ background:#D48DB6 } .f-leather{ background:#5a3a22 } .f-tobacco{ background:#3e2915 }
+.dot{ width:.55rem; height:.55rem; border-radius:999px; display:inline-block; box-shadow:0 0 0 1.5px #042C48 }
+.f-woody{ background:#C08A52 } .f-oriental{ background:#D9695C } .f-fresh{ background:#6FCF73 }
+.f-gourmand{ background:#E8A24D } .f-chypre{ background:#9DB05F } .f-aquatic{ background:#4BB3E8 }
+.f-floral{ background:#E8A5CB } .f-leather{ background:#B98458 } .f-tobacco{ background:#A98457 }
 
 /* --- rating stars --- */
-.star{ color:#D5A21F } .star-off{ color:#E4DAB8 }
+.star{ color:#FBBF24 } .star-off{ color:#5E88AA }
 
 /* --- overlay/modal --- */
 [x-cloak]{ display:none !important }
-.overlay{ position:fixed; inset:0; background:rgba(28,20,4,.42); backdrop-filter:blur(6px); z-index:70; display:flex; align-items:flex-end; justify-content:center; padding:0; }
+.overlay{ position:fixed; inset:0; background:rgba(2,15,26,.72); backdrop-filter:blur(6px); z-index:70; display:flex; align-items:flex-end; justify-content:center; padding:0; }
 @media(min-width:640px){ .overlay{ align-items:center; padding:1rem } }
-.modal-card{ background:#fff; border-radius:1.5rem 1.5rem 0 0; width:100%; max-width:520px; max-height:90dvh; overflow:auto; padding:1.25rem; box-shadow:0 -20px 60px -20px rgba(28,20,4,.4); }
+.modal-card{ background:#0A3450; border-radius:1.5rem 1.5rem 0 0; width:100%; max-width:520px; max-height:90dvh; overflow:auto; padding:1.25rem; box-shadow:0 0 0 1px #27557A, 0 -20px 60px -20px rgba(0,0,0,.6); }
 @media(min-width:640px){ .modal-card{ border-radius:1.5rem } }
-.drawer-card{ background:#fff; border-radius:1.5rem 1.5rem 0 0; width:100%; max-width:420px; max-height:90dvh; overflow:auto; padding:1.25rem; margin-right:auto; margin-left:auto; }
+.drawer-card{ background:#0A3450; box-shadow:0 0 0 1px #27557A; border-radius:1.5rem 1.5rem 0 0; width:100%; max-width:420px; max-height:90dvh; overflow:auto; padding:1.25rem; margin-right:auto; margin-left:auto; }
 @media(min-width:640px){ .drawer-card{ border-radius:1.5rem; margin-left:auto; margin-right:1rem; } .overlay.drawer{ align-items:stretch; justify-content:flex-end; padding:1rem; } .drawer-card{ height:100% } }
 
 /* --- animations --- */
@@ -147,33 +149,33 @@ textarea.field{ resize:vertical; min-height:80px }
 @keyframes spin{ to{ transform:rotate(360deg) } }
 
 /* highlight fields auto-preenchidos */
-.auto-glow{ box-shadow:0 0 0 3px rgba(184,134,11,.18); border-color:#D5A21F !important; }
-.auto-glow:focus{ box-shadow:0 0 0 4px rgba(184,134,11,.28); }
+.auto-glow{ box-shadow:0 0 0 3px rgba(251,191,36,.22); border-color:#FBBF24 !important; }
+.auto-glow:focus{ box-shadow:0 0 0 4px rgba(251,191,36,.34); }
 
 /* --- sidebar module (desktop) --- */
-.side-link{ display:flex; align-items:center; gap:.65rem; padding:.65rem .85rem; border-radius:12px; color:#5c5c5c; font-weight:500; font-size:.9rem; }
-.side-link:hover{ background:#F7F5EF; color:#1E1E1E }
-.side-link.active{ background:#1E1E1E; color:#fff }
-.side-link.active .side-ic{ color:#D5A21F }
+.side-link{ display:flex; align-items:center; gap:.65rem; padding:.65rem .85rem; border-radius:12px; color:#B5D4E8; font-weight:500; font-size:.9rem; }
+.side-link:hover{ background:#113C58; color:#EBF7FA }
+.side-link.active{ background:#113C58; color:#EBF7FA; box-shadow:inset 0 0 0 1px #27557A }
+.side-link.active .side-ic{ color:#74A9D7 }
 
 /* --- bottom nav (mobile) --- */
-.bnav{ display:flex; align-items:center; justify-content:space-around; padding:.5rem .25rem calc(.5rem + env(safe-area-inset-bottom)); background:#fff; border-top:1px solid var(--border) }
-.bnav a{ display:flex; flex-direction:column; align-items:center; gap:.15rem; font-size:.68rem; color:#8f8f8f; padding:.4rem .5rem; border-radius:12px; min-width:60px }
-.bnav a.active{ color:#1E1E1E; background:#FDF7EA }
+.bnav{ display:flex; align-items:center; justify-content:space-around; padding:.5rem .25rem calc(.5rem + env(safe-area-inset-bottom)); background:#0A3450; border-top:1px solid var(--border) }
+.bnav a{ display:flex; flex-direction:column; align-items:center; gap:.15rem; font-size:.68rem; color:#B5D4E8; padding:.4rem .5rem; border-radius:12px; min-width:60px }
+.bnav a.active{ color:#EBF7FA; background:#113C58 }
 
 /* --- toast --- */
-.toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:calc(72px + env(safe-area-inset-bottom)); z-index:100; background:#1E1E1E; color:#fff; padding:.75rem 1.1rem; border-radius:14px; box-shadow:0 24px 60px -22px rgba(28,20,4,.6); font-size:.9rem; display:flex; align-items:center; gap:.5rem; animation: fi .3s var(--ease) both }
+.toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:calc(72px + env(safe-area-inset-bottom)); z-index:100; background:#113C58; color:#EBF7FA; padding:.75rem 1.1rem; border-radius:14px; box-shadow:0 0 0 1px #27557A, 0 24px 60px -22px rgba(0,0,0,.6); font-size:.9rem; display:flex; align-items:center; gap:.5rem; animation: fi .3s var(--ease) both }
 @media(min-width:1024px){ .toast{ bottom:24px } }
-.toast.err{ background:#c1352f }
-.toast.ok{ background:#047857 }
+.toast.err{ background:#7F1D1D; color:#FEE2E2 }
+.toast.ok{ background:#064E3B; color:#D1FAE5 }
 
 /* --- delta dupe badge cores --- */
-.delta-ok{ background:#ECFDF5; color:#047857 }
-.delta-warn{ background:#FEF6E7; color:#9a6400 }
-.delta-err{ background:#FEF2F2; color:#c1352f }
+.delta-ok{ background:#064E3B; color:#6EE7B7 }
+.delta-warn{ background:#422006; color:#FCD34D }
+.delta-err{ background:#4C1D1D; color:#FCA5A5 }
 
 /* --- skeleton --- */
-.sk{ background:linear-gradient(90deg,#EFE9D6 25%,#F7F2E1 37%,#EFE9D6 63%); background-size:400% 100%; animation: sk 1.4s ease infinite; border-radius:12px }
+.sk{ background:linear-gradient(90deg,#113C58 25%,#1D4B6D 37%,#113C58 63%); background-size:400% 100%; animation: sk 1.4s ease infinite; border-radius:12px }
 @keyframes sk{ from{ background-position:100% 0 } to{ background-position:0 0 } }
 
 /* --- utilities --- */
@@ -265,7 +267,7 @@ textarea.field{ resize:vertical; min-height:80px }
   <header class="glass sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center gap-3">
       <!-- mobile menu btn -->
-      <button @click="drawerNav = true" class="lg:hidden -ml-2 p-2 rounded-lg hover:bg-cream-200" aria-label="Menu">
+      <button @click="drawerNav = true" class="lg:hidden -ml-2 p-2 rounded-lg hover:bg-nv-hairline" aria-label="Menu">
         <svg class="i text-lg"><use href="#i-menu"/></svg>
       </button>
 
@@ -274,21 +276,21 @@ textarea.field{ resize:vertical; min-height:80px }
         <div class="w-8 h-8 rounded-lg btn-ink flex items-center justify-center">
           <svg class="i text-gold-400" style="font-size:1.1rem"><use href="#i-spray"/></svg>
         </div>
-        <div class="hidden sm:flex items-center gap-1.5 text-sm text-ink-muted min-w-0">
-          <a href="#/" @click.prevent="navigate('/')" class="hover:text-ink whitespace-nowrap">Ferramentas</a>
+        <div class="hidden sm:flex items-center gap-1.5 text-sm text-nv-soft min-w-0">
+          <a href="#/" @click.prevent="navigate('/')" class="hover:text-nv-ink whitespace-nowrap">Ferramentas</a>
           <svg class="i text-xs"><use href="#i-chev-right"/></svg>
-          <a href="#/" @click.prevent="navigate('/')" class="font-semibold text-ink whitespace-nowrap">Perfumaria</a>
+          <a href="#/" @click.prevent="navigate('/')" class="font-semibold text-nv-ink whitespace-nowrap">Perfumaria</a>
           <template x-if="breadcrumbTail()">
             <span class="flex items-center gap-1.5 min-w-0"><svg class="i text-xs"><use href="#i-chev-right"/></svg><span class="truncate" x-text="breadcrumbTail()"></span></span>
           </template>
         </div>
-        <span class="sm:hidden font-display font-extrabold text-ink" x-text="headerTitle()"></span>
+        <span class="sm:hidden font-display font-extrabold text-nv-ink" x-text="headerTitle()"></span>
       </div>
 
       <!-- search desktop -->
       <div class="ml-auto hidden md:flex items-center gap-2">
         <div class="relative">
-          <svg class="i absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint text-sm"><use href="#i-search"/></svg>
+          <svg class="i absolute left-3 top-1/2 -translate-y-1/2 text-nv-muted text-sm"><use href="#i-search"/></svg>
           <input x-model="query" type="search" placeholder="Buscar marca ou modelo" class="field pl-9 pr-3 py-2 w-64">
         </div>
         <button @click="openRandom = true" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-2 text-sm font-semibold" title="Random Pick">
@@ -300,14 +302,14 @@ textarea.field{ resize:vertical; min-height:80px }
       </div>
 
       <!-- search mobile trigger -->
-      <button @click="mobileSearch = !mobileSearch" class="md:hidden ml-auto -mr-2 p-2 rounded-lg hover:bg-cream-200" aria-label="Buscar">
+      <button @click="mobileSearch = !mobileSearch" class="md:hidden ml-auto -mr-2 p-2 rounded-lg hover:bg-nv-hairline" aria-label="Buscar">
         <svg class="i text-lg"><use href="#i-search"/></svg>
       </button>
     </div>
     <!-- mobile search bar -->
     <div x-show="mobileSearch" x-transition class="md:hidden px-4 pb-3">
       <div class="relative">
-        <svg class="i absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint text-sm"><use href="#i-search"/></svg>
+        <svg class="i absolute left-3 top-1/2 -translate-y-1/2 text-nv-muted text-sm"><use href="#i-search"/></svg>
         <input x-model="query" type="search" placeholder="Buscar marca ou modelo" class="field pl-9 pr-3 py-2 w-full">
       </div>
     </div>
@@ -320,8 +322,8 @@ textarea.field{ resize:vertical; min-height:80px }
 
     <!-- SIDEBAR do módulo (desktop) -->
     <aside class="hidden lg:block w-56 shrink-0 sticky top-24 self-start">
-      <div class="bg-white border border-surface-border rounded-2xl p-3 shadow-soft">
-        <p class="px-3 pb-2 pt-1 text-xs uppercase tracking-wider text-ink-faint font-semibold">Perfumaria</p>
+      <div class="bg-nv-surface border border-nv-border-strong rounded-2xl p-3 shadow-soft">
+        <p class="px-3 pb-2 pt-1 text-xs uppercase tracking-wider text-nv-muted font-semibold">Perfumaria</p>
         <nav class="flex flex-col gap-0.5">
           <a href="#/" @click.prevent="navigate('/')" class="side-link" :class="{'active': route === '/'}">
             <svg class="i text-base side-ic"><use href="#i-list"/></svg>Coleção
@@ -335,7 +337,7 @@ textarea.field{ resize:vertical; min-height:80px }
             <svg class="i text-base side-ic"><use href="#i-archive"/></svg>Já tive
             <span class="ml-auto text-xs opacity-70 tnum" x-text="pastCollection().length"></span>
           </a>
-          <div class="h-px bg-surface-border my-1.5 mx-3"></div>
+          <div class="h-px bg-nv-border-strong my-1.5 mx-3"></div>
           <a href="#/import" @click.prevent="navigate('/import')" class="side-link" :class="{'active': route === '/import'}">
             <svg class="i text-base side-ic"><use href="#i-import"/></svg>Importar planilha
           </a>
@@ -353,23 +355,23 @@ textarea.field{ resize:vertical; min-height:80px }
         <!-- header ações -->
         <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
           <div class="min-w-0">
-            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-ink">Coleção</h1>
-            <p class="text-sm text-ink-muted mt-0.5">
+            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-nv-ink">Coleção</h1>
+            <p class="text-sm text-nv-soft mt-0.5">
               <span class="tnum" x-text="filteredCollection().length"></span> perfumes<span x-show="Object.keys(activeFilters()).length > 0" class="text-gold-600 font-semibold"> · com filtros ativos</span>
             </p>
           </div>
           <div class="flex items-center gap-2">
-            <div class="inline-flex rounded-xl border border-surface-border p-0.5 bg-cream-100">
-              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
+            <div class="inline-flex rounded-xl border border-nv-border-strong p-0.5 bg-nv-surface-2">
+              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-nv-primary shadow-sm text-nv-bg' : 'text-nv-muted'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
                 <svg class="i text-base"><use href="#i-grid"/></svg>
               </button>
-              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
+              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-nv-primary shadow-sm text-nv-bg' : 'text-nv-muted'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
                 <svg class="i text-base"><use href="#i-list"/></svg>
               </button>
             </div>
             <button @click="drawerFilters = true" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold relative">
               <svg class="i text-base"><use href="#i-filter"/></svg><span class="hidden sm:inline">Filtrar</span>
-              <span x-show="Object.keys(activeFilters()).length > 0" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-gold-500 text-white text-[10px] font-bold flex items-center justify-center tnum" x-text="Object.keys(activeFilters()).length"></span>
+              <span x-show="Object.keys(activeFilters()).length > 0" class="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-nv-primary text-nv-bg text-[10px] font-bold flex items-center justify-center tnum" x-text="Object.keys(activeFilters()).length"></span>
             </button>
             <button @click="openRandom = true" class="btn-ghost h-10 w-10 rounded-xl md:hidden flex items-center justify-center" title="Random Pick">
               <svg class="i text-base"><use href="#i-dice"/></svg>
@@ -389,11 +391,11 @@ textarea.field{ resize:vertical; min-height:80px }
 
         <template x-if="!loading && filteredCollection().length === 0">
           <div class="card p-10 text-center">
-            <div class="mx-auto w-14 h-14 rounded-2xl bg-cream-200 flex items-center justify-center mb-4">
-              <svg class="i text-2xl text-ink-faint"><use href="#i-spray"/></svg>
+            <div class="mx-auto w-14 h-14 rounded-2xl bg-nv-surface-2 flex items-center justify-center mb-4">
+              <svg class="i text-2xl text-nv-muted"><use href="#i-spray"/></svg>
             </div>
-            <h3 class="font-display font-extrabold text-lg text-ink" x-text="Object.keys(activeFilters()).length > 0 || query ? 'Nenhum perfume com esses filtros' : 'Nenhum perfume cadastrado ainda'"></h3>
-            <p class="text-sm text-ink-muted mt-1 mb-5" x-text="Object.keys(activeFilters()).length > 0 || query ? 'Ajuste os filtros ou limpe a busca.' : 'Comece cadastrando seu primeiro perfume ou importando da planilha.'"></p>
+            <h3 class="font-display font-extrabold text-lg text-nv-ink" x-text="Object.keys(activeFilters()).length > 0 || query ? 'Nenhum perfume com esses filtros' : 'Nenhum perfume cadastrado ainda'"></h3>
+            <p class="text-sm text-nv-soft mt-1 mb-5" x-text="Object.keys(activeFilters()).length > 0 || query ? 'Ajuste os filtros ou limpe a busca.' : 'Comece cadastrando seu primeiro perfume ou importando da planilha.'"></p>
             <div class="flex items-center justify-center gap-2 flex-wrap">
               <template x-if="Object.keys(activeFilters()).length > 0 || query">
                 <button @click="clearAllFilters()" class="btn-ghost h-10 px-4 rounded-xl text-sm font-semibold">Limpar filtros</button>
@@ -422,7 +424,7 @@ textarea.field{ resize:vertical; min-height:80px }
                     <svg viewBox="0 0 60 90" width="70" height="105" style="width:60%;height:auto"><use href="#bottle-svg"/></svg>
                   </template>
                   <template x-if="photoKind(p.foto) === 'none'">
-                    <svg class="i text-3xl text-ink/40" style="width:2rem;height:2rem"><use href="#i-drop"/></svg>
+                    <svg class="i text-3xl text-nv-bg" style="width:2rem;height:2rem"><use href="#i-drop"/></svg>
                   </template>
                   <template x-if="p.estoque_ml <= 0">
                     <div class="oos">Sem estoque</div>
@@ -437,8 +439,8 @@ textarea.field{ resize:vertical; min-height:80px }
 
                 <!-- info -->
                 <div class="flex-1 flex flex-col">
-                  <p class="text-[11px] font-semibold uppercase tracking-wider text-ink-muted truncate" x-text="p.marca"></p>
-                  <h3 class="font-display font-extrabold text-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
+                  <p class="text-[11px] font-semibold uppercase tracking-wider text-nv-soft truncate" x-text="p.marca"></p>
+                  <h3 class="font-display font-extrabold text-nv-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
 
                   <!-- família + rating -->
                   <div class="flex items-center justify-between mt-2">
@@ -453,8 +455,8 @@ textarea.field{ resize:vertical; min-height:80px }
                   <!-- estoque bar -->
                   <div class="mt-3">
                     <div class="flex items-center justify-between text-[11px] mb-1">
-                      <span class="text-ink-muted">Estoque</span>
-                      <span class="font-semibold text-ink tnum" x-text="p.estoque_ml + '/' + p.tamanho_ml + ' ml'"></span>
+                      <span class="text-nv-soft">Estoque</span>
+                      <span class="font-semibold text-nv-ink tnum" x-text="p.estoque_ml + '/' + p.tamanho_ml + ' ml'"></span>
                     </div>
                     <div class="eb"><span :style="'width:'+Math.max(0,(p.estoque_ml/p.tamanho_ml)*100)+'%; background:'+stockColor(p)"></span></div>
                   </div>
@@ -462,8 +464,8 @@ textarea.field{ resize:vertical; min-height:80px }
                   <!-- dupe delta -->
                   <template x-if="p.referencia_id && findPerfume(p.referencia_id)">
                     <div class="mt-2.5 flex items-center gap-1.5 text-[11px]">
-                      <span class="text-ink-muted">vs</span>
-                      <span class="font-semibold text-ink truncate" x-text="findPerfume(p.referencia_id).marca+' '+findPerfume(p.referencia_id).modelo"></span>
+                      <span class="text-nv-soft">vs</span>
+                      <span class="font-semibold text-nv-ink truncate" x-text="findPerfume(p.referencia_id).marca+' '+findPerfume(p.referencia_id).modelo"></span>
                       <span class="chip text-[10px] py-0.5 px-1.5 ml-auto" :class="deltaClass(Math.abs(findPerfume(p.referencia_id).nota_fragrantica - p.nota_fragrantica))">
                         Δ<span x-text="Math.abs(findPerfume(p.referencia_id).nota_fragrantica - p.nota_fragrantica).toFixed(2)"></span>
                       </span>
@@ -471,14 +473,14 @@ textarea.field{ resize:vertical; min-height:80px }
                   </template>
 
                   <!-- rodapé: custo/spray + Spray On -->
-                  <div class="mt-3 pt-3 border-t border-surface-border flex items-end justify-between gap-2">
+                  <div class="mt-3 pt-3 border-t border-nv-border-strong flex items-end justify-between gap-2">
                     <div class="min-w-0">
-                      <p class="text-[10px] text-ink-faint uppercase tracking-wider">Custo/spray</p>
-                      <p class="font-display font-bold text-[13px] text-ink tnum" x-text="p.preco_pago ? brl((p.preco_pago/(p.tamanho_ml/p.ml_por_spray))) : '—'"></p>
+                      <p class="text-[10px] text-nv-muted uppercase tracking-wider">Custo/spray</p>
+                      <p class="font-display font-bold text-[13px] text-nv-ink tnum" x-text="p.preco_pago ? brl((p.preco_pago/(p.tamanho_ml/p.ml_por_spray))) : '—'"></p>
                     </div>
                     <button @click.stop="openSprayModal(p.id)" class="btn-ink h-9 px-2.5 rounded-lg text-xs font-semibold flex items-center gap-1"
                             :disabled="p.estoque_ml < p.ml_por_spray"
-                            :class="{'!bg-cream-300 !text-ink-faint': p.estoque_ml < p.ml_por_spray}">
+                            :class="{'!bg-nv-bg !text-nv-muted': p.estoque_ml < p.ml_por_spray}">
                       <svg class="i text-sm"><use href="#i-spray"/></svg><span class="hidden sm:inline">Spray</span>
                     </button>
                   </div>
@@ -493,70 +495,70 @@ textarea.field{ resize:vertical; min-height:80px }
           <div class="card overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted select-none">
+                <thead class="bg-nv-surface-2 border-b border-nv-border-strong text-[11px] uppercase tracking-wider text-nv-soft select-none">
                   <tr>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Marca</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Modelo</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Ano</span>
                         </button>
                       </div>
                     </th>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Concentração</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Nota</span>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Votos</span>
                         </button>
                       </div>
@@ -565,13 +567,13 @@ textarea.field{ resize:vertical; min-height:80px }
                 </thead>
                 <tbody>
                   <template x-for="p in tableRows(filteredCollection())" :key="p.id">
-                    <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
-                      <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
-                      <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
-                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.ano || '—'"></td>
+                    <tr class="border-b border-nv-border hover:bg-nv-surface-2 cursor-pointer" @click="navigate('/'+p.id)">
+                      <td class="py-3 px-4 font-semibold text-nv-ink whitespace-nowrap" x-text="p.marca"></td>
+                      <td class="py-3 px-4 text-nv-ink" x-text="p.modelo"></td>
+                      <td class="py-3 px-4 text-right tnum text-nv-soft" x-text="p.ano || '—'"></td>
                       <td class="py-3 px-4"><span class="chip chip-ink text-[10px] py-0.5 px-2" x-text="p.concentracao"></span></td>
-                      <td class="py-3 px-4 text-right tnum font-semibold text-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
-                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum font-semibold text-nv-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum text-nv-soft" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
                     </tr>
                   </template>
                 </tbody>
@@ -587,17 +589,17 @@ textarea.field{ resize:vertical; min-height:80px }
       <section x-show="route === '/wishlist'" x-transition.opacity class="fade-in">
         <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
           <div>
-            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-ink flex items-center gap-2">
+            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-nv-ink flex items-center gap-2">
               <svg class="i text-2xl text-gold-500 fill"><use href="#i-heart"/></svg>Wishlist
             </h1>
-            <p class="text-sm text-ink-muted mt-0.5"><span class="tnum" x-text="wishlist().length"></span> perfumes desejados</p>
+            <p class="text-sm text-nv-soft mt-0.5"><span class="tnum" x-text="wishlist().length"></span> perfumes desejados</p>
           </div>
           <div class="flex items-center gap-2">
-            <div class="inline-flex rounded-xl border border-surface-border p-0.5 bg-cream-100">
-              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
+            <div class="inline-flex rounded-xl border border-nv-border-strong p-0.5 bg-nv-surface-2">
+              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-nv-primary shadow-sm text-nv-bg' : 'text-nv-muted'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
                 <svg class="i text-base"><use href="#i-grid"/></svg>
               </button>
-              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
+              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-nv-primary shadow-sm text-nv-bg' : 'text-nv-muted'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
                 <svg class="i text-base"><use href="#i-list"/></svg>
               </button>
             </div>
@@ -609,11 +611,11 @@ textarea.field{ resize:vertical; min-height:80px }
 
         <template x-if="wishlist().length === 0">
           <div class="card p-10 text-center">
-            <div class="mx-auto w-14 h-14 rounded-2xl bg-cream-200 flex items-center justify-center mb-4">
-              <svg class="i text-2xl text-ink-faint"><use href="#i-heart"/></svg>
+            <div class="mx-auto w-14 h-14 rounded-2xl bg-nv-surface-2 flex items-center justify-center mb-4">
+              <svg class="i text-2xl text-nv-muted"><use href="#i-heart"/></svg>
             </div>
-            <h3 class="font-display font-extrabold text-lg text-ink">Sua wishlist está vazia</h3>
-            <p class="text-sm text-ink-muted mt-1 mb-5">Cadastre perfumes marcados como "wishlist" para vê-los aqui.</p>
+            <h3 class="font-display font-extrabold text-lg text-nv-ink">Sua wishlist está vazia</h3>
+            <p class="text-sm text-nv-soft mt-1 mb-5">Cadastre perfumes marcados como "wishlist" para vê-los aqui.</p>
             <button @click="navigate('/novo'); newForm.eh_wishlist = true" class="btn-gold h-10 px-4 rounded-xl text-sm font-semibold inline-flex items-center gap-1.5"><svg class="i"><use href="#i-plus"/></svg>Cadastrar como wishlist</button>
           </div>
         </template>
@@ -631,19 +633,19 @@ textarea.field{ resize:vertical; min-height:80px }
                     <svg class="i fill text-[10px]"><use href="#i-heart"/></svg>QUERO
                   </span>
                 </div>
-                <p class="text-[11px] font-semibold uppercase tracking-wider text-ink-muted truncate" x-text="p.marca"></p>
-                <h3 class="font-display font-extrabold text-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-nv-soft truncate" x-text="p.marca"></p>
+                <h3 class="font-display font-extrabold text-nv-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
                 <div class="flex items-center justify-between mt-2">
                   <span class="chip chip-neutral text-[10px] py-0.5 px-2"><span class="dot" :class="'f-'+p.familia"></span><span x-text="familiaLabel(p.familia)"></span></span>
                   <div class="flex items-center gap-0.5">
                     <template x-for="i in 5" :key="i"><svg class="i fill" :class="i <= p.rating ? 'star' : 'star-off'" style="width:.85rem;height:.85rem"><use href="#i-star"/></svg></template>
                   </div>
                 </div>
-                <div class="mt-3 pt-3 border-t border-surface-border">
-                  <p class="text-[11px] text-ink-muted">Nota Fragrantica</p>
+                <div class="mt-3 pt-3 border-t border-nv-border-strong">
+                  <p class="text-[11px] text-nv-soft">Nota Fragrantica</p>
                   <div class="flex items-center gap-2 mt-0.5">
-                    <span class="font-display font-extrabold text-ink text-lg tnum" x-text="p.nota_fragrantica.toFixed(2)"></span>
-                    <span class="text-[10px] text-ink-faint tnum" x-text="'('+p.votos_fragrantica.toLocaleString('pt-BR')+' votos)'"></span>
+                    <span class="font-display font-extrabold text-nv-ink text-lg tnum" x-text="p.nota_fragrantica.toFixed(2)"></span>
+                    <span class="text-[10px] text-nv-muted tnum" x-text="'('+p.votos_fragrantica.toLocaleString('pt-BR')+' votos)'"></span>
                   </div>
                 </div>
               </article>
@@ -655,70 +657,70 @@ textarea.field{ resize:vertical; min-height:80px }
           <div class="card overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted select-none">
+                <thead class="bg-nv-surface-2 border-b border-nv-border-strong text-[11px] uppercase tracking-wider text-nv-soft select-none">
                   <tr>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Marca</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Modelo</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Ano</span>
                         </button>
                       </div>
                     </th>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Concentração</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Nota</span>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Votos</span>
                         </button>
                       </div>
@@ -727,13 +729,13 @@ textarea.field{ resize:vertical; min-height:80px }
                 </thead>
                 <tbody>
                   <template x-for="p in tableRows(wishlist())" :key="p.id">
-                    <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
-                      <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
-                      <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
-                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.ano || '—'"></td>
+                    <tr class="border-b border-nv-border hover:bg-nv-surface-2 cursor-pointer" @click="navigate('/'+p.id)">
+                      <td class="py-3 px-4 font-semibold text-nv-ink whitespace-nowrap" x-text="p.marca"></td>
+                      <td class="py-3 px-4 text-nv-ink" x-text="p.modelo"></td>
+                      <td class="py-3 px-4 text-right tnum text-nv-soft" x-text="p.ano || '—'"></td>
                       <td class="py-3 px-4"><span class="chip chip-ink text-[10px] py-0.5 px-2" x-text="p.concentracao"></span></td>
-                      <td class="py-3 px-4 text-right tnum font-semibold text-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
-                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum font-semibold text-nv-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum text-nv-soft" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
                     </tr>
                   </template>
                 </tbody>
@@ -749,17 +751,17 @@ textarea.field{ resize:vertical; min-height:80px }
       <section x-show="route === '/tive'" x-transition.opacity class="fade-in">
         <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
           <div>
-            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-ink flex items-center gap-2">
-              <svg class="i text-2xl text-ink-muted"><use href="#i-archive"/></svg>Já tive
+            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-nv-ink flex items-center gap-2">
+              <svg class="i text-2xl text-nv-soft"><use href="#i-archive"/></svg>Já tive
             </h1>
-            <p class="text-sm text-ink-muted mt-0.5"><span class="tnum" x-text="pastCollection().length"></span> perfumes que tinha e não tenho mais</p>
+            <p class="text-sm text-nv-soft mt-0.5"><span class="tnum" x-text="pastCollection().length"></span> perfumes que tinha e não tenho mais</p>
           </div>
           <div class="flex items-center gap-2">
-            <div class="inline-flex rounded-xl border border-surface-border p-0.5 bg-cream-100">
-              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
+            <div class="inline-flex rounded-xl border border-nv-border-strong p-0.5 bg-nv-surface-2">
+              <button @click="viewMode='grid'" :class="viewMode==='grid' ? 'bg-nv-primary shadow-sm text-nv-bg' : 'text-nv-muted'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Cards">
                 <svg class="i text-base"><use href="#i-grid"/></svg>
               </button>
-              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-white shadow-sm text-ink' : 'text-ink-faint'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
+              <button @click="viewMode='table'" :class="viewMode==='table' ? 'bg-nv-primary shadow-sm text-nv-bg' : 'text-nv-muted'" class="h-9 w-9 rounded-lg flex items-center justify-center transition-colors" title="Tabela">
                 <svg class="i text-base"><use href="#i-list"/></svg>
               </button>
             </div>
@@ -771,11 +773,11 @@ textarea.field{ resize:vertical; min-height:80px }
 
         <template x-if="pastCollection().length === 0">
           <div class="card p-10 text-center">
-            <div class="mx-auto w-14 h-14 rounded-2xl bg-cream-200 flex items-center justify-center mb-4">
-              <svg class="i text-2xl text-ink-faint"><use href="#i-archive"/></svg>
+            <div class="mx-auto w-14 h-14 rounded-2xl bg-nv-surface-2 flex items-center justify-center mb-4">
+              <svg class="i text-2xl text-nv-muted"><use href="#i-archive"/></svg>
             </div>
-            <h3 class="font-display font-extrabold text-lg text-ink">Nenhum perfume arquivado ainda</h3>
-            <p class="text-sm text-ink-muted mt-1 mb-5">Quando terminar ou vender um perfume, marca ele como "já tive" no detalhe pra manter o histórico da tua trajetória olfativa.</p>
+            <h3 class="font-display font-extrabold text-lg text-nv-ink">Nenhum perfume arquivado ainda</h3>
+            <p class="text-sm text-nv-soft mt-1 mb-5">Quando terminar ou vender um perfume, marca ele como "já tive" no detalhe pra manter o histórico da tua trajetória olfativa.</p>
           </div>
         </template>
 
@@ -792,18 +794,18 @@ textarea.field{ resize:vertical; min-height:80px }
                     <svg class="i text-[10px]"><use href="#i-archive"/></svg>JÁ TIVE
                   </span>
                 </div>
-                <p class="text-[11px] font-semibold uppercase tracking-wider text-ink-muted truncate" x-text="p.marca"></p>
-                <h3 class="font-display font-extrabold text-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
+                <p class="text-[11px] font-semibold uppercase tracking-wider text-nv-soft truncate" x-text="p.marca"></p>
+                <h3 class="font-display font-extrabold text-nv-ink text-[15px] leading-tight line-2 mt-0.5" x-text="p.modelo"></h3>
                 <div class="flex items-center justify-between mt-2">
                   <span class="chip chip-neutral text-[10px] py-0.5 px-2"><span class="dot" :class="'f-'+p.familia"></span><span x-text="familiaLabel(p.familia)"></span></span>
                   <div class="flex items-center gap-0.5">
                     <template x-for="i in 5" :key="i"><svg class="i fill" :class="i <= p.rating ? 'star' : 'star-off'" style="width:.85rem;height:.85rem"><use href="#i-star"/></svg></template>
                   </div>
                 </div>
-                <div class="mt-3 pt-3 border-t border-surface-border flex items-center justify-between">
+                <div class="mt-3 pt-3 border-t border-nv-border-strong flex items-center justify-between">
                   <div>
-                    <p class="text-[10px] uppercase tracking-wider text-ink-faint">Investido</p>
-                    <p class="font-display font-bold text-[13px] text-ink tnum" x-text="p.preco_pago ? brl(p.preco_pago) : '—'"></p>
+                    <p class="text-[10px] uppercase tracking-wider text-nv-muted">Investido</p>
+                    <p class="font-display font-bold text-[13px] text-nv-ink tnum" x-text="p.preco_pago ? brl(p.preco_pago) : '—'"></p>
                   </div>
                   <button @click.stop="togglePast(p.id)" class="btn-ghost h-8 px-2.5 rounded-lg text-[11px] font-semibold flex items-center gap-1" title="Voltar para coleção ativa">
                     <svg class="i text-xs"><use href="#i-back"/></svg>Voltar
@@ -818,70 +820,70 @@ textarea.field{ resize:vertical; min-height:80px }
           <div class="card overflow-hidden">
             <div class="overflow-x-auto">
               <table class="w-full text-sm">
-                <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted select-none">
+                <thead class="bg-nv-surface-2 border-b border-nv-border-strong text-[11px] uppercase tracking-wider text-nv-soft select-none">
                   <tr>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('marca')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Marca</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='marca' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='marca' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('marca', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('marca') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('modelo')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Modelo</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='modelo' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='modelo' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('modelo', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('modelo') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('ano', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('ano') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('ano')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='ano' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='ano' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Ano</span>
                         </button>
                       </div>
                     </th>
                     <th class="text-left py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1">
-                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-ink">
+                        <button type="button" @click="toggleSort('concentracao')" class="flex items-center gap-1 hover:text-nv-ink">
                           <span>Concentração</span>
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='concentracao' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='concentracao' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                         </button>
-                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('concentracao', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('concentracao') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('nota', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('nota') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('nota_fragrantica')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='nota_fragrantica' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='nota_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Nota</span>
                         </button>
                       </div>
                     </th>
                     <th class="text-right py-2.5 px-4 font-semibold">
                       <div class="flex items-center gap-1 justify-end">
-                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-cream-200" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-ink-faint/60'">
+                        <button type="button" @click="openColFilterPopover('votos', $event)" data-colfilter-btn class="p-0.5 rounded hover:bg-nv-hairline" :class="colFilterActive('votos') ? 'text-gold-600' : 'text-nv-faint'">
                           <svg class="i" style="width:.6rem;height:.6rem"><use href="#i-filter"/></svg>
                         </button>
-                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-ink">
-                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-ink' : 'text-ink-faint/50', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
+                        <button type="button" @click="toggleSort('votos_fragrantica')" class="flex items-center gap-1 hover:text-nv-ink">
+                          <svg class="i transition-transform duration-200" style="width:.6rem;height:.6rem" :class="[sortBy==='votos_fragrantica' ? 'text-nv-ink' : 'text-nv-faint', {'rotate-180': sortBy==='votos_fragrantica' && sortDir==='asc'}]"><use href="#i-chev-down"/></svg>
                           <span>Votos</span>
                         </button>
                       </div>
@@ -890,13 +892,13 @@ textarea.field{ resize:vertical; min-height:80px }
                 </thead>
                 <tbody>
                   <template x-for="p in tableRows(pastCollection())" :key="p.id">
-                    <tr class="border-b border-surface-border/60 hover:bg-cream-100/60 cursor-pointer" @click="navigate('/'+p.id)">
-                      <td class="py-3 px-4 font-semibold text-ink whitespace-nowrap" x-text="p.marca"></td>
-                      <td class="py-3 px-4 text-ink" x-text="p.modelo"></td>
-                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.ano || '—'"></td>
+                    <tr class="border-b border-nv-border hover:bg-nv-surface-2 cursor-pointer" @click="navigate('/'+p.id)">
+                      <td class="py-3 px-4 font-semibold text-nv-ink whitespace-nowrap" x-text="p.marca"></td>
+                      <td class="py-3 px-4 text-nv-ink" x-text="p.modelo"></td>
+                      <td class="py-3 px-4 text-right tnum text-nv-soft" x-text="p.ano || '—'"></td>
                       <td class="py-3 px-4"><span class="chip chip-ink text-[10px] py-0.5 px-2" x-text="p.concentracao"></span></td>
-                      <td class="py-3 px-4 text-right tnum font-semibold text-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
-                      <td class="py-3 px-4 text-right tnum text-ink-muted" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum font-semibold text-nv-ink" x-text="p.nota_fragrantica ? p.nota_fragrantica.toFixed(2) : '—'"></td>
+                      <td class="py-3 px-4 text-right tnum text-nv-soft" x-text="p.votos_fragrantica ? p.votos_fragrantica.toLocaleString('pt-BR') : '—'"></td>
                     </tr>
                   </template>
                 </tbody>
@@ -922,13 +924,13 @@ textarea.field{ resize:vertical; min-height:80px }
               </button>
               <div class="relative">
                 <button @click="menuMore = !menuMore" class="btn-ghost h-10 w-10 rounded-xl flex items-center justify-center"><svg class="i"><use href="#i-more"/></svg></button>
-                <div x-show="menuMore" @click.outside="menuMore=false" x-transition class="absolute right-0 top-11 bg-white border border-surface-border rounded-xl shadow-lift p-1 z-30 min-w-[220px]">
-                  <button @click="menuMore=false; togglePast(currentPerfume().id)" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-cream-100 text-ink flex items-center gap-2">
+                <div x-show="menuMore" @click.outside="menuMore=false" x-transition class="absolute right-0 top-11 bg-nv-surface border border-nv-border-strong rounded-xl shadow-lift p-1 z-30 min-w-[220px]">
+                  <button @click="menuMore=false; togglePast(currentPerfume().id)" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-nv-surface-2 text-nv-ink flex items-center gap-2">
                     <svg class="i"><use :href="currentPerfume().ja_terminou ? '#i-back' : '#i-archive'"/></svg>
                     <span x-text="currentPerfume().ja_terminou ? 'Voltar para coleção ativa' : 'Marcar como já tive'"></span>
                   </button>
-                  <div class="h-px bg-surface-border my-1"></div>
-                  <button @click="menuMore=false; openConfirmDelete = currentPerfume().id" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-err-bg text-err-fg flex items-center gap-2"><svg class="i"><use href="#i-trash"/></svg>Excluir perfume</button>
+                  <div class="h-px bg-nv-border-strong my-1"></div>
+                  <button @click="menuMore=false; openConfirmDelete = currentPerfume().id" class="w-full text-left px-3 py-2 text-sm rounded-lg hover:bg-nv-danger-bg text-nv-danger-text flex items-center gap-2"><svg class="i"><use href="#i-trash"/></svg>Excluir perfume</button>
                 </div>
               </div>
             </div>
@@ -950,35 +952,35 @@ textarea.field{ resize:vertical; min-height:80px }
                 <template x-if="currentPerfume().ja_terminou"><span class="chip chip-neutral"><svg class="i"><use href="#i-archive"/></svg>Já tive</span></template>
                 <template x-if="currentPerfume().referencia_id"><span class="chip chip-gold">DUPE</span></template>
               </div>
-              <p class="text-sm font-semibold uppercase tracking-wider text-ink-muted" x-text="currentPerfume().marca"></p>
-              <h1 class="font-display font-extrabold text-3xl sm:text-4xl text-ink leading-tight" x-text="currentPerfume().modelo"></h1>
-              <p class="text-sm text-ink-muted mt-1"><span x-text="currentPerfume().tamanho_ml"></span>ml · <span x-text="currentPerfume().ano"></span></p>
+              <p class="text-sm font-semibold uppercase tracking-wider text-nv-soft" x-text="currentPerfume().marca"></p>
+              <h1 class="font-display font-extrabold text-3xl sm:text-4xl text-nv-ink leading-tight" x-text="currentPerfume().modelo"></h1>
+              <p class="text-sm text-nv-soft mt-1"><span x-text="currentPerfume().tamanho_ml"></span>ml · <span x-text="currentPerfume().ano"></span></p>
 
               <!-- rating -->
               <div class="flex items-center gap-1 mt-3">
                 <template x-for="i in 5" :key="i"><svg class="i fill" :class="i <= currentPerfume().rating ? 'star' : 'star-off'" style="width:1.35rem;height:1.35rem"><use href="#i-star"/></svg></template>
-                <span class="ml-2 text-sm text-ink-muted"><span class="font-semibold text-ink tnum" x-text="currentPerfume().rating"></span>/5 pessoal</span>
+                <span class="ml-2 text-sm text-nv-soft"><span class="font-semibold text-nv-ink tnum" x-text="currentPerfume().rating"></span>/5 pessoal</span>
               </div>
 
               <!-- KPIs -->
               <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-5">
-                <div class="bg-cream-200 rounded-2xl p-3">
-                  <p class="text-[11px] uppercase tracking-wider text-ink-faint">Estoque</p>
-                  <p class="font-display font-extrabold text-xl text-ink tnum mt-0.5"><span x-text="currentPerfume().estoque_ml"></span><span class="text-sm text-ink-muted">/<span x-text="currentPerfume().tamanho_ml"></span>ml</span></p>
+                <div class="bg-nv-surface-2 rounded-2xl p-3">
+                  <p class="text-[11px] uppercase tracking-wider text-nv-muted">Estoque</p>
+                  <p class="font-display font-extrabold text-xl text-nv-ink tnum mt-0.5"><span x-text="currentPerfume().estoque_ml"></span><span class="text-sm text-nv-soft">/<span x-text="currentPerfume().tamanho_ml"></span>ml</span></p>
                   <div class="eb mt-2"><span :style="'width:'+Math.max(0,(currentPerfume().estoque_ml/currentPerfume().tamanho_ml)*100)+'%; background:'+stockColor(currentPerfume())"></span></div>
                 </div>
-                <div class="bg-cream-200 rounded-2xl p-3">
-                  <p class="text-[11px] uppercase tracking-wider text-ink-faint">Custo por spray</p>
-                  <p class="font-display font-extrabold text-xl text-ink tnum mt-0.5" x-text="currentPerfume().preco_pago ? brl(currentPerfume().preco_pago/(currentPerfume().tamanho_ml/currentPerfume().ml_por_spray)) : '—'"></p>
-                  <p class="text-[11px] text-ink-faint mt-1">de <span x-text="brl(currentPerfume().preco_pago||0)"></span></p>
+                <div class="bg-nv-surface-2 rounded-2xl p-3">
+                  <p class="text-[11px] uppercase tracking-wider text-nv-muted">Custo por spray</p>
+                  <p class="font-display font-extrabold text-xl text-nv-ink tnum mt-0.5" x-text="currentPerfume().preco_pago ? brl(currentPerfume().preco_pago/(currentPerfume().tamanho_ml/currentPerfume().ml_por_spray)) : '—'"></p>
+                  <p class="text-[11px] text-nv-muted mt-1">de <span x-text="brl(currentPerfume().preco_pago||0)"></span></p>
                 </div>
-                <div class="bg-cream-200 rounded-2xl p-3 col-span-2 sm:col-span-1">
-                  <p class="text-[11px] uppercase tracking-wider text-ink-faint">Fragrantica</p>
+                <div class="bg-nv-surface-2 rounded-2xl p-3 col-span-2 sm:col-span-1">
+                  <p class="text-[11px] uppercase tracking-wider text-nv-muted">Fragrantica</p>
                   <div class="flex items-baseline gap-2 mt-0.5">
-                    <span class="font-display font-extrabold text-xl text-ink tnum" x-text="currentPerfume().nota_fragrantica.toFixed(2)"></span>
-                    <span class="text-[11px] text-ink-faint tnum">/5</span>
+                    <span class="font-display font-extrabold text-xl text-nv-ink tnum" x-text="currentPerfume().nota_fragrantica.toFixed(2)"></span>
+                    <span class="text-[11px] text-nv-muted tnum">/5</span>
                   </div>
-                  <p class="text-[11px] text-ink-faint mt-1 tnum" x-text="currentPerfume().votos_fragrantica.toLocaleString('pt-BR') + ' votos'"></p>
+                  <p class="text-[11px] text-nv-muted mt-1 tnum" x-text="currentPerfume().votos_fragrantica.toLocaleString('pt-BR') + ' votos'"></p>
                 </div>
               </div>
 
@@ -995,13 +997,13 @@ textarea.field{ resize:vertical; min-height:80px }
           </div>
 
           <!-- ABAS -->
-          <div class="border-b border-surface-border mb-5">
+          <div class="border-b border-nv-border-strong mb-5">
             <div class="flex items-center gap-1 overflow-x-auto no-scrollbar">
-              <button @click="tab = 'geral'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap" :class="tab === 'geral' ? 'border-ink text-ink' : 'border-transparent text-ink-muted hover:text-ink'">Geral</button>
-              <button @click="tab = 'historico'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap flex items-center gap-1.5" :class="tab === 'historico' ? 'border-ink text-ink' : 'border-transparent text-ink-muted hover:text-ink'">
+              <button @click="tab = 'geral'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap" :class="tab === 'geral' ? 'border-nv-primary text-nv-ink' : 'border-transparent text-nv-soft hover:text-nv-ink'">Geral</button>
+              <button @click="tab = 'historico'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap flex items-center gap-1.5" :class="tab === 'historico' ? 'border-nv-primary text-nv-ink' : 'border-transparent text-nv-soft hover:text-nv-ink'">
                 Histórico de uso <span class="chip chip-neutral text-[10px] py-0 px-1.5" x-text="usageOf(currentPerfume().id).length"></span>
               </button>
-              <button @click="tab = 'estoque'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap" :class="tab === 'estoque' ? 'border-ink text-ink' : 'border-transparent text-ink-muted hover:text-ink'">Estoque</button>
+              <button @click="tab = 'estoque'" class="px-4 h-11 text-sm font-semibold border-b-2 whitespace-nowrap" :class="tab === 'estoque' ? 'border-nv-primary text-nv-ink' : 'border-transparent text-nv-soft hover:text-nv-ink'">Estoque</button>
             </div>
           </div>
 
@@ -1009,19 +1011,19 @@ textarea.field{ resize:vertical; min-height:80px }
           <div x-show="tab === 'geral'" class="fade-in grid lg:grid-cols-3 gap-5">
             <div class="lg:col-span-2 space-y-5">
               <div class="card p-5">
-                <h3 class="font-display font-extrabold text-lg text-ink mb-3">Pirâmide olfativa</h3>
+                <h3 class="font-display font-extrabold text-lg text-nv-ink mb-3">Pirâmide olfativa</h3>
                 <div class="space-y-3">
-                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-ink-faint">Notas de topo</p><p class="text-sm text-ink" x-text="currentPerfume().notas_topo || '—'"></p></div>
-                  <div class="h-px bg-surface-border"></div>
-                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-ink-faint">Notas de coração</p><p class="text-sm text-ink" x-text="currentPerfume().notas_coracao || '—'"></p></div>
-                  <div class="h-px bg-surface-border"></div>
-                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-ink-faint">Notas de fundo</p><p class="text-sm text-ink" x-text="currentPerfume().notas_fundo || '—'"></p></div>
+                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-nv-muted">Notas de topo</p><p class="text-sm text-nv-ink" x-text="currentPerfume().notas_topo || '—'"></p></div>
+                  <div class="h-px bg-nv-border-strong"></div>
+                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-nv-muted">Notas de coração</p><p class="text-sm text-nv-ink" x-text="currentPerfume().notas_coracao || '—'"></p></div>
+                  <div class="h-px bg-nv-border-strong"></div>
+                  <div class="grid grid-cols-[110px_1fr] items-baseline gap-3"><p class="text-xs uppercase tracking-wider text-nv-muted">Notas de fundo</p><p class="text-sm text-nv-ink" x-text="currentPerfume().notas_fundo || '—'"></p></div>
                 </div>
               </div>
 
               <div class="card p-5">
-                <h3 class="font-display font-extrabold text-lg text-ink mb-2">Review pessoal</h3>
-                <p class="text-sm text-ink-soft leading-relaxed whitespace-pre-line" x-text="currentPerfume().review || 'Nenhuma review escrita ainda.'"></p>
+                <h3 class="font-display font-extrabold text-lg text-nv-ink mb-2">Review pessoal</h3>
+                <p class="text-sm text-nv-soft leading-relaxed whitespace-pre-line" x-text="currentPerfume().review || 'Nenhuma review escrita ainda.'"></p>
               </div>
             </div>
 
@@ -1029,38 +1031,38 @@ textarea.field{ resize:vertical; min-height:80px }
               <!-- Referência olfativa -->
               <template x-if="currentPerfume().referencia_id && findPerfume(currentPerfume().referencia_id)">
                 <div class="card p-4">
-                  <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">Referência olfativa</p>
+                  <p class="text-[11px] uppercase tracking-wider text-nv-muted mb-3">Referência olfativa</p>
                   <a href="#" @click.prevent="navigate('/'+currentPerfume().referencia_id)" class="flex items-center gap-3 group">
                     <div class="bottle w-14 shrink-0" :class="'tone-'+findPerfume(currentPerfume().referencia_id).familia" style="aspect-ratio: 4/5">
                       <template x-if="photoKind(findPerfume(currentPerfume().referencia_id).foto) === 'url'"><img :src="findPerfume(currentPerfume().referencia_id).foto" class="absolute inset-0 w-full h-full object-contain p-1 z-10" onerror="this.style.display='none'"></template>
                       <template x-if="photoKind(findPerfume(currentPerfume().referencia_id).foto) !== 'url'"><svg viewBox="0 0 60 90" style="width:70%;height:auto"><use href="#bottle-svg"/></svg></template>
                     </div>
                     <div class="min-w-0 flex-1">
-                      <p class="text-[11px] font-semibold uppercase tracking-wider text-ink-muted truncate" x-text="findPerfume(currentPerfume().referencia_id).marca"></p>
-                      <h4 class="font-display font-extrabold text-ink text-[15px] leading-tight group-hover:text-gold-600 line-2" x-text="findPerfume(currentPerfume().referencia_id).modelo"></h4>
+                      <p class="text-[11px] font-semibold uppercase tracking-wider text-nv-soft truncate" x-text="findPerfume(currentPerfume().referencia_id).marca"></p>
+                      <h4 class="font-display font-extrabold text-nv-ink text-[15px] leading-tight group-hover:text-gold-600 line-2" x-text="findPerfume(currentPerfume().referencia_id).modelo"></h4>
                       <div class="flex items-center gap-2 mt-1.5">
-                        <span class="text-[11px] text-ink-muted">Δ Fragrantica</span>
+                        <span class="text-[11px] text-nv-soft">Δ Fragrantica</span>
                         <span class="chip text-[10px] py-0.5 px-1.5" :class="deltaClass(Math.abs(findPerfume(currentPerfume().referencia_id).nota_fragrantica - currentPerfume().nota_fragrantica))">
                           <span x-text="Math.abs(findPerfume(currentPerfume().referencia_id).nota_fragrantica - currentPerfume().nota_fragrantica).toFixed(2)"></span>
                         </span>
                       </div>
                     </div>
-                    <svg class="i text-ink-faint"><use href="#i-chev-right"/></svg>
+                    <svg class="i text-nv-muted"><use href="#i-chev-right"/></svg>
                   </a>
                 </div>
               </template>
 
               <!-- Ficha técnica -->
               <div class="card p-4">
-                <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">Ficha técnica</p>
+                <p class="text-[11px] uppercase tracking-wider text-nv-muted mb-3">Ficha técnica</p>
                 <dl class="text-sm space-y-2">
-                  <div class="flex justify-between"><dt class="text-ink-muted">Marca</dt><dd class="font-semibold" x-text="currentPerfume().marca"></dd></div>
-                  <div class="flex justify-between"><dt class="text-ink-muted">Modelo</dt><dd class="font-semibold text-right" x-text="currentPerfume().modelo"></dd></div>
-                  <div class="flex justify-between"><dt class="text-ink-muted">Ano</dt><dd class="font-semibold tnum" x-text="currentPerfume().ano"></dd></div>
-                  <div class="flex justify-between"><dt class="text-ink-muted">Concentração</dt><dd class="font-semibold" x-text="currentPerfume().concentracao"></dd></div>
-                  <div class="flex justify-between"><dt class="text-ink-muted">Frasco</dt><dd class="font-semibold tnum" x-text="currentPerfume().tamanho_ml + ' ml'"></dd></div>
-                  <div class="flex justify-between"><dt class="text-ink-muted">ml por spray</dt><dd class="font-semibold tnum" x-text="currentPerfume().ml_por_spray + ' ml'"></dd></div>
-                  <div class="flex justify-between"><dt class="text-ink-muted">Preço pago</dt><dd class="font-semibold tnum" x-text="brl(currentPerfume().preco_pago||0)"></dd></div>
+                  <div class="flex justify-between"><dt class="text-nv-soft">Marca</dt><dd class="font-semibold" x-text="currentPerfume().marca"></dd></div>
+                  <div class="flex justify-between"><dt class="text-nv-soft">Modelo</dt><dd class="font-semibold text-right" x-text="currentPerfume().modelo"></dd></div>
+                  <div class="flex justify-between"><dt class="text-nv-soft">Ano</dt><dd class="font-semibold tnum" x-text="currentPerfume().ano"></dd></div>
+                  <div class="flex justify-between"><dt class="text-nv-soft">Concentração</dt><dd class="font-semibold" x-text="currentPerfume().concentracao"></dd></div>
+                  <div class="flex justify-between"><dt class="text-nv-soft">Frasco</dt><dd class="font-semibold tnum" x-text="currentPerfume().tamanho_ml + ' ml'"></dd></div>
+                  <div class="flex justify-between"><dt class="text-nv-soft">ml por spray</dt><dd class="font-semibold tnum" x-text="currentPerfume().ml_por_spray + ' ml'"></dd></div>
+                  <div class="flex justify-between"><dt class="text-nv-soft">Preço pago</dt><dd class="font-semibold tnum" x-text="brl(currentPerfume().preco_pago||0)"></dd></div>
                 </dl>
               </div>
             </div>
@@ -1069,34 +1071,34 @@ textarea.field{ resize:vertical; min-height:80px }
           <!-- TAB: Histórico -->
           <div x-show="tab === 'historico'" class="fade-in">
             <div class="card overflow-hidden">
-              <div class="p-4 border-b border-surface-border flex items-center justify-between">
+              <div class="p-4 border-b border-nv-border-strong flex items-center justify-between">
                 <div>
-                  <h3 class="font-display font-extrabold text-lg text-ink">Histórico de sprays</h3>
-                  <p class="text-xs text-ink-muted mt-0.5"><span class="tnum" x-text="usageOf(currentPerfume().id).length"></span> registros</p>
+                  <h3 class="font-display font-extrabold text-lg text-nv-ink">Histórico de sprays</h3>
+                  <p class="text-xs text-nv-soft mt-0.5"><span class="tnum" x-text="usageOf(currentPerfume().id).length"></span> registros</p>
                 </div>
               </div>
               <template x-if="usageOf(currentPerfume().id).length === 0">
                 <div class="p-10 text-center">
-                  <div class="mx-auto w-12 h-12 rounded-2xl bg-cream-200 flex items-center justify-center mb-3"><svg class="i text-xl text-ink-faint"><use href="#i-history"/></svg></div>
-                  <p class="text-sm text-ink-muted">Nenhum uso registrado ainda.</p>
+                  <div class="mx-auto w-12 h-12 rounded-2xl bg-nv-surface-2 flex items-center justify-center mb-3"><svg class="i text-xl text-nv-muted"><use href="#i-history"/></svg></div>
+                  <p class="text-sm text-nv-soft">Nenhum uso registrado ainda.</p>
                   <button @click="openSprayModal(currentPerfume().id)" class="mt-4 btn-ink h-9 px-4 rounded-lg text-xs font-bold uppercase tracking-wider inline-flex items-center gap-1.5"><svg class="i"><use href="#i-spray"/></svg>Registrar spray</button>
                 </div>
               </template>
               <template x-if="usageOf(currentPerfume().id).length > 0">
                 <div class="overflow-x-auto">
                   <table class="w-full text-sm">
-                    <thead class="bg-cream-100 border-b border-surface-border text-[11px] uppercase tracking-wider text-ink-muted">
+                    <thead class="bg-nv-surface-2 border-b border-nv-border-strong text-[11px] uppercase tracking-wider text-nv-soft">
                       <tr><th class="text-left py-2.5 px-4 font-semibold">Data</th><th class="text-left py-2.5 px-4 font-semibold">Ocasião</th><th class="text-left py-2.5 px-4 font-semibold hidden sm:table-cell">Estação</th><th class="text-left py-2.5 px-4 font-semibold hidden sm:table-cell">Hora</th><th class="text-right py-2.5 px-4 font-semibold">ml</th><th class="w-10"></th></tr>
                     </thead>
                     <tbody>
                       <template x-for="u in usageOf(currentPerfume().id)" :key="u.id">
-                        <tr class="border-b border-surface-border/60 hover:bg-cream-100/60">
+                        <tr class="border-b border-nv-border hover:bg-nv-surface-2">
                           <td class="py-3 px-4 tnum" x-text="fmtDateTime(u.data)"></td>
                           <td class="py-3 px-4 capitalize" x-text="u.ocasiao"></td>
                           <td class="py-3 px-4 capitalize hidden sm:table-cell" x-text="u.estacao"></td>
                           <td class="py-3 px-4 capitalize hidden sm:table-cell" x-text="u.hora_dia"></td>
                           <td class="py-3 px-4 text-right tnum" x-text="u.ml.toFixed(2)"></td>
-                          <td class="py-3 px-2"><button @click="openConfirmDeleteSpray = u.id" class="p-2 rounded-lg text-ink-faint hover:text-err hover:bg-err-bg"><svg class="i"><use href="#i-trash"/></svg></button></td>
+                          <td class="py-3 px-2"><button @click="openConfirmDeleteSpray = u.id" class="p-2 rounded-lg text-nv-muted hover:text-nv-danger-text hover:bg-nv-danger-bg"><svg class="i"><use href="#i-trash"/></svg></button></td>
                         </tr>
                       </template>
                     </tbody>
@@ -1111,21 +1113,21 @@ textarea.field{ resize:vertical; min-height:80px }
             <div class="card p-5">
               <div class="flex items-center justify-between mb-4">
                 <div>
-                  <h3 class="font-display font-extrabold text-lg text-ink">Estoque ao longo do tempo</h3>
-                  <p class="text-xs text-ink-muted mt-0.5">Cada spray registrado deduz <span class="tnum" x-text="currentPerfume().ml_por_spray"></span>ml do total.</p>
+                  <h3 class="font-display font-extrabold text-lg text-nv-ink">Estoque ao longo do tempo</h3>
+                  <p class="text-xs text-nv-soft mt-0.5">Cada spray registrado deduz <span class="tnum" x-text="currentPerfume().ml_por_spray"></span>ml do total.</p>
                 </div>
                 <div class="text-right">
-                  <p class="text-[11px] uppercase tracking-wider text-ink-faint">Restante</p>
-                  <p class="font-display font-extrabold text-2xl text-ink tnum"><span x-text="currentPerfume().estoque_ml"></span><span class="text-sm text-ink-muted">ml</span></p>
+                  <p class="text-[11px] uppercase tracking-wider text-nv-muted">Restante</p>
+                  <p class="font-display font-extrabold text-2xl text-nv-ink tnum"><span x-text="currentPerfume().estoque_ml"></span><span class="text-sm text-nv-soft">ml</span></p>
                 </div>
               </div>
-              <div class="rounded-2xl bg-cream-100 border border-surface-border p-4 overflow-x-auto">
+              <div class="rounded-2xl bg-nv-surface-2 border border-nv-border-strong p-4 overflow-x-auto">
                 <div x-html="renderStockChart(currentPerfume())"></div>
               </div>
               <div class="grid grid-cols-3 gap-3 mt-4">
-                <div><p class="text-[10px] uppercase tracking-wider text-ink-faint">Sprays totais</p><p class="font-display font-extrabold text-lg text-ink tnum" x-text="usageOf(currentPerfume().id).length"></p></div>
-                <div><p class="text-[10px] uppercase tracking-wider text-ink-faint">ml consumidos</p><p class="font-display font-extrabold text-lg text-ink tnum" x-text="(currentPerfume().tamanho_ml - currentPerfume().estoque_ml).toFixed(1)"></p></div>
-                <div><p class="text-[10px] uppercase tracking-wider text-ink-faint">Sprays restantes</p><p class="font-display font-extrabold text-lg text-ink tnum" x-text="Math.floor(currentPerfume().estoque_ml/currentPerfume().ml_por_spray)"></p></div>
+                <div><p class="text-[10px] uppercase tracking-wider text-nv-muted">Sprays totais</p><p class="font-display font-extrabold text-lg text-nv-ink tnum" x-text="usageOf(currentPerfume().id).length"></p></div>
+                <div><p class="text-[10px] uppercase tracking-wider text-nv-muted">ml consumidos</p><p class="font-display font-extrabold text-lg text-nv-ink tnum" x-text="(currentPerfume().tamanho_ml - currentPerfume().estoque_ml).toFixed(1)"></p></div>
+                <div><p class="text-[10px] uppercase tracking-wider text-nv-muted">Sprays restantes</p><p class="font-display font-extrabold text-lg text-nv-ink tnum" x-text="Math.floor(currentPerfume().estoque_ml/currentPerfume().ml_por_spray)"></p></div>
               </div>
             </div>
           </div>
@@ -1138,30 +1140,30 @@ textarea.field{ resize:vertical; min-height:80px }
       <section x-show="route === '/novo'" x-transition.opacity class="fade-in">
         <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
           <button @click="navigate('/')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold"><svg class="i"><use href="#i-back"/></svg><span class="hidden sm:inline">Voltar</span></button>
-          <h1 class="font-display font-extrabold text-xl sm:text-2xl text-ink">Novo perfume</h1>
+          <h1 class="font-display font-extrabold text-xl sm:text-2xl text-nv-ink">Novo perfume</h1>
           <span class="w-24"></span>
         </div>
 
         <!-- SCRAPE CARD (auto-preencher via URL Fragrantica) -->
         <div class="max-w-5xl mb-5">
-          <div class="card p-5 bg-gradient-to-br from-white to-cream-100 border-gold-200">
+          <div class="card p-5 bg-gradient-to-br from-nv-surface to-nv-surface-2 border-gold-200">
             <div class="flex items-start gap-3">
               <div class="w-11 h-11 rounded-xl btn-gold flex items-center justify-center shrink-0 shadow-cta">
                 <svg class="i text-xl"><use href="#i-import"/></svg>
               </div>
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-2 flex-wrap mb-1">
-                  <h3 class="font-display font-extrabold text-base text-ink">Preencher a partir de link</h3>
+                  <h3 class="font-display font-extrabold text-base text-nv-ink">Preencher a partir de link</h3>
                   <span class="chip chip-gold text-[10px]">FRAGRANTICA</span>
                 </div>
-                <p class="text-xs text-ink-muted">Cole a URL da página do perfume no Fragrantica — vou puxar marca, modelo, ano, concentração, família, notas olfativas, nota e votos. Os campos <span class="font-semibold">pessoais</span> (estoque, preço, rating, review, dupe) você preenche depois.</p>
+                <p class="text-xs text-nv-soft">Cole a URL da página do perfume no Fragrantica — vou puxar marca, modelo, ano, concentração, família, notas olfativas, nota e votos. Os campos <span class="font-semibold">pessoais</span> (estoque, preço, rating, review, dupe) você preenche depois.</p>
               </div>
             </div>
             <div class="mt-4 flex flex-col sm:flex-row gap-2">
               <div class="relative flex-1">
                 <input x-model="scrapeUrl" type="url" placeholder="https://www.fragrantica.com.br/perfume/…" class="field pr-10" @keydown.enter.prevent="scrapeFragrantica()">
                 <template x-if="scrapeUrl">
-                  <button type="button" @click="scrapeUrl=''" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-ink-faint hover:bg-cream-200"><svg class="i text-xs"><use href="#i-x"/></svg></button>
+                  <button type="button" @click="scrapeUrl=''" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg text-nv-muted hover:bg-nv-hairline"><svg class="i text-xs"><use href="#i-x"/></svg></button>
                 </template>
               </div>
               <button type="button" @click="scrapeFragrantica()" :disabled="scrapeLoading || !scrapeUrl" class="btn-gold h-11 px-5 rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-center gap-2 whitespace-nowrap" :class="{'opacity-60 cursor-not-allowed': scrapeLoading || !scrapeUrl}">
@@ -1173,13 +1175,13 @@ textarea.field{ resize:vertical; min-height:80px }
               </button>
             </div>
             <template x-if="scrapeStatus">
-              <div class="mt-3 flex items-start gap-2 text-xs" :class="scrapeStatus.type === 'ok' ? 'text-ok-fg' : (scrapeStatus.type === 'err' ? 'text-err-fg' : 'text-ink-muted')">
+              <div class="mt-3 flex items-start gap-2 text-xs" :class="scrapeStatus.type === 'ok' ? 'text-nv-success-text' : (scrapeStatus.type === 'err' ? 'text-nv-danger-text' : 'text-nv-soft')">
                 <svg class="i text-sm mt-0.5"><use :href="scrapeStatus.type === 'ok' ? '#i-check' : '#i-info'"/></svg>
                 <span x-text="scrapeStatus.msg"></span>
               </div>
             </template>
-            <details class="mt-3 text-xs text-ink-muted group">
-              <summary class="cursor-pointer hover:text-ink font-semibold flex items-center gap-1">
+            <details class="mt-3 text-xs text-nv-soft group">
+              <summary class="cursor-pointer hover:text-nv-ink font-semibold flex items-center gap-1">
                 <svg class="i text-xs transition-transform group-open:rotate-90"><use href="#i-chev-right"/></svg>Exemplos de URL pra testar
               </summary>
               <ul class="mt-2 space-y-1.5 pl-4">
@@ -1199,7 +1201,7 @@ textarea.field{ resize:vertical; min-height:80px }
           <div class="lg:col-span-1 space-y-4">
             <div class="card p-4">
               <div class="flex items-center justify-between mb-2">
-                <p class="text-[11px] uppercase tracking-wider text-ink-faint">Foto do frasco</p>
+                <p class="text-[11px] uppercase tracking-wider text-nv-muted">Foto do frasco</p>
                 <template x-if="scrapeFilled.includes('foto')"><span class="chip chip-gold text-[9px] py-0.5 px-1.5">AUTO</span></template>
               </div>
               <div class="bottle" :class="'tone-'+(newForm.familia||'leather')" style="aspect-ratio: 4/5">
@@ -1215,21 +1217,21 @@ textarea.field{ resize:vertical; min-height:80px }
             <div class="card p-4 space-y-3">
               <div class="flex items-center justify-between gap-3">
                 <div class="min-w-0">
-                  <p class="font-semibold text-ink text-sm">Adicionar à wishlist</p>
-                  <p class="text-xs text-ink-muted mt-0.5">Ainda quero comprar.</p>
+                  <p class="font-semibold text-nv-ink text-sm">Adicionar à wishlist</p>
+                  <p class="text-xs text-nv-soft mt-0.5">Ainda quero comprar.</p>
                 </div>
-                <button type="button" @click="newForm.eh_wishlist = !newForm.eh_wishlist; if(newForm.eh_wishlist) newForm.ja_terminou = false" :class="newForm.eh_wishlist ? 'bg-gold-500' : 'bg-cream-300'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors flex-shrink-0">
-                  <span :class="newForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-white shadow transition-transform"></span>
+                <button type="button" @click="newForm.eh_wishlist = !newForm.eh_wishlist; if(newForm.eh_wishlist) newForm.ja_terminou = false" :class="newForm.eh_wishlist ? 'bg-nv-on' : 'bg-nv-border-strong'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors flex-shrink-0">
+                  <span :class="newForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-[#FFFFFF] shadow transition-transform"></span>
                 </button>
               </div>
-              <div class="h-px bg-surface-border"></div>
+              <div class="h-px bg-nv-border-strong"></div>
               <div class="flex items-center justify-between gap-3">
                 <div class="min-w-0">
-                  <p class="font-semibold text-ink text-sm">Já tive (não tenho mais)</p>
-                  <p class="text-xs text-ink-muted mt-0.5">Vai pro histórico "Já tive".</p>
+                  <p class="font-semibold text-nv-ink text-sm">Já tive (não tenho mais)</p>
+                  <p class="text-xs text-nv-soft mt-0.5">Vai pro histórico "Já tive".</p>
                 </div>
-                <button type="button" @click="newForm.ja_terminou = !newForm.ja_terminou; if(newForm.ja_terminou) newForm.eh_wishlist = false" :class="newForm.ja_terminou ? 'bg-ink' : 'bg-cream-300'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors flex-shrink-0">
-                  <span :class="newForm.ja_terminou ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-white shadow transition-transform"></span>
+                <button type="button" @click="newForm.ja_terminou = !newForm.ja_terminou; if(newForm.ja_terminou) newForm.eh_wishlist = false" :class="newForm.ja_terminou ? 'bg-nv-on' : 'bg-nv-border-strong'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors flex-shrink-0">
+                  <span :class="newForm.ja_terminou ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-[#FFFFFF] shadow transition-transform"></span>
                 </button>
               </div>
             </div>
@@ -1239,15 +1241,15 @@ textarea.field{ resize:vertical; min-height:80px }
           <div class="lg:col-span-2 space-y-5">
             <div class="card p-5">
               <div class="flex items-center justify-between mb-4">
-                <h3 class="font-display font-extrabold text-base text-ink">Identificação</h3>
+                <h3 class="font-display font-extrabold text-base text-nv-ink">Identificação</h3>
                 <template x-if="['marca','modelo','ano','concentracao'].some(k => scrapeFilled.includes(k))"><span class="chip chip-gold text-[10px]">AUTO · FRAGRANTICA</span></template>
               </div>
               <div class="grid sm:grid-cols-2 gap-4">
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Marca <span class="text-err">*</span></label><input x-model="newForm.marca" type="text" class="field" :class="{'auto-glow': scrapeFilled.includes('marca')}" placeholder="Ex: Chanel"></div>
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Modelo <span class="text-err">*</span></label><input x-model="newForm.modelo" type="text" class="field" :class="{'auto-glow': scrapeFilled.includes('modelo')}" placeholder="Ex: Bleu de Chanel"></div>
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Ano de lançamento</label><input x-model.number="newForm.ano" type="number" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('ano')}" placeholder="2020"></div>
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Concentração</label>
-                  <select x-model="newForm.concentracao" class="field bg-white" :class="{'auto-glow': scrapeFilled.includes('concentracao')}">
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Marca <span class="text-nv-danger-text">*</span></label><input x-model="newForm.marca" type="text" class="field" :class="{'auto-glow': scrapeFilled.includes('marca')}" placeholder="Ex: Chanel"></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Modelo <span class="text-nv-danger-text">*</span></label><input x-model="newForm.modelo" type="text" class="field" :class="{'auto-glow': scrapeFilled.includes('modelo')}" placeholder="Ex: Bleu de Chanel"></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Ano de lançamento</label><input x-model.number="newForm.ano" type="number" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('ano')}" placeholder="2020"></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Concentração</label>
+                  <select x-model="newForm.concentracao" class="field" :class="{'auto-glow': scrapeFilled.includes('concentracao')}">
                     <option value="EDT">Eau de Toilette (EDT)</option><option value="EDP">Eau de Parfum (EDP)</option><option value="Elixir">Elixir</option><option value="Parfum">Parfum</option><option value="EDC">Eau de Cologne (EDC)</option>
                   </select>
                 </div>
@@ -1256,27 +1258,27 @@ textarea.field{ resize:vertical; min-height:80px }
 
             <div class="card p-5">
               <div class="flex items-center justify-between mb-1">
-                <h3 class="font-display font-extrabold text-base text-ink">Estoque e preço</h3>
+                <h3 class="font-display font-extrabold text-base text-nv-ink">Estoque e preço</h3>
                 <span class="chip chip-neutral text-[10px]">MANUAL</span>
               </div>
-              <p class="text-[11px] text-ink-muted mb-4">Fragrantica não informa isto — depende do frasco que você comprou.</p>
+              <p class="text-[11px] text-nv-soft mb-4">Fragrantica não informa isto — depende do frasco que você comprou.</p>
               <div class="grid sm:grid-cols-3 gap-4">
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Tamanho (ml) <span class="text-err">*</span></label><input x-model.number="newForm.tamanho_ml" @input="if(!newForm._touched_est) newForm.estoque_ml = newForm.tamanho_ml" type="number" class="field tnum" placeholder="100"></div>
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Estoque atual (ml) <span class="text-err">*</span></label><input x-model.number="newForm.estoque_ml" @input="newForm._touched_est = true" type="number" class="field tnum"></div>
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">ml por spray <span class="text-err">*</span></label><input x-model.number="newForm.ml_por_spray" type="number" step="0.05" class="field tnum" placeholder="0.10"></div>
-                <div class="sm:col-span-2"><label class="text-xs font-semibold text-ink-muted mb-1 block">Preço pago (R$)</label><input x-model.number="newForm.preco_pago" type="number" step="0.01" class="field tnum" placeholder="0,00"></div>
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Custo/spray (calc.)</label><input :value="newForm.preco_pago && newForm.tamanho_ml && newForm.ml_por_spray ? brl(newForm.preco_pago/(newForm.tamanho_ml/newForm.ml_por_spray)) : '—'" type="text" class="field tnum" disabled></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Tamanho (ml) <span class="text-nv-danger-text">*</span></label><input x-model.number="newForm.tamanho_ml" @input="if(!newForm._touched_est) newForm.estoque_ml = newForm.tamanho_ml" type="number" class="field tnum" placeholder="100"></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Estoque atual (ml) <span class="text-nv-danger-text">*</span></label><input x-model.number="newForm.estoque_ml" @input="newForm._touched_est = true" type="number" class="field tnum"></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 block">ml por spray <span class="text-nv-danger-text">*</span></label><input x-model.number="newForm.ml_por_spray" type="number" step="0.05" class="field tnum" placeholder="0.10"></div>
+                <div class="sm:col-span-2"><label class="text-xs font-semibold text-nv-soft mb-1 block">Preço pago (R$)</label><input x-model.number="newForm.preco_pago" type="number" step="0.01" class="field tnum" placeholder="0,00"></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Custo/spray (calc.)</label><input :value="newForm.preco_pago && newForm.tamanho_ml && newForm.ml_por_spray ? brl(newForm.preco_pago/(newForm.tamanho_ml/newForm.ml_por_spray)) : '—'" type="text" class="field tnum" disabled></div>
               </div>
             </div>
 
             <div class="card p-5">
               <div class="flex items-center justify-between mb-4">
-                <h3 class="font-display font-extrabold text-base text-ink">Perfil olfativo</h3>
+                <h3 class="font-display font-extrabold text-base text-nv-ink">Perfil olfativo</h3>
                 <template x-if="['familia','notas_topo','notas_coracao','notas_fundo'].some(k => scrapeFilled.includes(k))"><span class="chip chip-gold text-[10px]">AUTO · FRAGRANTICA</span></template>
               </div>
               <div class="space-y-4">
                 <div>
-                  <label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Família olfativa <template x-if="scrapeFilled.includes('familia')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label>
+                  <label class="text-xs font-semibold text-nv-soft mb-1 flex items-center gap-2">Família olfativa <template x-if="scrapeFilled.includes('familia')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label>
                   <div class="flex flex-wrap gap-2 p-1 rounded-xl" :class="{'ring-2 ring-gold-300 bg-gold-50/40': scrapeFilled.includes('familia')}">
                     <template x-for="f in familias" :key="f.key">
                       <button type="button" @click="newForm.familia = f.key" class="chip cursor-pointer transition-all" :class="newForm.familia === f.key ? 'chip-ink' : 'chip-neutral'">
@@ -1286,18 +1288,18 @@ textarea.field{ resize:vertical; min-height:80px }
                   </div>
                 </div>
                 <div class="grid sm:grid-cols-3 gap-4">
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Notas de topo</label><textarea x-model="newForm.notas_topo" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_topo')}" placeholder="Bergamota, limão…"></textarea></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Notas de coração</label><textarea x-model="newForm.notas_coracao" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_coracao')}" placeholder="Rosa, jasmim…"></textarea></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Notas de fundo</label><textarea x-model="newForm.notas_fundo" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_fundo')}" placeholder="Almíscar, cedro…"></textarea></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Notas de topo</label><textarea x-model="newForm.notas_topo" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_topo')}" placeholder="Bergamota, limão…"></textarea></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Notas de coração</label><textarea x-model="newForm.notas_coracao" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_coracao')}" placeholder="Rosa, jasmim…"></textarea></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Notas de fundo</label><textarea x-model="newForm.notas_fundo" class="field" :class="{'auto-glow': scrapeFilled.includes('notas_fundo')}" placeholder="Almíscar, cedro…"></textarea></div>
                 </div>
               </div>
             </div>
 
             <div class="card p-5">
-              <h3 class="font-display font-extrabold text-base text-ink mb-4">Avaliação</h3>
+              <h3 class="font-display font-extrabold text-base text-nv-ink mb-4">Avaliação</h3>
               <div class="grid sm:grid-cols-3 gap-4 items-start">
                 <div>
-                  <label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Rating pessoal <span class="chip chip-neutral text-[9px] py-0 px-1.5">MANUAL</span></label>
+                  <label class="text-xs font-semibold text-nv-soft mb-1 flex items-center gap-2">Rating pessoal <span class="chip chip-neutral text-[9px] py-0 px-1.5">MANUAL</span></label>
                   <div class="flex items-center gap-1">
                     <template x-for="i in 5" :key="i">
                       <button type="button" @click="newForm.rating = i" class="p-0.5">
@@ -1306,23 +1308,23 @@ textarea.field{ resize:vertical; min-height:80px }
                     </template>
                   </div>
                 </div>
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Nota Fragrantica (0-5) <template x-if="scrapeFilled.includes('nota_fragrantica')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label><input x-model.number="newForm.nota_fragrantica" type="number" step="0.01" min="0" max="5" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('nota_fragrantica')}" placeholder="4,20"></div>
-                <div><label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Votos Fragrantica <template x-if="scrapeFilled.includes('votos_fragrantica')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label><input x-model.number="newForm.votos_fragrantica" type="number" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('votos_fragrantica')}" placeholder="1000"></div>
-                <div class="sm:col-span-3"><label class="text-xs font-semibold text-ink-muted mb-1 flex items-center gap-2">Review pessoal <span class="chip chip-neutral text-[9px] py-0 px-1.5">MANUAL</span></label><textarea x-model="newForm.review" class="field" rows="4" placeholder="O que achou desse perfume?"></textarea></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 flex items-center gap-2">Nota Fragrantica (0-5) <template x-if="scrapeFilled.includes('nota_fragrantica')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label><input x-model.number="newForm.nota_fragrantica" type="number" step="0.01" min="0" max="5" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('nota_fragrantica')}" placeholder="4,20"></div>
+                <div><label class="text-xs font-semibold text-nv-soft mb-1 flex items-center gap-2">Votos Fragrantica <template x-if="scrapeFilled.includes('votos_fragrantica')"><span class="chip chip-gold text-[9px] py-0 px-1.5">AUTO</span></template></label><input x-model.number="newForm.votos_fragrantica" type="number" class="field tnum" :class="{'auto-glow': scrapeFilled.includes('votos_fragrantica')}" placeholder="1000"></div>
+                <div class="sm:col-span-3"><label class="text-xs font-semibold text-nv-soft mb-1 flex items-center gap-2">Review pessoal <span class="chip chip-neutral text-[9px] py-0 px-1.5">MANUAL</span></label><textarea x-model="newForm.review" class="field" rows="4" placeholder="O que achou desse perfume?"></textarea></div>
                 <div class="sm:col-span-3">
-                  <label class="text-xs font-semibold text-ink-muted mb-1 block">Referência olfativa (autocomplete)</label>
+                  <label class="text-xs font-semibold text-nv-soft mb-1 block">Referência olfativa (autocomplete)</label>
                   <div class="relative">
                     <input x-model="autoQuery" @focus="autoOpen=true" @input="autoOpen=true" type="text" class="field" placeholder="Buscar perfume existente…">
-                    <div x-show="autoOpen && autoResults().length > 0" @click.outside="autoOpen=false" class="absolute z-20 mt-1 w-full bg-white border border-surface-border rounded-xl shadow-lift max-h-56 overflow-auto">
+                    <div x-show="autoOpen && autoResults().length > 0" @click.outside="autoOpen=false" class="absolute z-20 mt-1 w-full bg-nv-surface border border-nv-border-strong rounded-xl shadow-lift max-h-56 overflow-auto">
                       <template x-for="r in autoResults()" :key="r.id">
-                        <button type="button" @click="newForm.referencia_id = r.id; autoQuery = r.marca+' '+r.modelo; autoOpen = false" class="w-full text-left px-3 py-2 hover:bg-cream-100 flex items-center gap-2 border-b border-surface-border/50 last:border-0">
+                        <button type="button" @click="newForm.referencia_id = r.id; autoQuery = r.marca+' '+r.modelo; autoOpen = false" class="w-full text-left px-3 py-2 hover:bg-nv-surface-2 flex items-center gap-2 border-b border-nv-border last:border-0">
                           <div class="bottle w-8 shrink-0" :class="'tone-'+r.familia" style="aspect-ratio:4/5">
                             <template x-if="photoKind(r.foto) === 'url'"><img :src="r.foto" class="absolute inset-0 w-full h-full object-contain p-0.5 z-10" onerror="this.style.display='none'"></template>
                             <template x-if="photoKind(r.foto) !== 'url'"><svg viewBox="0 0 60 90" style="width:70%;height:auto"><use href="#bottle-svg"/></svg></template>
                           </div>
                           <div class="min-w-0">
-                            <p class="text-[10px] uppercase text-ink-muted" x-text="r.marca"></p>
-                            <p class="text-sm font-semibold text-ink truncate" x-text="r.modelo"></p>
+                            <p class="text-[10px] uppercase text-nv-soft" x-text="r.marca"></p>
+                            <p class="text-sm font-semibold text-nv-ink truncate" x-text="r.modelo"></p>
                           </div>
                         </button>
                       </template>
@@ -1354,14 +1356,14 @@ textarea.field{ resize:vertical; min-height:80px }
         <section x-transition.opacity class="fade-in">
           <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
             <button @click="navigate('/'+currentPerfume().id)" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold"><svg class="i"><use href="#i-back"/></svg><span class="hidden sm:inline">Voltar</span></button>
-            <h1 class="font-display font-extrabold text-xl sm:text-2xl text-ink">Editar perfume</h1>
+            <h1 class="font-display font-extrabold text-xl sm:text-2xl text-nv-ink">Editar perfume</h1>
             <span class="w-24"></span>
           </div>
 
           <form @submit.prevent="submitEdit()" class="grid lg:grid-cols-3 gap-5 max-w-5xl">
             <div class="lg:col-span-1 space-y-4">
               <div class="card p-4">
-                <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-2">Foto do frasco</p>
+                <p class="text-[11px] uppercase tracking-wider text-nv-muted mb-2">Foto do frasco</p>
                 <div class="bottle" :class="'tone-'+(editForm.familia||'leather')" style="aspect-ratio: 4/5">
                   <template x-if="photoKind(editForm.foto) === 'url'"><img :src="editForm.foto" class="absolute inset-0 w-full h-full object-contain p-4 z-10" onerror="this.style.display='none'"></template>
                   <template x-if="photoKind(editForm.foto) === 'svg'"><svg viewBox="0 0 60 90" style="width:55%;height:auto"><use href="#bottle-svg"/></svg></template>
@@ -1374,44 +1376,44 @@ textarea.field{ resize:vertical; min-height:80px }
               </div>
               <div class="card p-4 space-y-3">
                 <div class="flex items-center justify-between gap-3">
-                  <div><p class="font-semibold text-ink text-sm">Na wishlist</p></div>
-                  <button type="button" @click="editForm.eh_wishlist = !editForm.eh_wishlist; if(editForm.eh_wishlist) editForm.ja_terminou = false" :class="editForm.eh_wishlist ? 'bg-gold-500' : 'bg-cream-300'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors">
-                    <span :class="editForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-white shadow transition-transform"></span>
+                  <div><p class="font-semibold text-nv-ink text-sm">Na wishlist</p></div>
+                  <button type="button" @click="editForm.eh_wishlist = !editForm.eh_wishlist; if(editForm.eh_wishlist) editForm.ja_terminou = false" :class="editForm.eh_wishlist ? 'bg-nv-on' : 'bg-nv-border-strong'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors">
+                    <span :class="editForm.eh_wishlist ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-[#FFFFFF] shadow transition-transform"></span>
                   </button>
                 </div>
-                <div class="h-px bg-surface-border"></div>
+                <div class="h-px bg-nv-border-strong"></div>
                 <div class="flex items-center justify-between gap-3">
-                  <div><p class="font-semibold text-ink text-sm">Já tive (arquivado)</p></div>
-                  <button type="button" @click="editForm.ja_terminou = !editForm.ja_terminou; if(editForm.ja_terminou) editForm.eh_wishlist = false" :class="editForm.ja_terminou ? 'bg-ink' : 'bg-cream-300'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors">
-                    <span :class="editForm.ja_terminou ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-white shadow transition-transform"></span>
+                  <div><p class="font-semibold text-nv-ink text-sm">Já tive (arquivado)</p></div>
+                  <button type="button" @click="editForm.ja_terminou = !editForm.ja_terminou; if(editForm.ja_terminou) editForm.eh_wishlist = false" :class="editForm.ja_terminou ? 'bg-nv-on' : 'bg-nv-border-strong'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors">
+                    <span :class="editForm.ja_terminou ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-[#FFFFFF] shadow transition-transform"></span>
                   </button>
                 </div>
               </div>
             </div>
             <div class="lg:col-span-2 space-y-5">
               <div class="card p-5">
-                <h3 class="font-display font-extrabold text-base text-ink mb-4">Identificação</h3>
+                <h3 class="font-display font-extrabold text-base text-nv-ink mb-4">Identificação</h3>
                 <div class="grid sm:grid-cols-2 gap-4">
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Marca <span class="text-err">*</span></label><input x-model="editForm.marca" type="text" class="field"></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Modelo <span class="text-err">*</span></label><input x-model="editForm.modelo" type="text" class="field"></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Ano</label><input x-model.number="editForm.ano" type="number" class="field tnum"></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Concentração</label>
-                    <select x-model="editForm.concentracao" class="field bg-white"><option>EDT</option><option>EDP</option><option>Elixir</option><option>Parfum</option><option>EDC</option></select>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Marca <span class="text-nv-danger-text">*</span></label><input x-model="editForm.marca" type="text" class="field"></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Modelo <span class="text-nv-danger-text">*</span></label><input x-model="editForm.modelo" type="text" class="field"></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Ano</label><input x-model.number="editForm.ano" type="number" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Concentração</label>
+                    <select x-model="editForm.concentracao" class="field"><option>EDT</option><option>EDP</option><option>Elixir</option><option>Parfum</option><option>EDC</option></select>
                   </div>
                 </div>
               </div>
               <div class="card p-5">
-                <h3 class="font-display font-extrabold text-base text-ink mb-4">Estoque e preço</h3>
+                <h3 class="font-display font-extrabold text-base text-nv-ink mb-4">Estoque e preço</h3>
                 <div class="grid sm:grid-cols-3 gap-4">
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Tamanho (ml)</label><input x-model.number="editForm.tamanho_ml" type="number" class="field tnum"></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Estoque (ml)</label><input x-model.number="editForm.estoque_ml" type="number" class="field tnum"></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">ml por spray</label><input x-model.number="editForm.ml_por_spray" type="number" step="0.05" class="field tnum"></div>
-                  <div class="sm:col-span-2"><label class="text-xs font-semibold text-ink-muted mb-1 block">Preço pago (R$)</label><input x-model.number="editForm.preco_pago" type="number" step="0.01" class="field tnum"></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Custo/spray</label><input :value="editForm.preco_pago && editForm.tamanho_ml && editForm.ml_por_spray ? brl(editForm.preco_pago/(editForm.tamanho_ml/editForm.ml_por_spray)) : '—'" type="text" class="field tnum" disabled></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Tamanho (ml)</label><input x-model.number="editForm.tamanho_ml" type="number" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Estoque (ml)</label><input x-model.number="editForm.estoque_ml" type="number" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">ml por spray</label><input x-model.number="editForm.ml_por_spray" type="number" step="0.05" class="field tnum"></div>
+                  <div class="sm:col-span-2"><label class="text-xs font-semibold text-nv-soft mb-1 block">Preço pago (R$)</label><input x-model.number="editForm.preco_pago" type="number" step="0.01" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Custo/spray</label><input :value="editForm.preco_pago && editForm.tamanho_ml && editForm.ml_por_spray ? brl(editForm.preco_pago/(editForm.tamanho_ml/editForm.ml_por_spray)) : '—'" type="text" class="field tnum" disabled></div>
                 </div>
               </div>
               <div class="card p-5">
-                <h3 class="font-display font-extrabold text-base text-ink mb-4">Perfil olfativo</h3>
+                <h3 class="font-display font-extrabold text-base text-nv-ink mb-4">Perfil olfativo</h3>
                 <div class="space-y-4">
                   <div class="flex flex-wrap gap-2">
                     <template x-for="f in familias" :key="f.key">
@@ -1426,17 +1428,17 @@ textarea.field{ resize:vertical; min-height:80px }
                 </div>
               </div>
               <div class="card p-5">
-                <h3 class="font-display font-extrabold text-base text-ink mb-4">Avaliação</h3>
+                <h3 class="font-display font-extrabold text-base text-nv-ink mb-4">Avaliação</h3>
                 <div class="grid sm:grid-cols-3 gap-4">
                   <div>
-                    <label class="text-xs font-semibold text-ink-muted mb-1 block">Rating</label>
+                    <label class="text-xs font-semibold text-nv-soft mb-1 block">Rating</label>
                     <div class="flex items-center gap-1">
                       <template x-for="i in 5" :key="i"><button type="button" @click="editForm.rating = i"><svg class="i fill" :class="i <= editForm.rating ? 'star' : 'star-off'" style="width:1.5rem;height:1.5rem"><use href="#i-star"/></svg></button></template>
                     </div>
                   </div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Nota Fragrantica</label><input x-model.number="editForm.nota_fragrantica" type="number" step="0.01" class="field tnum"></div>
-                  <div><label class="text-xs font-semibold text-ink-muted mb-1 block">Votos</label><input x-model.number="editForm.votos_fragrantica" type="number" class="field tnum"></div>
-                  <div class="sm:col-span-3"><label class="text-xs font-semibold text-ink-muted mb-1 block">Review</label><textarea x-model="editForm.review" class="field" rows="4"></textarea></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Nota Fragrantica</label><input x-model.number="editForm.nota_fragrantica" type="number" step="0.01" class="field tnum"></div>
+                  <div><label class="text-xs font-semibold text-nv-soft mb-1 block">Votos</label><input x-model.number="editForm.votos_fragrantica" type="number" class="field tnum"></div>
+                  <div class="sm:col-span-3"><label class="text-xs font-semibold text-nv-soft mb-1 block">Review</label><textarea x-model="editForm.review" class="field" rows="4"></textarea></div>
                 </div>
               </div>
 
@@ -1455,20 +1457,20 @@ textarea.field{ resize:vertical; min-height:80px }
       <section x-show="route === '/import'" x-transition.opacity class="fade-in">
         <div class="flex items-center justify-between gap-3 mt-4 lg:mt-0 mb-5">
           <button @click="navigate('/')" class="btn-ghost h-10 px-3 rounded-xl flex items-center gap-1.5 text-sm font-semibold"><svg class="i"><use href="#i-back"/></svg><span class="hidden sm:inline">Voltar</span></button>
-          <h1 class="font-display font-extrabold text-xl sm:text-2xl text-ink">Importar planilha</h1>
+          <h1 class="font-display font-extrabold text-xl sm:text-2xl text-nv-ink">Importar planilha</h1>
           <span class="w-24"></span>
         </div>
 
         <div class="max-w-3xl space-y-5">
           <div class="card p-6">
-            <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">1. Selecione o arquivo</p>
+            <p class="text-[11px] uppercase tracking-wider text-nv-muted mb-3">1. Selecione o arquivo</p>
             <label class="block cursor-pointer">
-              <div class="border-2 border-dashed border-surface-border-strong rounded-2xl p-8 text-center hover:border-gold-500 hover:bg-cream-100 transition-colors" :class="{'border-gold-500 bg-cream-100': importFile}">
-                <div class="mx-auto w-14 h-14 rounded-2xl bg-cream-200 flex items-center justify-center mb-3">
-                  <svg class="i text-2xl text-ink-muted"><use href="#i-upload"/></svg>
+              <div class="border-2 border-dashed border-nv-border-strong rounded-2xl p-8 text-center hover:border-nv-primary hover:bg-nv-surface-2 transition-colors" :class="{'border-nv-primary bg-nv-surface-2': importFile}">
+                <div class="mx-auto w-14 h-14 rounded-2xl bg-nv-surface-2 flex items-center justify-center mb-3">
+                  <svg class="i text-2xl text-nv-soft"><use href="#i-upload"/></svg>
                 </div>
-                <p class="font-semibold text-ink">Arraste ou clique para enviar Perfumes.xlsx</p>
-                <p class="text-xs text-ink-muted mt-1">Formatos aceitos: xlsx, xls, csv · até 5 MB</p>
+                <p class="font-semibold text-nv-ink">Arraste ou clique para enviar Perfumes.xlsx</p>
+                <p class="text-xs text-nv-soft mt-1">Formatos aceitos: xlsx, xls, csv · até 5 MB</p>
                 <template x-if="importFile">
                   <div class="mt-4 chip chip-ok"><svg class="i"><use href="#i-check"/></svg><span x-text="importFile"></span></div>
                 </template>
@@ -1478,27 +1480,27 @@ textarea.field{ resize:vertical; min-height:80px }
 
           <template x-if="importPreview">
             <div class="card p-6 fade-in">
-              <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-3">2. Colunas que serão reconhecidas</p>
-              <div class="bg-cream-100 rounded-xl p-4 text-sm space-y-2">
-                <p class="text-ink-muted"><span class="font-semibold text-ink">Obrigatórias:</span> marca, modelo</p>
-                <p class="text-ink-muted"><span class="font-semibold text-ink">Reconhecidas por nome</span> (podem variar): ano, tamanho/ml, estoque, preço, família, notas topo/coração/fundo, rating, fragrantica, votos, review, wishlist, já tive, foto</p>
-                <p class="text-[11px] text-ink-faint mt-2">Cabeçalhos em português ou inglês, com ou sem acento. Linhas sem marca/modelo são ignoradas.</p>
+              <p class="text-[11px] uppercase tracking-wider text-nv-muted mb-3">2. Colunas que serão reconhecidas</p>
+              <div class="bg-nv-surface-2 rounded-xl p-4 text-sm space-y-2">
+                <p class="text-nv-soft"><span class="font-semibold text-nv-ink">Obrigatórias:</span> marca, modelo</p>
+                <p class="text-nv-soft"><span class="font-semibold text-nv-ink">Reconhecidas por nome</span> (podem variar): ano, tamanho/ml, estoque, preço, família, notas topo/coração/fundo, rating, fragrantica, votos, review, wishlist, já tive, foto</p>
+                <p class="text-[11px] text-nv-muted mt-2">Cabeçalhos em português ou inglês, com ou sem acento. Linhas sem marca/modelo são ignoradas.</p>
               </div>
 
-              <p class="text-[11px] uppercase tracking-wider text-ink-faint mb-2 mt-6">3. Modo de import</p>
+              <p class="text-[11px] uppercase tracking-wider text-nv-muted mb-2 mt-6">3. Modo de import</p>
               <div class="flex flex-col sm:flex-row gap-2">
                 <label class="flex-1 cursor-pointer">
                   <input type="radio" name="importMode" value="add" x-model="importMode" class="peer hidden">
-                  <div class="border-2 rounded-2xl p-4 transition-colors" :class="importMode === 'add' ? 'border-ink bg-cream-100' : 'border-surface-border'">
-                    <p class="font-semibold text-ink text-sm flex items-center gap-2"><svg class="i"><use href="#i-plus"/></svg>Adicionar</p>
-                    <p class="text-xs text-ink-muted mt-1">Adiciona os novos e mantém os existentes.</p>
+                  <div class="border-2 rounded-2xl p-4 transition-colors" :class="importMode === 'add' ? 'border-nv-primary bg-nv-surface-2' : 'border-nv-border-strong'">
+                    <p class="font-semibold text-nv-ink text-sm flex items-center gap-2"><svg class="i"><use href="#i-plus"/></svg>Adicionar</p>
+                    <p class="text-xs text-nv-soft mt-1">Adiciona os novos e mantém os existentes.</p>
                   </div>
                 </label>
                 <label class="flex-1 cursor-pointer">
                   <input type="radio" name="importMode" value="replace" x-model="importMode" class="peer hidden">
-                  <div class="border-2 rounded-2xl p-4 transition-colors" :class="importMode === 'replace' ? 'border-err bg-err-bg' : 'border-surface-border'">
-                    <p class="font-semibold text-ink text-sm flex items-center gap-2"><svg class="i"><use href="#i-trash"/></svg>Substituir tudo</p>
-                    <p class="text-xs text-ink-muted mt-1">Apaga a coleção atual e importa do zero.</p>
+                  <div class="border-2 rounded-2xl p-4 transition-colors" :class="importMode === 'replace' ? 'border-nv-danger bg-nv-danger-bg' : 'border-nv-border-strong'">
+                    <p class="font-semibold text-nv-ink text-sm flex items-center gap-2"><svg class="i"><use href="#i-trash"/></svg>Substituir tudo</p>
+                    <p class="text-xs text-nv-soft mt-1">Apaga a coleção atual e importa do zero.</p>
                   </div>
                 </label>
               </div>
@@ -1518,7 +1520,7 @@ textarea.field{ resize:vertical; min-height:80px }
   <!-- ============================================================ -->
   <!-- BOTTOM NAV (mobile) -->
   <!-- ============================================================ -->
-  <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-white/90 backdrop-blur border-t border-surface-border">
+  <nav class="lg:hidden fixed bottom-0 inset-x-0 z-40 bg-nv-surface/90 backdrop-blur border-t border-nv-border-strong">
     <div class="bnav max-w-md mx-auto">
       <a href="#/" @click.prevent="navigate('/')" :class="{'active': route === '/'}"><svg class="i text-lg"><use href="#i-list"/></svg>Coleção</a>
       <a href="#/wishlist" @click.prevent="navigate('/wishlist')" :class="{'active': route === '/wishlist'}"><svg class="i text-lg"><use href="#i-heart"/></svg>Wishlist</a>
@@ -1540,7 +1542,7 @@ textarea.field{ resize:vertical; min-height:80px }
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center gap-2">
         <div class="w-10 h-10 rounded-xl btn-ink flex items-center justify-center"><svg class="i text-xl text-gold-400"><use href="#i-spray"/></svg></div>
-        <div><p class="font-display font-extrabold text-lg text-ink">Perfumaria</p><p class="text-[11px] text-ink-faint">Ferramentas · Clavis</p></div>
+        <div><p class="font-display font-extrabold text-lg text-nv-ink">Perfumaria</p><p class="text-[11px] text-nv-muted">Ferramentas · Clavis</p></div>
       </div>
       <button @click="drawerNav=false" class="btn-ghost h-9 w-9 rounded-lg flex items-center justify-center"><svg class="i"><use href="#i-x"/></svg></button>
     </div>
@@ -1548,7 +1550,7 @@ textarea.field{ resize:vertical; min-height:80px }
       <a href="#/" @click.prevent="navigate('/'); drawerNav=false" class="side-link" :class="{'active': route === '/'}"><svg class="i text-base side-ic"><use href="#i-list"/></svg>Coleção<span class="ml-auto text-xs opacity-70 tnum" x-text="filteredCollection().length"></span></a>
       <a href="#/wishlist" @click.prevent="navigate('/wishlist'); drawerNav=false" class="side-link" :class="{'active': route === '/wishlist'}"><svg class="i text-base side-ic"><use href="#i-heart"/></svg>Wishlist<span class="ml-auto text-xs opacity-70 tnum" x-text="wishlist().length"></span></a>
       <a href="#/tive" @click.prevent="navigate('/tive'); drawerNav=false" class="side-link" :class="{'active': route === '/tive'}"><svg class="i text-base side-ic"><use href="#i-archive"/></svg>Já tive<span class="ml-auto text-xs opacity-70 tnum" x-text="pastCollection().length"></span></a>
-      <div class="h-px bg-surface-border my-1.5 mx-3"></div>
+      <div class="h-px bg-nv-border-strong my-1.5 mx-3"></div>
       <a href="#/novo" @click.prevent="navigate('/novo'); drawerNav=false" class="side-link" :class="{'active': route === '/novo'}"><svg class="i text-base side-ic"><use href="#i-plus"/></svg>Cadastrar novo</a>
       <a href="#/import" @click.prevent="navigate('/import'); drawerNav=false" class="side-link" :class="{'active': route === '/import'}"><svg class="i text-base side-ic"><use href="#i-import"/></svg>Importar planilha</a>
     </nav>
@@ -1561,13 +1563,13 @@ textarea.field{ resize:vertical; min-height:80px }
 <div x-show="drawerFilters" x-transition.opacity class="overlay drawer" @click.self="drawerFilters=false" x-cloak>
   <div class="drawer-card fade-in">
     <div class="flex items-center justify-between mb-5">
-      <h3 class="font-display font-extrabold text-lg text-ink">Filtros</h3>
+      <h3 class="font-display font-extrabold text-lg text-nv-ink">Filtros</h3>
       <button @click="drawerFilters=false" class="btn-ghost h-9 w-9 rounded-lg flex items-center justify-center"><svg class="i"><use href="#i-x"/></svg></button>
     </div>
 
     <div class="space-y-6">
       <div>
-        <p class="text-xs font-semibold text-ink-muted mb-2">Marca</p>
+        <p class="text-xs font-semibold text-nv-soft mb-2">Marca</p>
         <div class="flex flex-wrap gap-2">
           <template x-for="m in uniqueBrands()" :key="m">
             <button @click="toggleFilterList('marcas', m)" class="chip cursor-pointer" :class="filters.marcas.includes(m) ? 'chip-ink' : 'chip-neutral'"><span x-text="m"></span></button>
@@ -1575,7 +1577,7 @@ textarea.field{ resize:vertical; min-height:80px }
         </div>
       </div>
       <div>
-        <p class="text-xs font-semibold text-ink-muted mb-2">Família olfativa</p>
+        <p class="text-xs font-semibold text-nv-soft mb-2">Família olfativa</p>
         <div class="flex flex-wrap gap-2">
           <template x-for="f in familias" :key="f.key">
             <button @click="toggleFilterList('familias', f.key)" class="chip cursor-pointer" :class="filters.familias.includes(f.key) ? 'chip-ink' : 'chip-neutral'"><span class="dot" :class="'f-'+f.key"></span><span x-text="f.label"></span></button>
@@ -1583,25 +1585,25 @@ textarea.field{ resize:vertical; min-height:80px }
         </div>
       </div>
       <div>
-        <p class="text-xs font-semibold text-ink-muted mb-2 flex items-center justify-between">Rating mínimo<span class="tnum text-ink" x-text="filters.ratingMin+' ★'"></span></p>
-        <input type="range" min="0" max="5" step="1" x-model.number="filters.ratingMin" class="w-full accent-gold-500">
-        <div class="flex justify-between text-[10px] text-ink-faint mt-1"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+        <p class="text-xs font-semibold text-nv-soft mb-2 flex items-center justify-between">Rating mínimo<span class="tnum text-nv-ink" x-text="filters.ratingMin+' ★'"></span></p>
+        <input type="range" min="0" max="5" step="1" x-model.number="filters.ratingMin" class="w-full accent-nv-primary">
+        <div class="flex justify-between text-[10px] text-nv-muted mt-1"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
       </div>
       <label class="flex items-center justify-between cursor-pointer">
-        <span class="text-sm text-ink font-semibold">Só com estoque</span>
-        <button type="button" @click="filters.somenteEstoque = !filters.somenteEstoque" :class="filters.somenteEstoque ? 'bg-gold-500' : 'bg-cream-300'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors">
-          <span :class="filters.somenteEstoque ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-white shadow transition-transform"></span>
+        <span class="text-sm text-nv-ink font-semibold">Só com estoque</span>
+        <button type="button" @click="filters.somenteEstoque = !filters.somenteEstoque" :class="filters.somenteEstoque ? 'bg-nv-on' : 'bg-nv-border-strong'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors">
+          <span :class="filters.somenteEstoque ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-[#FFFFFF] shadow transition-transform"></span>
         </button>
       </label>
       <label class="flex items-center justify-between cursor-pointer">
-        <span class="text-sm text-ink font-semibold">Só com referência (dupe)</span>
-        <button type="button" @click="filters.somenteReferencia = !filters.somenteReferencia" :class="filters.somenteReferencia ? 'bg-gold-500' : 'bg-cream-300'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors">
-          <span :class="filters.somenteReferencia ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-white shadow transition-transform"></span>
+        <span class="text-sm text-nv-ink font-semibold">Só com referência (dupe)</span>
+        <button type="button" @click="filters.somenteReferencia = !filters.somenteReferencia" :class="filters.somenteReferencia ? 'bg-nv-on' : 'bg-nv-border-strong'" class="relative inline-flex items-center w-11 h-6 px-1 rounded-full transition-colors">
+          <span :class="filters.somenteReferencia ? 'translate-x-5' : 'translate-x-0'" class="inline-block w-4 h-4 rounded-full bg-[#FFFFFF] shadow transition-transform"></span>
         </button>
       </label>
     </div>
 
-    <div class="flex items-center gap-2 mt-8 pt-4 border-t border-surface-border">
+    <div class="flex items-center gap-2 mt-8 pt-4 border-t border-nv-border-strong">
       <button @click="clearAllFilters()" class="btn-ghost h-10 px-4 rounded-xl text-sm font-semibold flex-1">Limpar</button>
       <button @click="drawerFilters=false" class="btn-ink h-10 px-4 rounded-xl text-sm font-semibold flex-1 uppercase tracking-wider">Aplicar</button>
     </div>
@@ -1619,8 +1621,8 @@ textarea.field{ resize:vertical; min-height:80px }
           <svg class="i text-xl text-gold-400"><use href="#i-spray"/></svg>
         </div>
         <div>
-          <h3 class="font-display font-extrabold text-lg text-ink">Registrar uso</h3>
-          <p class="text-xs text-ink-muted" x-text="sprayModal.perfumeId && findPerfume(sprayModal.perfumeId) ? findPerfume(sprayModal.perfumeId).marca+' — '+findPerfume(sprayModal.perfumeId).modelo : ''"></p>
+          <h3 class="font-display font-extrabold text-lg text-nv-ink">Registrar uso</h3>
+          <p class="text-xs text-nv-soft" x-text="sprayModal.perfumeId && findPerfume(sprayModal.perfumeId) ? findPerfume(sprayModal.perfumeId).marca+' — '+findPerfume(sprayModal.perfumeId).modelo : ''"></p>
         </div>
       </div>
       <button @click="sprayModal.open=false" class="btn-ghost h-9 w-9 rounded-lg flex items-center justify-center"><svg class="i"><use href="#i-x"/></svg></button>
@@ -1628,7 +1630,7 @@ textarea.field{ resize:vertical; min-height:80px }
 
     <div class="space-y-4">
       <div>
-        <p class="text-xs font-semibold text-ink-muted mb-2">Ocasião</p>
+        <p class="text-xs font-semibold text-nv-soft mb-2">Ocasião</p>
         <div class="grid grid-cols-2 gap-2">
           <template x-for="o in ['trabalho','social','noite','casa']" :key="o">
             <button @click="sprayModal.ocasiao = o" class="chip py-2 cursor-pointer capitalize justify-center" :class="sprayModal.ocasiao === o ? 'chip-ink' : 'chip-neutral'" x-text="o"></button>
@@ -1636,7 +1638,7 @@ textarea.field{ resize:vertical; min-height:80px }
         </div>
       </div>
       <div>
-        <p class="text-xs font-semibold text-ink-muted mb-2">Estação</p>
+        <p class="text-xs font-semibold text-nv-soft mb-2">Estação</p>
         <div class="grid grid-cols-3 gap-2">
           <template x-for="e in ['verão','meia-estação','inverno']" :key="e">
             <button @click="sprayModal.estacao = e" class="chip py-2 cursor-pointer capitalize justify-center" :class="sprayModal.estacao === e ? 'chip-ink' : 'chip-neutral'" x-text="e"></button>
@@ -1644,22 +1646,22 @@ textarea.field{ resize:vertical; min-height:80px }
         </div>
       </div>
       <div>
-        <p class="text-xs font-semibold text-ink-muted mb-2">Hora do dia</p>
+        <p class="text-xs font-semibold text-nv-soft mb-2">Hora do dia</p>
         <div class="grid grid-cols-3 gap-2">
           <template x-for="h in ['manhã','tarde','noite']" :key="h">
             <button @click="sprayModal.hora = h" class="chip py-2 cursor-pointer capitalize justify-center" :class="sprayModal.hora === h ? 'chip-ink' : 'chip-neutral'" x-text="h"></button>
           </template>
         </div>
       </div>
-      <div class="bg-cream-100 rounded-xl p-3 flex items-center gap-3">
+      <div class="bg-nv-surface-2 rounded-xl p-3 flex items-center gap-3">
         <div class="w-9 h-9 rounded-lg btn-gold flex items-center justify-center"><svg class="i text-base"><use href="#i-drop"/></svg></div>
         <div class="flex-1">
-          <p class="text-[11px] uppercase tracking-wider text-ink-faint">Será deduzido</p>
-          <p class="font-display font-extrabold text-ink tnum"><span x-text="sprayModal.perfumeId && findPerfume(sprayModal.perfumeId) ? findPerfume(sprayModal.perfumeId).ml_por_spray : 0.1"></span> ml</p>
+          <p class="text-[11px] uppercase tracking-wider text-nv-muted">Será deduzido</p>
+          <p class="font-display font-extrabold text-nv-ink tnum"><span x-text="sprayModal.perfumeId && findPerfume(sprayModal.perfumeId) ? findPerfume(sprayModal.perfumeId).ml_por_spray : 0.1"></span> ml</p>
         </div>
         <div class="text-right">
-          <p class="text-[11px] uppercase tracking-wider text-ink-faint">Restará</p>
-          <p class="font-display font-extrabold text-ink tnum">
+          <p class="text-[11px] uppercase tracking-wider text-nv-muted">Restará</p>
+          <p class="font-display font-extrabold text-nv-ink tnum">
             <span x-text="sprayModal.perfumeId && findPerfume(sprayModal.perfumeId) ? Math.max(0,findPerfume(sprayModal.perfumeId).estoque_ml - findPerfume(sprayModal.perfumeId).ml_por_spray).toFixed(2) : ''"></span> ml
           </p>
         </div>
@@ -1681,7 +1683,7 @@ textarea.field{ resize:vertical; min-height:80px }
     <div class="flex items-center justify-between mb-5">
       <div class="flex items-center gap-3">
         <div class="w-11 h-11 rounded-xl btn-gold flex items-center justify-center"><svg class="i text-xl"><use href="#i-dice"/></svg></div>
-        <div><h3 class="font-display font-extrabold text-lg text-ink">Random pick</h3><p class="text-xs text-ink-muted">Sortear um perfume da coleção com estoque</p></div>
+        <div><h3 class="font-display font-extrabold text-lg text-nv-ink">Random pick</h3><p class="text-xs text-nv-soft">Sortear um perfume da coleção com estoque</p></div>
       </div>
       <button @click="openRandom=false; randomPicked=null" class="btn-ghost h-9 w-9 rounded-lg flex items-center justify-center"><svg class="i"><use href="#i-x"/></svg></button>
     </div>
@@ -1689,13 +1691,13 @@ textarea.field{ resize:vertical; min-height:80px }
     <template x-if="!randomPicked">
       <div class="space-y-4">
         <div>
-          <p class="text-xs font-semibold text-ink-muted mb-2">Filtro por ocasião (opcional)</p>
+          <p class="text-xs font-semibold text-nv-soft mb-2">Filtro por ocasião (opcional)</p>
           <div class="grid grid-cols-2 gap-2">
             <template x-for="o in ['qualquer','trabalho','social','noite','casa']" :key="o"><button @click="randomFilter.ocasiao = o" class="chip py-2 cursor-pointer capitalize justify-center" :class="randomFilter.ocasiao === o ? 'chip-ink' : 'chip-neutral'" x-text="o"></button></template>
           </div>
         </div>
         <div>
-          <p class="text-xs font-semibold text-ink-muted mb-2">Filtro por estação (opcional)</p>
+          <p class="text-xs font-semibold text-nv-soft mb-2">Filtro por estação (opcional)</p>
           <div class="grid grid-cols-3 gap-2">
             <template x-for="e in ['qualquer','verão','meia-estação','inverno']" :key="e"><button @click="randomFilter.estacao = e" class="chip py-2 cursor-pointer capitalize justify-center" :class="randomFilter.estacao === e ? 'chip-ink' : 'chip-neutral'" x-text="e"></button></template>
           </div>
@@ -1706,13 +1708,13 @@ textarea.field{ resize:vertical; min-height:80px }
 
     <template x-if="randomPicked">
       <div class="fade-in text-center">
-        <p class="text-xs text-ink-muted mb-3">Escolhemos pra você</p>
+        <p class="text-xs text-nv-soft mb-3">Escolhemos pra você</p>
         <div class="bottle mx-auto mb-4" :class="'tone-'+randomPicked.familia" style="aspect-ratio: 4/5; max-width: 180px">
           <template x-if="photoKind(randomPicked.foto) === 'url'"><img :src="randomPicked.foto" class="absolute inset-0 w-full h-full object-contain p-3 z-10" onerror="this.style.display='none'"></template>
           <template x-if="photoKind(randomPicked.foto) !== 'url'"><svg viewBox="0 0 60 90" style="width:55%;height:auto"><use href="#bottle-svg"/></svg></template>
         </div>
-        <p class="text-xs font-semibold uppercase tracking-wider text-ink-muted" x-text="randomPicked.marca"></p>
-        <h4 class="font-display font-extrabold text-2xl text-ink leading-tight" x-text="randomPicked.modelo"></h4>
+        <p class="text-xs font-semibold uppercase tracking-wider text-nv-soft" x-text="randomPicked.marca"></p>
+        <h4 class="font-display font-extrabold text-2xl text-nv-ink leading-tight" x-text="randomPicked.modelo"></h4>
         <div class="flex items-center justify-center gap-1 mt-2 mb-4">
           <template x-for="i in 5" :key="i"><svg class="i fill" :class="i <= randomPicked.rating ? 'star' : 'star-off'" style="width:1.1rem;height:1.1rem"><use href="#i-star"/></svg></template>
         </div>
@@ -1732,15 +1734,15 @@ textarea.field{ resize:vertical; min-height:80px }
 <div x-show="openConfirmDelete" x-transition.opacity class="overlay" @click.self="openConfirmDelete=null" x-cloak>
   <div class="modal-card fade-in" style="max-width:420px">
     <div class="flex items-start gap-3 mb-4">
-      <div class="w-11 h-11 rounded-xl bg-err-bg flex items-center justify-center shrink-0"><svg class="i text-xl text-err-fg"><use href="#i-trash"/></svg></div>
+      <div class="w-11 h-11 rounded-xl bg-nv-danger-bg flex items-center justify-center shrink-0"><svg class="i text-xl text-nv-danger-text"><use href="#i-trash"/></svg></div>
       <div>
-        <h3 class="font-display font-extrabold text-lg text-ink">Excluir perfume?</h3>
-        <p class="text-sm text-ink-muted mt-1">Isso apaga também o histórico de <span class="font-semibold tnum" x-text="openConfirmDelete ? usageOf(openConfirmDelete).length : 0"></span> spray(s) associados. A ação é irreversível.</p>
+        <h3 class="font-display font-extrabold text-lg text-nv-ink">Excluir perfume?</h3>
+        <p class="text-sm text-nv-soft mt-1">Isso apaga também o histórico de <span class="font-semibold tnum" x-text="openConfirmDelete ? usageOf(openConfirmDelete).length : 0"></span> spray(s) associados. A ação é irreversível.</p>
       </div>
     </div>
     <div class="flex items-center gap-2">
       <button @click="openConfirmDelete=null" class="btn-ghost h-11 px-4 rounded-xl text-sm font-semibold flex-1">Cancelar</button>
-      <button @click="confirmDelete()" class="h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1 bg-err text-white hover:bg-err-fg">Excluir</button>
+      <button @click="confirmDelete()" class="h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1 bg-nv-danger text-nv-bg hover:bg-nv-danger-text">Excluir</button>
     </div>
   </div>
 </div>
@@ -1751,15 +1753,15 @@ textarea.field{ resize:vertical; min-height:80px }
 <div x-show="openConfirmDeleteSpray" x-transition.opacity class="overlay" @click.self="openConfirmDeleteSpray=null" x-cloak>
   <div class="modal-card fade-in" style="max-width:400px">
     <div class="flex items-start gap-3 mb-4">
-      <div class="w-11 h-11 rounded-xl bg-err-bg flex items-center justify-center shrink-0"><svg class="i text-xl text-err-fg"><use href="#i-trash"/></svg></div>
+      <div class="w-11 h-11 rounded-xl bg-nv-danger-bg flex items-center justify-center shrink-0"><svg class="i text-xl text-nv-danger-text"><use href="#i-trash"/></svg></div>
       <div>
-        <h3 class="font-display font-extrabold text-lg text-ink">Remover este spray?</h3>
-        <p class="text-sm text-ink-muted mt-1">O estoque do perfume será restaurado em <span class="tnum" x-text="openConfirmDeleteSpray && usageLog.find(u=>u.id===openConfirmDeleteSpray) ? usageLog.find(u=>u.id===openConfirmDeleteSpray).ml : 0"></span> ml.</p>
+        <h3 class="font-display font-extrabold text-lg text-nv-ink">Remover este spray?</h3>
+        <p class="text-sm text-nv-soft mt-1">O estoque do perfume será restaurado em <span class="tnum" x-text="openConfirmDeleteSpray && usageLog.find(u=>u.id===openConfirmDeleteSpray) ? usageLog.find(u=>u.id===openConfirmDeleteSpray).ml : 0"></span> ml.</p>
       </div>
     </div>
     <div class="flex items-center gap-2">
       <button @click="openConfirmDeleteSpray=null" class="btn-ghost h-11 px-4 rounded-xl text-sm font-semibold flex-1">Cancelar</button>
-      <button @click="confirmDeleteSpray()" class="h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1 bg-err text-white hover:bg-err-fg">Remover</button>
+      <button @click="confirmDeleteSpray()" class="h-11 px-4 rounded-xl text-sm font-bold uppercase tracking-wider flex-1 bg-nv-danger text-nv-bg hover:bg-nv-danger-text">Remover</button>
     </div>
   </div>
 </div>
@@ -1770,18 +1772,18 @@ textarea.field{ resize:vertical; min-height:80px }
 <div x-show="openConfirmImport" x-transition.opacity class="overlay" @click.self="openConfirmImport=false" x-cloak>
   <div class="modal-card fade-in" style="max-width:460px">
     <div class="flex items-start gap-3 mb-4">
-      <div class="w-11 h-11 rounded-xl bg-gold-100 flex items-center justify-center shrink-0"><svg class="i text-xl text-gold-700"><use href="#i-import"/></svg></div>
+      <div class="w-11 h-11 rounded-xl bg-[#FFFFFF] flex items-center justify-center shrink-0"><svg class="i text-xl text-nv-bg"><use href="#i-import"/></svg></div>
       <div>
-        <h3 class="font-display font-extrabold text-lg text-ink">Confirmar importação?</h3>
-        <p class="text-sm text-ink-muted mt-1">Modo selecionado: <span class="font-semibold" x-text="importMode === 'add' ? 'Adicionar' : 'Substituir tudo'"></span>.</p>
+        <h3 class="font-display font-extrabold text-lg text-nv-ink">Confirmar importação?</h3>
+        <p class="text-sm text-nv-soft mt-1">Modo selecionado: <span class="font-semibold" x-text="importMode === 'add' ? 'Adicionar' : 'Substituir tudo'"></span>.</p>
       </div>
     </div>
-    <div class="bg-cream-100 rounded-xl p-3 space-y-1.5 text-sm">
-      <div class="flex justify-between"><span class="text-ink-muted">Linhas OK</span><span class="font-semibold tnum">45</span></div>
-      <div class="flex justify-between"><span class="text-ink-muted">Linhas com aviso</span><span class="font-semibold tnum">3</span></div>
-      <div class="flex justify-between"><span class="text-ink-muted">Linhas rejeitadas</span><span class="font-semibold tnum">0</span></div>
-      <div class="h-px bg-surface-border my-1"></div>
-      <div class="flex justify-between"><span class="text-ink">Serão importadas</span><span class="font-display font-extrabold text-ink tnum">48</span></div>
+    <div class="bg-nv-surface-2 rounded-xl p-3 space-y-1.5 text-sm">
+      <div class="flex justify-between"><span class="text-nv-soft">Linhas OK</span><span class="font-semibold tnum">45</span></div>
+      <div class="flex justify-between"><span class="text-nv-soft">Linhas com aviso</span><span class="font-semibold tnum">3</span></div>
+      <div class="flex justify-between"><span class="text-nv-soft">Linhas rejeitadas</span><span class="font-semibold tnum">0</span></div>
+      <div class="h-px bg-nv-border-strong my-1"></div>
+      <div class="flex justify-between"><span class="text-nv-ink">Serão importadas</span><span class="font-display font-extrabold text-nv-ink tnum">48</span></div>
     </div>
     <div class="flex items-center gap-2 mt-5">
       <button @click="openConfirmImport=false" class="btn-ghost h-11 px-4 rounded-xl text-sm font-semibold flex-1">Cancelar</button>
@@ -1794,23 +1796,23 @@ textarea.field{ resize:vertical; min-height:80px }
 <!-- POPOVER: Filtro de coluna da tabela -->
 <!-- ============================================================ -->
 <div x-show="openColFilter" @click.outside="if(!$event.target.closest('[data-colfilter-btn]')) openColFilter=null" x-transition x-cloak
-     class="fixed z-[90] bg-white border border-surface-border rounded-xl shadow-lift p-3 w-56"
+     class="fixed z-[90] bg-nv-surface border border-nv-border-strong rounded-xl shadow-lift p-3 w-56"
      :style="'top:'+colFilterPos.top+'px; left:'+colFilterPos.left+'px'">
 
   <template x-if="openColFilter === 'marca'">
-    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por marca</p>
+    <div><p class="text-xs font-semibold text-nv-soft mb-1.5">Filtrar por marca</p>
       <input x-model="colFilters.marca" type="text" placeholder="Ex: Dior" class="field text-sm py-1.5">
     </div>
   </template>
 
   <template x-if="openColFilter === 'modelo'">
-    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por modelo</p>
+    <div><p class="text-xs font-semibold text-nv-soft mb-1.5">Filtrar por modelo</p>
       <input x-model="colFilters.modelo" type="text" placeholder="Ex: Aventus" class="field text-sm py-1.5">
     </div>
   </template>
 
   <template x-if="openColFilter === 'concentracao'">
-    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por concentração</p>
+    <div><p class="text-xs font-semibold text-nv-soft mb-1.5">Filtrar por concentração</p>
       <div class="flex flex-wrap gap-1.5">
         <template x-for="c in uniqueConcentracoes()" :key="c">
           <button type="button" @click="toggleConcentracaoFilter(c)" class="chip cursor-pointer text-[11px]" :class="colFilters.concentracao.includes(c) ? 'chip-ink' : 'chip-neutral'" x-text="c"></button>
@@ -1820,37 +1822,37 @@ textarea.field{ resize:vertical; min-height:80px }
   </template>
 
   <template x-if="openColFilter === 'ano'">
-    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por ano</p>
+    <div><p class="text-xs font-semibold text-nv-soft mb-1.5">Filtrar por ano</p>
       <div class="flex items-center gap-2">
         <input x-model.number="colFilters.ano_min" type="number" placeholder="De" class="field text-sm py-1.5 tnum">
-        <span class="text-ink-faint text-xs">até</span>
+        <span class="text-nv-muted text-xs">até</span>
         <input x-model.number="colFilters.ano_max" type="number" placeholder="Até" class="field text-sm py-1.5 tnum">
       </div>
     </div>
   </template>
 
   <template x-if="openColFilter === 'nota'">
-    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por nota Fragrantica</p>
+    <div><p class="text-xs font-semibold text-nv-soft mb-1.5">Filtrar por nota Fragrantica</p>
       <div class="flex items-center gap-2">
         <input x-model.number="colFilters.nota_min" type="number" step="0.1" min="0" max="5" placeholder="Min" class="field text-sm py-1.5 tnum">
-        <span class="text-ink-faint text-xs">até</span>
+        <span class="text-nv-muted text-xs">até</span>
         <input x-model.number="colFilters.nota_max" type="number" step="0.1" min="0" max="5" placeholder="Max" class="field text-sm py-1.5 tnum">
       </div>
     </div>
   </template>
 
   <template x-if="openColFilter === 'votos'">
-    <div><p class="text-xs font-semibold text-ink-muted mb-1.5">Filtrar por votos</p>
+    <div><p class="text-xs font-semibold text-nv-soft mb-1.5">Filtrar por votos</p>
       <div class="flex items-center gap-2">
         <input x-model.number="colFilters.votos_min" type="number" placeholder="Min" class="field text-sm py-1.5 tnum">
-        <span class="text-ink-faint text-xs">até</span>
+        <span class="text-nv-muted text-xs">até</span>
         <input x-model.number="colFilters.votos_max" type="number" placeholder="Max" class="field text-sm py-1.5 tnum">
       </div>
     </div>
   </template>
 
-  <div class="flex items-center justify-between mt-3 pt-2 border-t border-surface-border">
-    <button type="button" @click="clearColFilters()" class="text-xs text-ink-muted hover:text-ink">Limpar todos</button>
+  <div class="flex items-center justify-between mt-3 pt-2 border-t border-nv-border-strong">
+    <button type="button" @click="clearColFilters()" class="text-xs text-nv-soft hover:text-nv-ink">Limpar todos</button>
     <button type="button" @click="openColFilter=null" class="text-xs font-semibold text-gold-700 hover:underline">Fechar</button>
   </div>
 </div>
@@ -2075,9 +2077,9 @@ function perfumaria(){
     },
     stockColor(p){
       const pct = p.tamanho_ml ? p.estoque_ml/p.tamanho_ml : 0;
-      if(pct >= 0.5) return '#16A34A';
-      if(pct >= 0.2) return '#F59E0B';
-      return '#DC2626';
+      if(pct >= 0.5) return '#34D399';
+      if(pct >= 0.2) return '#FBBF24';
+      return '#F87171';
     },
     deltaClass(d){ if(d < 0.3) return 'delta-ok'; if(d < 0.5) return 'delta-warn'; return 'delta-err'; },
     brl(n){ return (n||0).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); },
@@ -2301,19 +2303,19 @@ function perfumaria(){
       const areaPath = linePath + ' L'+points[points.length-1].x.toFixed(1)+','+(H-pad)+' L'+points[0].x.toFixed(1)+','+(H-pad)+' Z';
       const gridY = [0,25,50,75,100].map(pct => {
         const y = pad + (1 - pct/100)*(H-pad*2);
-        return `<line x1="${pad}" x2="${W-pad}" y1="${y}" y2="${y}" stroke="#EBE5D3" stroke-width="1"/><text x="${pad-6}" y="${y+3}" text-anchor="end" font-size="9" fill="#8f8f8f" font-family="Inter">${Math.round(maxY*pct/100)}</text>`;
+        return `<line x1="${pad}" x2="${W-pad}" y1="${y}" y2="${y}" stroke="#27557A" stroke-width="1"/><text x="${pad-6}" y="${y+3}" text-anchor="end" font-size="9" fill="#B5D4E8" font-family="Inter">${Math.round(maxY*pct/100)}</text>`;
       }).join('');
       return `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto; min-width:520px" role="img" aria-label="Estoque ao longo do tempo">
         <defs>
           <linearGradient id="grad-stock" x1="0" x2="0" y1="0" y2="1">
-            <stop offset="0%" stop-color="#B8860B" stop-opacity=".28"/>
-            <stop offset="100%" stop-color="#B8860B" stop-opacity="0"/>
+            <stop offset="0%" stop-color="#74A9D7" stop-opacity=".30"/>
+            <stop offset="100%" stop-color="#74A9D7" stop-opacity="0"/>
           </linearGradient>
         </defs>
         ${gridY}
         <path d="${areaPath}" fill="url(#grad-stock)"/>
-        <path d="${linePath}" fill="none" stroke="#1E1E1E" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        ${points.map((pt,i)=> i===points.length-1 ? `<circle cx="${pt.x}" cy="${pt.y}" r="5" fill="#B8860B" stroke="#fff" stroke-width="2"/>` : `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="#fff" stroke="#1E1E1E" stroke-width="1.6"/>`).join('')}
+        <path d="${linePath}" fill="none" stroke="#EBF7FA" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+        ${points.map((pt,i)=> i===points.length-1 ? `<circle cx="${pt.x}" cy="${pt.y}" r="5" fill="#74A9D7" stroke="#042C48" stroke-width="2"/>` : `<circle cx="${pt.x}" cy="${pt.y}" r="3" fill="#042C48" stroke="#EBF7FA" stroke-width="1.6"/>`).join('')}
       </svg>`;
     },
 
